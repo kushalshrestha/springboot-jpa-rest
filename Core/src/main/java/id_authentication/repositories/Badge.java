@@ -1,8 +1,8 @@
-package id_authentication.Repositories;
+package id_authentication.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LocationTimeSlot extends JpaRepository<LocationTimeSlot, Long> {
+public interface Badge extends JpaRepository<Badge, Long> {
 }
