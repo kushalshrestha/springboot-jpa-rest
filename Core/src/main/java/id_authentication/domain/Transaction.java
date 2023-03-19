@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "checkin_transaction")
 @Data
 @NoArgsConstructor
 public class Transaction {
@@ -18,6 +19,7 @@ public class Transaction {
     @NonNull
     private LocalDateTime dateTime;
     @NonNull
+    @Column(name="transaction_type")
     private String TransactionType;
 
     @ManyToOne
