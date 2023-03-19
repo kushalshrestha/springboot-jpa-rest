@@ -1,9 +1,6 @@
 package id_authentication.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,10 +9,9 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Location {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NonNull
     private String name;
@@ -27,4 +23,13 @@ public class Location {
     @JoinColumn(name = "location_id")
     @Column(name = "time_slot")
     private List<LocationTimeSlot> timeSlots=new ArrayList<LocationTimeSlot>();
+
+    public Location(@NonNull String name, String description, int capacity, String type, List<LocationTimeSlot> timeSlots) {
+        this.name = name;
+        this.description = description;
+        this.capacity = capacity;
+        this.type = type;
+        this.timeSlots = timeSlots;
+    }
+
 }
