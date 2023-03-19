@@ -37,7 +37,7 @@ public class Member {
     private List<Badge> badges=new ArrayList<Badge>();
 
     @OneToMany
-    private List<CheckInRecord> checkInRecords = new ArrayList<>();
+    private List<CheckInRecord> checkInRecords;
 
     public void addMembership(Membership membership) {
         if (memberships == null) {
@@ -49,6 +49,19 @@ public class Member {
     public void removeMembership(Membership membership) {
         if (memberships != null) {
             memberships.remove(membership);
+        }
+    }
+
+    public void addCheckInRecord(CheckInRecord checkInRecord) {
+        if (checkInRecords == null) {
+            checkInRecords = new ArrayList<>();
+        }
+        checkInRecords.add(checkInRecord);
+    }
+
+    public void removeCheckInRecord(CheckInRecord checkInRecord) {
+        if (checkInRecords != null) {
+            checkInRecords.remove(checkInRecord);
         }
     }
 }
