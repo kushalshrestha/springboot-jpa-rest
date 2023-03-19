@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -37,5 +38,6 @@ public class CheckInRecord {
     @NonNull
     private Role role;
 
+    private Date lastCheckIn;
 
 }
