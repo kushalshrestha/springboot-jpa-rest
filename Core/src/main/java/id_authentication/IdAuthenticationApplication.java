@@ -15,19 +15,11 @@ import java.util.List;
 
 
 @SpringBootApplication
-public class IdAuthenticationApplication implements CommandLineRunner {
+public class IdAuthenticationApplication{
 	@Autowired
 	private LocationService locationService;
 	public static void main(String[] args) {
 		SpringApplication.run(IdAuthenticationApplication.class, args);
 	}
 
-
-	@Override
-	public void run(String... args) throws Exception {
-		LocationTimeSlot locationTimeSlot = new LocationTimeSlot( 1,LocalDateTime.now(),LocalDateTime.now().plusHours(1));
-		List<LocationTimeSlot> locationTimeSlots =new ArrayList<LocationTimeSlot>();
-		Location location = new Location("Argiro","",100,"DINING_HALL",locationTimeSlots);
-		locationService.addLocation(location);
-	}
 }
