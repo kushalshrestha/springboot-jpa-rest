@@ -36,7 +36,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Badge> badges=new ArrayList<Badge>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany
     private List<CheckInRecord> checkInRecords = new ArrayList<>();
 
     public void addMembership(Membership membership) {

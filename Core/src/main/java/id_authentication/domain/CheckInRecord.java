@@ -25,25 +25,17 @@ public class CheckInRecord {
     @NonNull
     private Member member;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "plans_id")
     @NonNull
-    private List<Plan> plan = new ArrayList<>();
+    private Plan plan;
 
     private int count;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "roles_id")
     @NonNull
-    private List<Role> role = new ArrayList<>();
-
-    private CheckStatus checkStatus;
-
-    public void  updateCount(){
-        if(checkStatus.APPROVED == CheckStatus.APPROVED)
-        this.count = count++;
-    }
-
+    private Role role;
 
 
 }
