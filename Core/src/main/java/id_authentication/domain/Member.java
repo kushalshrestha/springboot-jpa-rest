@@ -37,6 +37,7 @@ public class Member {
     private List<Badge> badges=new ArrayList<Badge>();
 
     @OneToMany
+    @JoinColumn(name = "member_id")
     private List<CheckInRecord> checkInRecords;
 
     public void addMembership(Membership membership) {

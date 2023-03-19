@@ -21,11 +21,6 @@ public class CheckInRecord {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    @NonNull
-    private Member member;
-
     @OneToOne
     @JoinColumn(name = "plans_id")
     @NonNull
