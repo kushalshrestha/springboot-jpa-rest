@@ -20,10 +20,9 @@ public class Badge {
     private long id;
     @NonNull
     @Column(name="expiry_date")
-    private LocalDate ExpiryDate;
+    private LocalDate expiryDate;
     @NonNull
-    @Column(name="is_active")
-    private Boolean isActive;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name="member_id")
