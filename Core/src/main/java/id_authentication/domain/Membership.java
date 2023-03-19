@@ -2,6 +2,7 @@ package id_authentication.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
@@ -15,13 +16,18 @@ public class Membership {
     @Id
     @GeneratedValue
     private long id;
+    @NonNull
+    @Column(length = 50)
     private String type;
 
     @Column(name="start_date")
+    @NonNull
     private LocalDateTime startDate;
     @Column(name = "end_date")
+    @NonNull
     private LocalDateTime endDate;
 
     @ManyToOne
+    @NonNull
     private Plan plan;
 }
