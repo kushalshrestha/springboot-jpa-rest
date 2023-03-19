@@ -11,10 +11,9 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Membership {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NonNull
     @Column(length = 50)

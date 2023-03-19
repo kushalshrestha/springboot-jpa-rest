@@ -1,8 +1,10 @@
 package id_authentication.repositories;
 
+
+import id_authentication.domain.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Location extends JpaRepository<Location, Long> {
+public interface LocationRepository extends JpaRepository<Location, Long> {
 }

@@ -11,10 +11,9 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Transaction {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NonNull
     private LocalDateTime dateTime;
@@ -23,10 +22,8 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "location_id")
-    @NonNull
     private Location location;
     @ManyToOne
-    @NonNull
     @JoinColumn(name = "plan_id")
     private Plan plan;
 

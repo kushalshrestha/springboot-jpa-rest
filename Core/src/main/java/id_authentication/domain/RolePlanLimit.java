@@ -11,10 +11,9 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class RolePlanLimit {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "limit_by")
     @NonNull
