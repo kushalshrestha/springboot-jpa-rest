@@ -22,13 +22,12 @@ public class MembershipService implements IMembershipService{
     public MembershipResponseDto save(MembershipRequestDto membershipRequestDto) {
         Membership membership = modelMapper.map(membershipRequestDto, Membership.class);
         membershipRepository.save(membership);
-        return MembershipAdapter.getMemberShipDTOFromMembership(membership);
+        return modelMapper.map(membershipRepository.save(membership), MembershipResponseDto.class);
     }
 
     public MembershipResponseDto getMembership(long id){
         Membership membership = membershipRepository.findById(id).get();
-        modelMapper.map(membership, MembershipResponseDto.class);
-        return null;
+        return modelMapper.map(membership, MembershipResponseDto.class);
     }
 
     public List<Membership> getAllMemberships() {
@@ -45,6 +44,12 @@ public class MembershipService implements IMembershipService{
 
     public void deleteMembership(long id) {
         membershipRepository.deleteById(id);
+    }
+
+    @Override
+    public List<MembershipResponseDto> findAllByMembershipNumber(String memberNumber) {
+
+        return null;
     }
 
     public void update(long id, Membership membership) {

@@ -3,6 +3,7 @@ package id_authentication.controller;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.service.IMembershipService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,13 @@ import java.util.List;
 public class MemberController {
 
     private IMembershipService membershipService;
+    private ModelMapper modelMapper;
 
-//    @GetMapping("{memberId}/memberships")
-//    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId){
-//        List<MembershipResponseDto> membershipResponseDto =  membershipService.findAllByMembershipNumber(memberId);
-//        return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
-//    }
+    @GetMapping("{memberId}/memberships")
+    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId){
+        List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMembershipNumber(memberId);
+        return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
+    }
 
 
 

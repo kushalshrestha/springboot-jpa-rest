@@ -15,7 +15,7 @@ public interface IMembershipService {
     MembershipResponseDto updateMembership(long id, MembershipRequestDto membershipRequestDto);
     void deleteMembership(long id);
 
-//    List<MembershipResponseDto> findAllByMembershipNumber(String memberNumber);
+    List<MembershipResponseDto> findAllByMembershipNumber(String memberNumber);
 
 //    List<MembershipResponseDto> findAll();
 }

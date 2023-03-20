@@ -8,14 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("membership")
+@RequestMapping("/api/v1/memberships")
 public class MembershipController {
-
     private IMembershipService membershipService;
     @PostMapping
     public ResponseEntity<?> createMembership(@RequestBody MembershipRequestDto membershipRequestDto) {
         MembershipResponseDto membershipResponseDto = membershipService.save(membershipRequestDto);
-        return new ResponseEntity<>(membershipResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(membershipResponseDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
