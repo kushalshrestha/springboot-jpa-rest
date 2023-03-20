@@ -1,9 +1,9 @@
 package id_authentication.dto;
 
 import id_authentication.domain.LocationTimeSlot;
+import id_authentication.domain.LocationType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 @Data
@@ -13,18 +13,9 @@ public class LocationDTO {
     private String name;
     private String description;
     private int capacity;
-    private String type;
-    private List<LocationTimeSlot> timeSlots=new ArrayList<LocationTimeSlot>();
 
-    public LocationDTO(long id, String name, String description, int capacity,
-                       String type, List<LocationTimeSlot> timeSlots) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.capacity = capacity;
-        this.type = type;
-        this.timeSlots = timeSlots;
-    }
+    private LocationType locationType;
+    private List<LocationTimeSlotDTO> timeSlots=new ArrayList<LocationTimeSlotDTO>();
 
 
 }
