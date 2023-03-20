@@ -31,6 +31,9 @@ public class Member {
     @NonNull
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
     @OneToMany
     @JoinColumn(name = "member_id")
     private List<Membership> memberships;
