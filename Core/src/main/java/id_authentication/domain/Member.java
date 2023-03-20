@@ -42,6 +42,15 @@ public class Member {
     @JoinColumn(name = "member_id")
     private List<CheckInRecord> checkInRecords;
 
+    public Member(@NonNull String memberNumber, @NonNull String firstName, String lastName, @NonNull String userName, @NonNull String password, List<Badge> badges) {
+        this.memberNumber = memberNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.badges = badges;
+    }
+
     public void addMembership(Membership membership) {
         if (memberships == null) {
             memberships = new ArrayList<>();
