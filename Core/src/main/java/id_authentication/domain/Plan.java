@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "PlanInfo")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Plan {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NonNull
@@ -23,7 +23,7 @@ public class Plan {
     private String description;
 
     @OneToMany
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "plan_id")
     private List<Location> locations=new ArrayList<Location>();
     @OneToMany
     @Column(name = "role_plan_limit")

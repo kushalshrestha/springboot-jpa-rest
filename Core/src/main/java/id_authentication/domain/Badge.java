@@ -13,11 +13,15 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Badge {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "badge_number", length=50)
+    @NonNull
+    private String badgeNumber;
+
     @NonNull
     @Column(name="expiry_date")
     private LocalDate expiryDate;
