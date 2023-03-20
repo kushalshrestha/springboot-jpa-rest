@@ -26,9 +26,9 @@ public class LocationTimeSlot {
     private LocalDateTime endTime;
 
 
-    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalDateTime startTime, @NonNull LocalDateTime endTime) {
-        this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+//    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalDateTime startTime, @NonNull LocalDateTime endTime) {
+//        this.dayOfWeek = dayOfWeek;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//    }
 }
