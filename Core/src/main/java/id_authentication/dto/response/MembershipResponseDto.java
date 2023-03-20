@@ -1,8 +1,10 @@
 package id_authentication.dto.response;
 
+import id_authentication.domain.Plan;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class MembershipResponseDto {

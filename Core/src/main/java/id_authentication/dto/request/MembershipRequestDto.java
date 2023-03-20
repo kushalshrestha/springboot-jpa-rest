@@ -6,4 +6,6 @@ import lombok.Data;
 public class MembershipRequestDto {
     private String membershipNumber;
     private long planId;
+
+
 }
