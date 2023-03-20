@@ -37,3 +37,11 @@ values
     ('2023-12-31 23:59:59', 'ACTIVE', 2, 'V2DAO2KB95MTJ34IHSVQ'),
     ('2023-12-31 23:59:59', 'ACTIVE', 3, 'PF4SL5UYZ0OZYL11PH1A');
 
+
+insert into [dbo].[RolePlanLimit](limit_by, limit_value, role_id, plan_id)
+values
+    ('weeks',20, 1, 1),
+    ('weeks', 50, 2, 1),
+    ('weeks', 30, 3, 1);
+
+
