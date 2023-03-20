@@ -2,7 +2,10 @@ package id_authentication;
 
 import id_authentication.domain.Location;
 import id_authentication.domain.LocationTimeSlot;
+<<<<<<< HEAD
+=======
 import id_authentication.repositories.PlanRepository;
+>>>>>>> main
 import id_authentication.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +19,11 @@ import java.util.List;
 
 
 @SpringBootApplication
+<<<<<<< HEAD
+public class IdAuthenticationApplication{
+=======
 public class IdAuthenticationApplication implements CommandLineRunner{
+>>>>>>> main
 	@Autowired
 	private LocationService locationService;
 	public static void main(String[] args) {
