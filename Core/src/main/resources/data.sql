@@ -45,3 +45,14 @@ values
     ('weeks', 30, 3, 1);
 
 
+insert into [dbo].[Location](capacity, description, name, type, plan_id)
+values
+    (100, 'Meal Plan for Argiro', 'Argiro','DINING_HALL', 1),
+    (25, 'Meal Plan for Golden Dome Market Place', 'Golden Dome' , 'DINING_HALL' , 1),
+    (30, 'Fit for Life', 'Rec Centre', 'GYMNASIUM', 2),
+    (15, 'Get Ready for US Open', 'Rec Centre', 'LAWN_TENNIS', 2),
+    (20, 'Get Ready for outdoor tennis', 'Brooklyn Avenue', 'LAWN_TENNIS', 2),
+    (200, 'Look a Book', 'XYZ Avenue', 'LIBRARY', 3),
+    (80, 'H3', 'ABC Avenue', 'DORMITORY', 4),
+    (50, 'R16', '123 Avenue', 'DORMITORY', 4);
+
