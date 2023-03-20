@@ -20,7 +20,8 @@ public class Location {
     private String name;
     private String description;
     private int capacity;
-
+    @Enumerated(EnumType.STRING) @Column(name = "type")
+    //@Column(name="type")
     private LocationType locationType;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")

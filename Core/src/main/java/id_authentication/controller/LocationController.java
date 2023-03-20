@@ -1,6 +1,7 @@
 package id_authentication.controller;
 
 import id_authentication.dto.LocationDTO;
+import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class LocationController {
         try {
             return new ResponseEntity<>(locationService.getLocation(id), HttpStatus.OK);
         }catch (ResourceNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping
@@ -34,7 +35,7 @@ public class LocationController {
         try {
             return new ResponseEntity<>(locationService.updateLocation(id, locationDTO), HttpStatus.OK);
         }catch (ResourceNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
     @DeleteMapping("/{id}")
@@ -42,7 +43,7 @@ public class LocationController {
         try {
             return new ResponseEntity<>(locationService.deleteLocation(id), HttpStatus.OK);
         }catch (ResourceNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
