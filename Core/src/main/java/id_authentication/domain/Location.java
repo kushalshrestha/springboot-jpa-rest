@@ -1,6 +1,7 @@
 package id_authentication.domain;
 
 import lombok.*;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -11,7 +12,6 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

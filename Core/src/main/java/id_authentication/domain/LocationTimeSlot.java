@@ -3,8 +3,13 @@ package id_authentication.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import javax.persistence.*;
 import java.time.LocalTime;
+
 
 @Entity
 @Data
@@ -13,7 +18,7 @@ public class LocationTimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name="day_of_week")
+    @Column(name = "day_of_week")
     @NonNull
     private int dayOfWeek;
     @Column(name = "start_time")
@@ -24,9 +29,11 @@ public class LocationTimeSlot {
     private LocalTime endTime;
 
 
-    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalTime startTime, @NonNull LocalTime endTime) {
-        this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalTime startTime, @NonNull LocalTime endTime){
+
+            this.dayOfWeek = dayOfWeek;
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+
 }
