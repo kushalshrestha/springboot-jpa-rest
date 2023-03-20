@@ -9,3 +9,10 @@ values
     ('Jane', 'Andersen', 'bruce.lester', 'jane.andersen'),
     ('Peter', 'Adley', 'peter.adley', 'peter.adley');
 
+
+insert into [dbo].[planInfo] (description, name)
+values
+    ('Meal plan', 'Meals'),
+    ('Gymnasium', 'Gym'),
+    ('Library', 'Library'),
+    ('Dorm for Home', 'Dorm');
