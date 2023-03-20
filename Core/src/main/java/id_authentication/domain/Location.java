@@ -2,6 +2,9 @@ package id_authentication.domain;
 
 import lombok.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ public class Location {
     private String description;
     private int capacity;
     private String type;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany
     @JoinColumn(name = "location_id")
     @Column(name = "time_slot")

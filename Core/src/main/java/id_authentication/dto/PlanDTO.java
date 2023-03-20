@@ -5,7 +5,8 @@ import id_authentication.domain.RolePlanLimit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.springframework.stereotype.Component;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,4 +27,7 @@ public class PlanDTO {
         this.locations = locations;
         this.rolePlanLimit = rolePlanLimit;
     }
+
+
+
 }

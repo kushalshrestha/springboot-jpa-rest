@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

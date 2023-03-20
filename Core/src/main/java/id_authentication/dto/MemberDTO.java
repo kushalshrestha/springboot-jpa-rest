@@ -1,5 +1,4 @@
 package id_authentication.dto;
-
 import id_authentication.domain.Badge;
 import id_authentication.domain.Membership;
 import lombok.Data;
@@ -18,14 +17,14 @@ public class MemberDTO {
     private String userName;
     private String password;
     private List<Membership> memberships;
-    private List<Badge> badges=new ArrayList<Badge>();
+    private List<Badge> badges = new ArrayList<Badge>();
 
     public MemberDTO(List<Membership> memberships, List<Badge> badges) {
 
     }
 
-    public MemberDTO(long id, String firstName, String lastName,List<Membership> memberships,
-                     List<Badge> badges, String userName , String password) {
+    public MemberDTO(long id, String firstName, String lastName, List<Membership> memberships,
+                     List<Badge> badges, String userName, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +33,5 @@ public class MemberDTO {
         this.memberships = memberships;
         this.badges = badges;
     }
-
 
 }
