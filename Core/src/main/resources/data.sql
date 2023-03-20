@@ -3,11 +3,11 @@ INSERT INTO [dbo].[Role] (name)
 VALUES ('Student'),('Faculty'),('Staff');
 
 
-INSERT INTO [dbo].[Member] (first_name, last_name, password, user_name)
+INSERT INTO [dbo].[Member] (first_name, last_name, password, user_name, role_id)
 values
-    ('Kushal','Shrestha', 'test123','kushal.shrestha'),
-    ('Jane', 'Andersen', 'bruce.lester', 'jane.andersen'),
-    ('Peter', 'Adley', 'peter.adley', 'peter.adley');
+    ('Kushal','Shrestha', 'test123','kushal.shrestha', 1),
+    ('Jane', 'Andersen', 'bruce.lester', 'jane.andersen', 2),
+    ('Peter', 'Adley', 'peter.adley', 'peter.adley', 3);
 
 
 insert into [dbo].[planInfo] (description, name)
