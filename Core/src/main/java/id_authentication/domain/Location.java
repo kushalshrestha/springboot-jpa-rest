@@ -2,6 +2,9 @@ package id_authentication.domain;
 
 import lombok.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ public class Location {
     private String name;
     private String description;
     private int capacity;
+
     private LocationType locationType;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")

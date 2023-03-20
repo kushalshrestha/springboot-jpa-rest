@@ -1,9 +1,6 @@
 package id_authentication.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,10 +10,17 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+
 public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "badge_number", length=50)
+    @NonNull
+    private String badgeNumber;
+
     @NonNull
     @Column(name="expiry_date")
     private LocalDate expiryDate;

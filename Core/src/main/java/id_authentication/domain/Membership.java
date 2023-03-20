@@ -15,6 +15,10 @@ public class Membership {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "membership_number", length=50)
+    @NonNull
+    private String membershipNumber;
     @NonNull
     @Column(length = 50)
     private String type;
