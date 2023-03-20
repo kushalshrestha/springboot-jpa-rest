@@ -9,24 +9,23 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "CheckinInformation")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Transaction {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NonNull
     private LocalDateTime dateTime;
     @NonNull
+    @Column(name="transaction_type")
     private String TransactionType;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
-    @NonNull
     private Location location;
     @ManyToOne
-    @NonNull
     @JoinColumn(name = "plan_id")
     private Plan plan;
 

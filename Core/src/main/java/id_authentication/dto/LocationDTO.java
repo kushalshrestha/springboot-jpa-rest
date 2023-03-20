@@ -1,35 +1,30 @@
-package id_authentication.domain;
+package id_authentication.dto;
 
-import lombok.*;
+import id_authentication.domain.LocationTimeSlot;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-@Entity
 @Data
 @NoArgsConstructor
-public class Location {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class LocationDTO {
     private long id;
-    @NonNull
     private String name;
-
     private String description;
     private int capacity;
     private String type;
-    @OneToMany
-    @JoinColumn(name = "location_id")
-    @Column(name = "time_slot")
     private List<LocationTimeSlot> timeSlots=new ArrayList<LocationTimeSlot>();
 
-    public Location(@NonNull String name, String description, int capacity, String type, List<LocationTimeSlot> timeSlots) {
+    public LocationDTO(long id, String name, String description, int capacity,
+                       String type, List<LocationTimeSlot> timeSlots) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.capacity = capacity;
         this.type = type;
         this.timeSlots = timeSlots;
     }
+
 
 }

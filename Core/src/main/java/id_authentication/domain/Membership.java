@@ -11,11 +11,14 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Membership {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "membership_number", length=50)
+    @NonNull
+    private String membershipNumber;
     @NonNull
     @Column(length = 50)
     private String type;

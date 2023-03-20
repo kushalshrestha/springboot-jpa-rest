@@ -12,11 +12,13 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "member_number", length=50)
+    @NonNull
+    private String memberNumber;
     @Column(name = "first_name", length=100)
     @NonNull
     private String firstName;
@@ -36,6 +38,19 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Badge> badges=new ArrayList<Badge>();
 
+    @OneToMany
+    @JoinColumn(name = "member_id")
+    private List<CheckInRecord> checkInRecords;
+
+    public Member(@NonNull String memberNumber, @NonNull String firstName, String lastName, @NonNull String userName, @NonNull String password, List<Badge> badges) {
+        this.memberNumber = memberNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.badges = badges;
+    }
+
     public void addMembership(Membership membership) {
         if (memberships == null) {
             memberships = new ArrayList<>();
@@ -46,6 +61,19 @@ public class Member {
     public void removeMembership(Membership membership) {
         if (memberships != null) {
             memberships.remove(membership);
+        }
+    }
+
+    public void addCheckInRecord(CheckInRecord checkInRecord) {
+        if (checkInRecords == null) {
+            checkInRecords = new ArrayList<>();
+        }
+        checkInRecords.add(checkInRecord);
+    }
+
+    public void removeCheckInRecord(CheckInRecord checkInRecord) {
+        if (checkInRecords != null) {
+            checkInRecords.remove(checkInRecord);
         }
     }
 }
