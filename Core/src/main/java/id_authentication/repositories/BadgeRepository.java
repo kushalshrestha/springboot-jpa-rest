@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BadgeRepository extends JpaRepository<Badge, Long> {
+    public void getBadgeByBadgeNumber(Long BadgeNumber);
+
+   public void deleteByBadgeNumber(Long badgeNumber);
 }

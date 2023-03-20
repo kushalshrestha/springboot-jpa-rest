@@ -5,19 +5,19 @@ import id_authentication.repositories.BadgeRepository;
 import id_authentication.service.BadgeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 
 public class BadgeServiceImp implements BadgeService {
-    private  final BadgeRepository badgeRepository;
-
-
+    private final BadgeRepository badgeRepository;
 
     @Override
     public Badge createBadge(Badge badge) {
 
-       return badgeRepository.save(badge);
+        return badgeRepository.save(badge);
     }
 
     @Override
@@ -29,17 +29,24 @@ public class BadgeServiceImp implements BadgeService {
             badge1.setExpiryDate(badge.getExpiryDate());
 
             return badgeRepository.save(badge1);
+        } else {
+            return createBadge(badge);
         }
-        else {return createBadge(badge);}
     }
 
     @Override
-    public Badge getBadge(Long BadgeNumber) {
-        return null;
+    public Badge getBadge(Long badgeId) {
+        return badgeRepository.findById(badgeId).get();
+
     }
 
     @Override
-    public Badge removeBadge(Long BadgeNumber) {
-        return null;
+    public List<Badge> getAllBadges() {
+        return badgeRepository.findAll();
+    }
+
+    @Override
+    public Badge deleteBadge(Long BadgeNumber) {
+
     }
 }
