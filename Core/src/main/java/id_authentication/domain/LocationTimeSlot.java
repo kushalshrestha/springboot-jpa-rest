@@ -3,10 +3,10 @@ package id_authentication.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -20,13 +20,13 @@ public class LocationTimeSlot {
     private int dayOfWeek;
     @Column(name = "start_time")
     @NonNull
-    private LocalDateTime startTime;
+    private LocalTime startTime;
     @Column(name = "end_time")
     @NonNull
-    private LocalDateTime endTime;
+    private LocalTime endTime;
 
 
-    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalDateTime startTime, @NonNull LocalDateTime endTime) {
+    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalTime startTime, @NonNull LocalTime endTime) {
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
