@@ -16,6 +16,9 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "member_number", length=50)
+    @NonNull
+    private String memberNumber;
     @Column(name = "first_name", length=100)
     @NonNull
     private String firstName;
