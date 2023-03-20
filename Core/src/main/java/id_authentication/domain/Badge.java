@@ -17,6 +17,11 @@ public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "badge_number", length=50)
+    @NonNull
+    private String badgeNumber;
+
     @NonNull
     @Column(name="expiry_date")
     private LocalDate expiryDate;

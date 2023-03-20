@@ -23,7 +23,7 @@ public class Plan {
     private String description;
 
     @OneToMany
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "plan_id")
     private List<Location> locations=new ArrayList<Location>();
     @OneToMany
     @Column(name = "role_plan_limit")
