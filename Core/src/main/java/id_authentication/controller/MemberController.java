@@ -1,13 +1,13 @@
 package id_authentication.controller;
 
+import id_authentication.dto.BadgeDTO;
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.collection.TransactionDTOs;
 import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.BadgeOnlyDTO;
 import id_authentication.dto.response.MembershipPlanResponseDto;
-import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
-import id_authentication.exceptions.MemberNotFoundException;
 import id_authentication.service.IMembershipService;
 import id_authentication.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,10 @@ public class MemberController {
 
     @Autowired
     private IMembershipService membershipService;
+
     @Autowired
     MemberService memberService;
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMember(@PathVariable String id) {
@@ -78,10 +80,24 @@ public class MemberController {
         }
     }
 
+
     @GetMapping("/{memberId}/transactions")
     public ResponseEntity<?> findTransactionsByMemberId(@PathVariable String memberId){
         TransactionDTOs transactionDTOS = memberService.findAllTransactionsByMemberId(Long.parseLong(memberId));
         return new ResponseEntity<TransactionDTOs>(transactionDTOS, HttpStatus.OK);
+    }
+
+
+    @GetMapping("{memberId}/badges")
+    public ResponseEntity<?> findBadgesForMemberId(@PathVariable long memberId) {
+        try {
+            List<BadgeOnlyDTO> badgeList = new ArrayList<>();
+            badgeList = memberService.getBadgesByMemberId(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(badgeList);
+        } catch (Exception e) {
+            CustomErrorType customErrorType = new CustomErrorType("Error Retrieving Badges : " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
+        }
     }
 
 }

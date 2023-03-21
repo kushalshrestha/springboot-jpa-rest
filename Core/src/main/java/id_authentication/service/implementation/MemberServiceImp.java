@@ -9,6 +9,7 @@ import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.exceptions.MemberNotFoundException;
 import id_authentication.exceptions.ResourceNotFoundException;
+import id_authentication.dto.response.BadgeOnlyDTO;
 import id_authentication.repositories.*;
 import id_authentication.service.MemberService;
 import org.modelmapper.ModelMapper;
@@ -16,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImp implements MemberService {
@@ -26,6 +30,9 @@ public class MemberServiceImp implements MemberService {
     TransactionRepository transactionRepository;
     @Autowired
     MembershipRepository membershipRepository;
+
+    @Autowired
+    BadgeRepository badgeRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -117,7 +124,7 @@ public class MemberServiceImp implements MemberService {
 
     @Override
     public TransactionDTOs findAllTransactionsByMemberId(Long memberId) {
-        TransactionDTOs transactionDTOs=new TransactionDTOs();
+        TransactionDTOs transactionDTOs = new TransactionDTOs();
         memberRepository.findTransactionsByMemberId(memberId).forEach(transaction -> {
             transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
         });
@@ -126,10 +133,18 @@ public class MemberServiceImp implements MemberService {
 //            transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
 //        });
 
-        if(transactionDTOs.getTransactions().size()==0) {
+        if (transactionDTOs.getTransactions().size() == 0) {
             throw new ResourceNotFoundException("No transactions found for member id " + memberId);
         }
         return transactionDTOs;
+    }
+
+    public List<BadgeOnlyDTO> getBadgesByMemberId(long memberId) {
+        List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
+        return badgeRepository.findBadgesByMemberId(memberId).stream()
+                .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                .collect(Collectors.toList());
+
     }
 
 }
