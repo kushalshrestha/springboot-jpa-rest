@@ -73,8 +73,8 @@ public class MemberController {
     }
 
 
-    @GetMapping("/{memberid/plans")
-    public ResponseEntity<?>getPlansForMember(@PathVariable  long memberId){
+    @GetMapping("/{memberId}/plans")
+    public ResponseEntity<?>getPlansForMember(@PathVariable Long memberId){
             return new ResponseEntity<>(membershipService.getAllPlansForMember(memberId), HttpStatus.OK);
     }
 }

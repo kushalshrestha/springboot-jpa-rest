@@ -26,6 +26,7 @@ public interface MembershipRepository extends JpaRepository<Membership, Long> {
 
 
 
-    @Query("select ms.plan from Membership ms where ms.member.id = :memberId" )
+    @Query(value = "select p.* " +
+            "from membership m left join planinfo p on m.plan_id = p.id where m.member_id= :memberId", nativeQuery = true)
     List<Plan> findPlansByMemberId(@PathVariable("memberId") long memberId);
 }
