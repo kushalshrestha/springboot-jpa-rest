@@ -27,7 +27,7 @@ public class PlanController {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createAPlan(@RequestBody PlanDTO planDTO){
         PlanDTO p = planService.createPlanForMember(planDTO);
         return new ResponseEntity<PlanDTO>(planDTO,HttpStatus.OK);
@@ -35,12 +35,11 @@ public class PlanController {
     }
 
 
-    @PutMapping("/update/{planId}")
+    @PutMapping("/{planId}")
     public ResponseEntity<?> updatePlan(@RequestBody PlanDTO planDTO,@PathVariable Long planId){
         PlanDTO p = planService.updatePlanForMember(planId,planDTO);
         return new ResponseEntity<>(p,HttpStatus.OK);
     }
-
 
     @GetMapping("/plans")
 
@@ -49,7 +48,7 @@ public class PlanController {
     }
 
 
-    @DeleteMapping("/remove/{memberId}")
+    @DeleteMapping("/{memberId}")
 
     public ResponseEntity<?> deletePlan(@PathVariable Long memberId){
         planService.deletePlanForMember(memberId);
