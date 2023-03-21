@@ -4,6 +4,7 @@ import id_authentication.domain.LocationTimeSlot;
 import id_authentication.domain.LocationType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 @Data
@@ -16,6 +17,7 @@ public class LocationDTO {
 
     private LocationType locationType;
     private List<LocationTimeSlotDTO> timeSlots=new ArrayList<LocationTimeSlotDTO>();
+
 
 
 }
