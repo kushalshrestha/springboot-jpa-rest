@@ -1,12 +1,11 @@
 package id_authentication.service.implementation;
 
-import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
-import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.BadgeOnlyDTO;
 import id_authentication.errorhandler.MemberNotFoundException;
 import id_authentication.repositories.*;
 import id_authentication.service.MemberService;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +26,9 @@ public class MemberServiceImp implements MemberService {
 
     @Autowired
     MembershipRepository membershipRepository;
+
+    @Autowired
+    BadgeRepository badgeRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -103,6 +104,14 @@ public class MemberServiceImp implements MemberService {
         } else {
             throw new RuntimeException("Member not found" + id);
         }
+    }
+
+    @Override
+    public List<BadgeOnlyDTO> getBadgesByMemberId(long memberId) {
+        List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
+        return badgeRepository.findBadgesByMemberId(memberId).stream()
+                .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                .collect(Collectors.toList());
     }
 
 }
