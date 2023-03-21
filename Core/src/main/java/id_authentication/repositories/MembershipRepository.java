@@ -2,6 +2,7 @@ package id_authentication.repositories;
 
 import id_authentication.domain.Membership;
 import id_authentication.dto.LocationDTO;
+import id_authentication.dto.MemberShipDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

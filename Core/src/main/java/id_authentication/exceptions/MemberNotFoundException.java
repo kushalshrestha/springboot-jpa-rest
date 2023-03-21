@@ -1,4 +1,4 @@
-package id_authentication.errorhandler;
+package id_authentication.exceptions;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
