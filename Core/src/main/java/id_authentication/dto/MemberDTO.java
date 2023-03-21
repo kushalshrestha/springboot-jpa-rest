@@ -16,15 +16,15 @@ public class MemberDTO {
     private String lastName;
     private String userName;
     private String password;
-    private List<Membership> memberships;
-    private List<Badge> badges = new ArrayList<Badge>();
+    private List<MemberShipDTO> memberships;
+    private List<BadgeDTO> badges = new ArrayList<BadgeDTO>();
 
-    public MemberDTO(List<Membership> memberships, List<Badge> badges) {
+    public MemberDTO(List<MemberShipDTO> memberships, List<BadgeDTO>badges) {
 
     }
 
-    public MemberDTO(long id, String firstName, String lastName, List<Membership> memberships,
-                     List<Badge> badges, String userName, String password) {
+    public MemberDTO(long id, String firstName, String lastName, List<MemberShipDTO> memberships,
+                     List<BadgeDTO> badges, String userName, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
