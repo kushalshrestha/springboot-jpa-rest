@@ -3,6 +3,7 @@ package id_authentication.service;
 import id_authentication.domain.Membership;
 import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.request.MembershipRequestDto;
+import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.exceptions.ResourceNotFoundException;
 
@@ -18,6 +19,6 @@ public interface IMembershipService {
     MembershipResponseDto updateMembership(long id, MembershipRequestDto membershipRequestDto);
 
     String deleteMembership(long id);
-    List<MemberShipDTO> getMembershipsByMemberId(Long memberId);
+    List<MembershipPlanResponseDto> getMembershipsByMemberId(Long memberId);
 
 }

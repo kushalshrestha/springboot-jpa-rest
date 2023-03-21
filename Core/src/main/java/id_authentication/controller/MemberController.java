@@ -4,6 +4,7 @@ import id_authentication.dto.MemberDTO;
 import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.errorhandler.MemberNotFoundException;
@@ -70,7 +71,7 @@ public class MemberController {
     @GetMapping("{memberId}/memberships")
     public ResponseEntity<?> findMembershipsByMemberId(@PathVariable long memberId){
             try{
-                List<MemberShipDTO> memberShipDTOList = new ArrayList<>();
+                List<MembershipPlanResponseDto> memberShipDTOList = new ArrayList<>();
                 memberShipDTOList = membershipService.getMembershipsByMemberId(memberId);
                 return ResponseEntity.status(HttpStatus.OK).body(memberShipDTOList);
             } catch (Exception e) {

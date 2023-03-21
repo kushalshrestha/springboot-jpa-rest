@@ -5,6 +5,7 @@ import id_authentication.domain.Membership;
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.request.MembershipRequestDto;
+import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.MembershipRepository;
@@ -73,10 +74,10 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public List<MemberShipDTO> getMembershipsByMemberId(Long memberId) {
+    public List<MembershipPlanResponseDto> getMembershipsByMemberId(Long memberId) {
         List<MemberShipDTO> membershipsList = new ArrayList<MemberShipDTO>();
         return membershipRepository.findMembershipsByMemberId(memberId).stream()
-                .map(membership -> modelMapper.map(membership, MemberShipDTO.class))
+                .map(membership -> modelMapper.map(membership, MembershipPlanResponseDto.class))
                 .collect(Collectors.toList());
     }
 
