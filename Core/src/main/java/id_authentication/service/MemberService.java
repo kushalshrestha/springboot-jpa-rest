@@ -1,9 +1,9 @@
 package id_authentication.service;
 
 import id_authentication.dto.MemberDTO;
-import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.BadgeOnlyDTO;
 
 import java.util.List;
 
@@ -19,4 +19,6 @@ public interface MemberService {
     MemberDTO authenticate(String username, String password);
 
     void deleteMember(long parseLong);
+
+    List<BadgeOnlyDTO> getBadgesByMemberId(long memberId);
 }

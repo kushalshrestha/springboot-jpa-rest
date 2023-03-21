@@ -1,9 +1,11 @@
 package id_authentication.controller;
 
+import id_authentication.dto.BadgeDTO;
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.BadgeOnlyDTO;
 import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
@@ -11,6 +13,7 @@ import id_authentication.errorhandler.MemberNotFoundException;
 import id_authentication.service.IMembershipService;
 import id_authentication.service.MemberService;
 
+import id_authentication.service.implementation.BadgeServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +29,10 @@ public class MemberController {
 
     @Autowired
     private IMembershipService membershipService;
+
     @Autowired
     MemberService memberService;
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMember(@PathVariable String id) {
@@ -78,6 +83,18 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.OK).body(memberShipDTOList);
         } catch (Exception e) {
             CustomErrorType customErrorType = new CustomErrorType("Error retrieving memberships for memberID " + memberId + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
+        }
+    }
+
+    @GetMapping("{memberId}/badges")
+    public ResponseEntity<?> findBadgesForMemberId(@PathVariable long memberId) {
+        try {
+            List<BadgeOnlyDTO> badgeList = new ArrayList<>();
+            badgeList = memberService.getBadgesByMemberId(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(badgeList);
+        } catch (Exception e) {
+            CustomErrorType customErrorType = new CustomErrorType("Error Retrieving Badges : " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
         }
     }
