@@ -1,7 +1,6 @@
 package id_authentication.repositories;
-
+import id_authentication.domain.Transaction;
 import id_authentication.domain.Member;
-import id_authentication.domain.Plan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     public Member findMemberByUserName(String userName);
 
+    @Query("select b.transactions from Badge b join b.transactions where b.member.id=:memberId")
+    List<Transaction> findTransactionsByMemberId(Long memberId);
 }

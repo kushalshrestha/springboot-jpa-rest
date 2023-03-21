@@ -1,7 +1,7 @@
 package id_authentication.repositories;
 
 import id_authentication.domain.Membership;
-import id_authentication.domain.Plan;
+import id_authentication.dto.MemberShipDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +24,5 @@ public interface MembershipRepository extends JpaRepository<Membership, Long> {
     @Query(value = "update membership set member_id=:memberId where id=:id", nativeQuery = true)
     void updateMemberId(long id, long memberId);
 
-//    @Query("SELECT  ms.plan  from Member m join m.memberships ms where m.id = :memberId")
-//    //@Query("SELECT  ms.plan  from Membership ms where ms.member.id = :memberId")
-//    List<Plan> findPlansByMemberId(@Param("memberId") long memberId);
+
 }
