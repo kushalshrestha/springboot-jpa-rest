@@ -7,6 +7,7 @@ import id_authentication.dto.MemberDTO;
 import id_authentication.dto.PlanDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.PlanOnlyDTO;
 import id_authentication.errorhandler.MemberNotFoundException;
 import id_authentication.repositories.*;
 import id_authentication.service.MemberService;
@@ -101,6 +102,18 @@ public class MemberServiceImp implements MemberService {
         } else {
             throw new RuntimeException("Member not found" + id);
         }
+    }
+
+    @Override
+    public List<PlanOnlyDTO> getAllPlansForMember(long memberId) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (!memberOptional.isPresent()) {
+            throw new RuntimeException("Member not found" + memberId);
+        }
+        List<PlanOnlyDTO> planDTOs = memberOptional.get().getMemberships().stream()
+                .map(membership -> modelMapper.map(membership.getPlan(), PlanOnlyDTO.class))
+                .collect(Collectors.toList());
+        return planDTOs;
     }
 
 

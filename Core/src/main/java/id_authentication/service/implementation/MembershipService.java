@@ -1,10 +1,7 @@
 package id_authentication.service.implementation;
 
 import id_authentication.domain.Membership;
-import id_authentication.domain.Plan;
-import id_authentication.dto.collection.PlanMemberDTOs;
 import id_authentication.dto.request.MembershipRequestDto;
-import id_authentication.dto.response.PlanMemberDTO;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.MembershipRepository;
@@ -81,11 +78,5 @@ public class MembershipService implements IMembershipService {
         membershipRepository.save(membership);
     }
 
-    public PlanMemberDTOs getAllPlansForMember(long memberId){
-        PlanMemberDTOs planMemberDTOs =new PlanMemberDTOs();
-        List<Plan> memberPlanDTOList= membershipRepository.findPlansByMemberId(memberId);
-        memberPlanDTOList.forEach(memberPlanDTO -> planMemberDTOs.addMemberDTO(modelMapper.map(memberPlanDTO, PlanMemberDTO.class )));
-        return planMemberDTOs;
-    }
 
 }

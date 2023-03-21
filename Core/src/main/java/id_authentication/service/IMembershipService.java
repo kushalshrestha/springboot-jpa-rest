@@ -21,6 +21,6 @@ public interface IMembershipService {
 
     List<MembershipResponseDto> findAllByMemberId(String memberId);
 
-    PlanMemberDTOs getAllPlansForMember(long memberId);
+
 
 }

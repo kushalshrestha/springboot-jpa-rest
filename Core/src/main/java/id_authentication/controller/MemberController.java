@@ -76,6 +76,6 @@ public class MemberController {
 
     @GetMapping("/{memberId}/plans")
     public ResponseEntity<?>getPlansForMember(@PathVariable Long memberId){
-            return new ResponseEntity<PlanMemberDTOs>(membershipService.getAllPlansForMember(memberId), HttpStatus.OK);
+            return new ResponseEntity<>(memberService.getAllPlansForMember(memberId), HttpStatus.OK);
     }
 }
