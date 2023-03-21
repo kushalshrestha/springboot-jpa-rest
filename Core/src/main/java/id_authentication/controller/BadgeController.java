@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/badges")
@@ -22,9 +24,9 @@ public class BadgeController {
 
     public BadgeController (){
     }
-    @GetMapping("/badges/{badgeNumber}")
-    public ResponseEntity<?> getBadge(@PathVariable String badgeNumber) {
-        BadgeDTO badge = badges.get(badgeNumber);
+    @GetMapping("/{badgeId}")
+    public ResponseEntity<?> getBadge(@PathVariable String badgeId) {
+        BadgeDTO badge = badgeService.getBadge(Long.parseLong(badgeId));
         if (badge == null) {
             return new ResponseEntity<CustomErrorType>(new CustomErrorType("Badge Not Found"),
                     HttpStatus.NOT_FOUND);
@@ -52,4 +54,11 @@ public class BadgeController {
         }
 
     }
-}
+    @DeleteMapping("/{badgeId}")
+    public ResponseEntity<?> deleteBadge(@PathVariable Long  badgeId) {
+              var badege1 = badgeService.deleteBadge(badgeId);
+        return badege1!=null? new ResponseEntity<>(badege1.getStatus().toString(),HttpStatus.OK):
+                new ResponseEntity<CustomErrorType>(new CustomErrorType("Badge Not Found"), HttpStatus.NOT_FOUND);
+        }
+    }
+

@@ -4,9 +4,11 @@ import id_authentication.domain.Badge;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Repository
@@ -15,6 +17,8 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
 
    // public void deleteByBadgeId(Long badgeId);
 
+    @Query("Select b from Badge b")
+    public List<Badge> findBadges();
     @Modifying
     @Query(value = "update badge set member_id=:memberId where id=:id", nativeQuery = true)
     void updateMemberId(long id, long memberId);

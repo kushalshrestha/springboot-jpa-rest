@@ -53,6 +53,7 @@ public class BadgeServiceImp implements BadgeService {
     @Override
     public BadgeDTO getBadge(Long id) {
         Optional<Badge> oldBadge = badgeRepository.findById(id);
+        System.out.println("-----------------------------"+oldBadge.get().getBadgeNumber());
         if (oldBadge.isPresent()) {
             return modelMapper.map(oldBadge.get(), BadgeDTO.class);
         } else {
@@ -62,7 +63,9 @@ public class BadgeServiceImp implements BadgeService {
 
     @Override
     public List<BadgeDTO> getAllBadges() {
-        return badgeRepository.findAll().stream()
+        List<Badge> testBadge=badgeRepository.findBadges();
+
+        return testBadge.stream()
                 .map(badge -> modelMapper.map(badge, BadgeDTO.class))
                 .collect(Collectors.toList());
     }
@@ -76,5 +79,6 @@ public class BadgeServiceImp implements BadgeService {
         } else {
             throw new RuntimeException("Badge Doesn't Exist");
         }
+
     }
 }
