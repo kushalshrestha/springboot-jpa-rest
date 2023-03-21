@@ -11,9 +11,9 @@ import javax.transaction.Transactional;
 @Transactional
 @Repository
 public interface BadgeRepository extends JpaRepository<Badge, Long> {
-    public void getBadgeByBadgeId(Long BadgeId);
+    // public void getBadgeByBadgeId(Long BadgeId);
 
-    public void deleteByBadgeId(Long badgeId);
+   // public void deleteByBadgeId(Long badgeId);
 
     @Modifying
     @Query(value = "update badge set member_id=:memberId where id=:id", nativeQuery = true)
