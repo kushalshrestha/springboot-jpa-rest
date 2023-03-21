@@ -1,6 +1,4 @@
 package id_authentication.controller;
-
-import id_authentication.dto.BadgeDTO;
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.collection.TransactionDTOs;
 import id_authentication.dto.request.MemberCreateDTO;
@@ -15,21 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/v1/members")
 public class MemberController {
-
     @Autowired
     private IMembershipService membershipService;
-
     @Autowired
-    MemberService memberService;
-
+    private MemberService memberService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMember(@PathVariable String id) {
@@ -81,6 +74,10 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/{memberId}/plans")
+    public ResponseEntity<?>getPlansForMember(@PathVariable Long memberId){
+            return new ResponseEntity<>(memberService.getAllPlansForMember(memberId), HttpStatus.OK);
+    }
 
     @GetMapping("/{memberId}/transactions")
     public ResponseEntity<?> findTransactionsByMemberId(@PathVariable String memberId){
@@ -101,5 +98,4 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
         }
     }
-
 }

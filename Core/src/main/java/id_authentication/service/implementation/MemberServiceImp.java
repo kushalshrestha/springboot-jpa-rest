@@ -1,6 +1,4 @@
 package id_authentication.service.implementation;
-
-import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
@@ -9,6 +7,7 @@ import id_authentication.dto.collection.TransactionDTOs;
 import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.MemberDetailDTO;
+import id_authentication.dto.response.PlanOnlyDTO;
 import id_authentication.exceptions.MemberNotFoundException;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.dto.response.BadgeOnlyDTO;
@@ -18,7 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,8 +121,18 @@ public class MemberServiceImp implements MemberService {
             throw new RuntimeException("Member not found" + id);
         }
     }
-
     @Override
+    public List<PlanOnlyDTO> getAllPlansForMember(long memberId) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (!memberOptional.isPresent()) {
+            throw new RuntimeException("Member not found" + memberId);
+        }
+        List<PlanOnlyDTO> planDTOs = memberOptional.get().getMemberships().stream()
+                .map(membership -> modelMapper.map(membership.getPlan(), PlanOnlyDTO.class))
+                .collect(Collectors.toList());
+        return planDTOs;
+    }
+
     public List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status) {
         List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
         if (status != null &&

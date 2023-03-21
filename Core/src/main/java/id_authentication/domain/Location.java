@@ -2,12 +2,9 @@ package id_authentication.domain;
 
 import lombok.*;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,12 +17,15 @@ public class Location {
     private String name;
     private String description;
     private int capacity;
-    @Enumerated(EnumType.STRING) @Column(name = "type")
-    //@Column(name="type")
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private LocationType locationType;
     @OneToMany(cascade = CascadeType.ALL)
+
     @JoinColumn(name = "location_id")
     @Column(name = "time_slot")
-    private List<LocationTimeSlot> timeSlots=new ArrayList<LocationTimeSlot>();
+    private Set<LocationTimeSlot> timeSlots;
 
 }
