@@ -2,12 +2,9 @@ package id_authentication.domain;
 
 import lombok.*;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -22,13 +19,13 @@ public class Location {
     private String description;
     private int capacity;
     private String type;
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     @Column(name = "time_slot")
-    private List<LocationTimeSlot> timeSlots=new ArrayList<LocationTimeSlot>();
+    private Set<LocationTimeSlot> timeSlots;
 
-    public Location(@NonNull String name, String description, int capacity, String type, List<LocationTimeSlot> timeSlots) {
+    public Location(@NonNull String name, String description, int capacity, String type, Set<LocationTimeSlot> timeSlots) {
         this.name = name;
         this.description = description;
         this.capacity = capacity;
