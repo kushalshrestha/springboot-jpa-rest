@@ -4,6 +4,7 @@ import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
+import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.errorhandler.MemberNotFoundException;
@@ -15,13 +16,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImp implements MemberService {
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    MembershipRepository membershipRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -99,5 +105,13 @@ public class MemberServiceImp implements MemberService {
         } else {
             throw new RuntimeException("Member not found" + id);
         }
+    }
+
+    @Override
+    public List<MemberShipDTO> getMembershipsByMemberId(Long memberId) {
+        List<MemberShipDTO> membershipsList = new ArrayList<MemberShipDTO>();
+        return membershipRepository.findMembershipsByMemberId(memberId).stream()
+                .map(membership -> modelMapper.map(membership, MemberShipDTO.class))
+                .collect(Collectors.toList());
     }
 }

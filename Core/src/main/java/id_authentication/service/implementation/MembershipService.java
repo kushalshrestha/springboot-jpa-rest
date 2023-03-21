@@ -2,6 +2,8 @@ package id_authentication.service.implementation;
 
 import id_authentication.domain.Member;
 import id_authentication.domain.Membership;
+import id_authentication.dto.LocationDTO;
+import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.exceptions.ResourceNotFoundException;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,9 +73,11 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public List<MembershipResponseDto> findAllByMemberId(String memberId) {
-        //TODO
-        return null;
+    public List<MemberShipDTO> getMembershipsByMemberId(Long memberId) {
+        List<MemberShipDTO> membershipsList = new ArrayList<MemberShipDTO>();
+        return membershipRepository.findMembershipsByMemberId(memberId).stream()
+                .map(membership -> modelMapper.map(membership, MemberShipDTO.class))
+                .collect(Collectors.toList());
     }
 
     public void update(long id, Membership membership) {

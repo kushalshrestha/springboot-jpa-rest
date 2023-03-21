@@ -1,6 +1,7 @@
 package id_authentication.controller;
 
 import id_authentication.dto.MemberDTO;
+import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.MembershipResponseDto;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -66,8 +68,14 @@ public class MemberController {
 
 
     @GetMapping("{memberId}/memberships")
-    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId){
-        List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMemberId(memberId);
-        return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
+    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable long memberId){
+            try{
+                List<MemberShipDTO> memberShipDTOList = new ArrayList<>();
+                memberShipDTOList = membershipService.getMembershipsByMemberId(memberId);
+                return ResponseEntity.status(HttpStatus.OK).body(memberShipDTOList);
+            } catch (Exception e) {
+                CustomErrorType customErrorType = new CustomErrorType("Error retrieving memberships for memberID " + memberId + ": " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
+            }
     }
 }
