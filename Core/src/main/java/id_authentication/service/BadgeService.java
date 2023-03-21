@@ -2,15 +2,16 @@ package id_authentication.service;
 
 
 import id_authentication.domain.Badge;
+import id_authentication.dto.BadgeDTO;
 
 import java.util.List;
 
 public interface BadgeService {
-    Badge createBadge(Badge badge);
-    Badge updateBadge(Badge badge, Long BadgeNumber);
-    Badge getBadge(Long BadgeNumber);
-     List<Badge> getAllBadges();
-    Badge deleteBadge(Long BadgeNumber);
+    public BadgeDTO createBadge(BadgeDTO badgeDTO);
+    BadgeDTO updateBadge(BadgeDTO badge, Long BadgeNumber);
+    BadgeDTO getBadge(Long BadgeNumber);
+     List<BadgeDTO> getAllBadges();
+    BadgeDTO deleteBadge(Long BadgeNumber);
 
 
 

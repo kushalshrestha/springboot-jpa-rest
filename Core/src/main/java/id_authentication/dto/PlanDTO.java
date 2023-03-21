@@ -28,6 +28,4 @@ public class PlanDTO {
         this.rolePlanLimit = rolePlanLimit;
     }
 
-
-
 }
