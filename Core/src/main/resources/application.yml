@@ -22,4 +22,5 @@ logging:
   file:
     path: .
     name: /Logging/${spring.application.name}/log
-
+#server:
+#  port: 56061

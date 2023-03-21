@@ -1,22 +1,35 @@
 package id_authentication.service;
-
-import id_authentication.domain.Member;
 import id_authentication.dto.MemberDTO;
-import id_authentication.repositories.MemberRepository;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.PlanOnlyDTO;
+import id_authentication.dto.collection.TransactionDTOs;
+import id_authentication.dto.request.MemberCreateDTO;
+import id_authentication.dto.response.BadgeOnlyDTO;
+import id_authentication.dto.response.MemberDetailDTO;
 
-@Service
-public class MemberService {
-    @Autowired
-    MemberRepository memberRepository;
-    @Autowired
-    ModelMapper modelMapper;
-    public MemberDTO createMember(MemberDTO memberDTO){
-        Member member=modelMapper.map(memberDTO, Member.class);
-       memberRepository.save(member);
-       MemberDTO createdMemberDTO= modelMapper.map(member, MemberDTO.class);
-       return createdMemberDTO;
-    }
+import java.util.List;
+
+public interface MemberService {
+    MemberDTO createMember(MemberCreateDTO memberDTO);
+
+    MemberDetailDTO getMember(Long id);
+
+    MemberDTO updateMember(Long memberId, MemberDTO memberDTO);
+
+    MemberDTOs getAllMembers();
+
+    MemberDTO authenticate(String username, String password);
+
+    void deleteMember(long parseLong);
+
+    List<PlanOnlyDTO> getAllPlansForMember(long memberId);
+
+
+    List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status);
+
+    TransactionDTOs findAllTransactionsByMemberId(Long memberId);
+
+    List<BadgeOnlyDTO> getBadgesByMemberId(long memberId);
+
+
 }
