@@ -25,34 +25,38 @@ public class MemberServiceImp implements MemberService {
     @Autowired
     TransactionRepository transactionRepository;
     @Autowired
+    MembershipRepository membershipRepository;
+
+    @Autowired
     RoleRepository roleRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     ModelMapper modelMapper;
-    public MemberDTO createMember(MemberCreateDTO memberDTO){
-        Member member=modelMapper.map(memberDTO, Member.class);
-        Role role=roleRepository.findById(memberDTO.getRoleId()).get();
+
+    public MemberDTO createMember(MemberCreateDTO memberDTO) {
+        Member member = modelMapper.map(memberDTO, Member.class);
+        Role role = roleRepository.findById(memberDTO.getRoleId()).get();
         member.setRole(role);
         //System.out.println(member.getMemberNumber()+"-----------");
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         //System.out.println("_________member.getPassword()__________"+member.getPassword());
-        Member createdMember=memberRepository.save(member);
-       //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
-       MemberDTO createdMemberDTO= modelMapper.map(createdMember, MemberDTO.class);
-       return createdMemberDTO;
+        Member createdMember = memberRepository.save(member);
+        //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
+        MemberDTO createdMemberDTO = modelMapper.map(createdMember, MemberDTO.class);
+        return createdMemberDTO;
     }
 
-    public MemberDTO getMember(Long id){
+    public MemberDTO getMember(Long id) {
         Optional<Member> locationOptional = memberRepository.findById(id);
-        if(locationOptional.isPresent()){
+        if (locationOptional.isPresent()) {
             return modelMapper.map(locationOptional.get(), MemberDTO.class);
-        }else{
+        } else {
             throw new RuntimeException("Location not found " + id);
         }
     }
 
-    public MemberDTO updateMember(Long memberId,MemberDTO memberDTO){
+    public MemberDTO updateMember(Long memberId, MemberDTO memberDTO) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
         if (memberOptional.isPresent()) {
@@ -63,22 +67,21 @@ public class MemberServiceImp implements MemberService {
             foundMember.setUserName(memberDTO.getUserName());
             foundMember.setPassword(memberDTO.getPassword());
             return modelMapper.map(memberRepository.save(foundMember), MemberDTO.class);
-        }else {
+        } else {
             throw new RuntimeException("Member not found" + memberId);
         }
     }
 
     public MemberDTOs getAllMembers() {
-        MemberDTOs memberDTOs=new MemberDTOs();
+        MemberDTOs memberDTOs = new MemberDTOs();
         memberRepository.findAll().forEach(member -> {
-            MemberDTO memberDTO=modelMapper.map(member, MemberDTO.class);
+            MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
             memberDTOs.addMemberDTO(memberDTO);
         });
         return memberDTOs;
     }
 
     public MemberDTO authenticate(String username, String password) {
-
         try{
             Member member= memberRepository.findMemberByUserName(username);
             if(member.getMemberNumber()==null)
@@ -97,6 +100,7 @@ public class MemberServiceImp implements MemberService {
         }
         catch (Exception e){
             throw new MemberNotFoundException("Invalid Username or Password");
+
         }
     }
 
@@ -125,6 +129,7 @@ public class MemberServiceImp implements MemberService {
         if(transactionDTOs.getTransactions().size()==0) {
             throw new ResourceNotFoundException("No transactions found for member id " + memberId);
         }
-         return transactionDTOs;
+        return transactionDTOs;
     }
+
 }
