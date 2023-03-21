@@ -28,55 +28,57 @@ public class MemberController {
     private IMembershipService membershipService;
     @Autowired
     MemberService memberService;
-        @GetMapping("/{id}")
-        public ResponseEntity<?> getMember(@PathVariable String id){
-            MemberDTO memberDTO= memberService.getMember(Long.parseLong(id));
-            return new ResponseEntity<MemberDTO>(memberDTO, HttpStatus.OK);
-        }
 
-        @PostMapping("")
-        public ResponseEntity<?> createMember(@RequestBody MemberCreateDTO memberDTO){
-            MemberDTO createdMemberDTO= memberService.createMember(memberDTO);
-            return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getMember(@PathVariable String id) {
+        MemberDTO memberDTO = memberService.getMember(Long.parseLong(id));
+        return new ResponseEntity<MemberDTO>(memberDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createMember(@RequestBody MemberCreateDTO memberDTO) {
+        MemberDTO createdMemberDTO = memberService.createMember(memberDTO);
+        return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
+    }
+
     @PostMapping("/authentication")
-    public ResponseEntity<?> authentication(@RequestBody MemberDTO memberDTO){
-        try{
-            MemberDTO createdMemberDTO= memberService.authenticate(memberDTO.getUserName(),memberDTO.getPassword());
+    public ResponseEntity<?> authentication(@RequestBody MemberDTO memberDTO) {
+        try {
+            MemberDTO createdMemberDTO = memberService.authenticate(memberDTO.getUserName(), memberDTO.getPassword());
             return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
-        }
-        catch (MemberNotFoundException e){
+        } catch (MemberNotFoundException e) {
             return new ResponseEntity<CustomErrorType>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
-        @PutMapping("/{id}")
-        public ResponseEntity<?> updateMember(@PathVariable String id,@RequestBody MemberDTO memberDTO){
-            MemberDTO updatedMemberDTO= memberService.updateMember(Long.parseLong(id),memberDTO);
-            return new ResponseEntity<MemberDTO>(updatedMemberDTO, HttpStatus.OK);
-        }
 
-        @GetMapping("")
-        public ResponseEntity<?> getAllMembers(){
-            MemberDTOs memberDTOs= memberService.getAllMembers();
-            return new ResponseEntity<MemberDTOs>(memberDTOs, HttpStatus.OK);
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateMember(@PathVariable String id, @RequestBody MemberDTO memberDTO) {
+        MemberDTO updatedMemberDTO = memberService.updateMember(Long.parseLong(id), memberDTO);
+        return new ResponseEntity<MemberDTO>(updatedMemberDTO, HttpStatus.OK);
+    }
 
-        @DeleteMapping("/{id}")
-        public ResponseEntity<?> deleteMember(@PathVariable String id){
-            memberService.deleteMember(Long.parseLong(id));
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+    @GetMapping("")
+    public ResponseEntity<?> getAllMembers() {
+        MemberDTOs memberDTOs = memberService.getAllMembers();
+        return new ResponseEntity<MemberDTOs>(memberDTOs, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMember(@PathVariable String id) {
+        memberService.deleteMember(Long.parseLong(id));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 
     @GetMapping("{memberId}/memberships")
-    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable long memberId){
-            try{
-                List<MembershipPlanResponseDto> memberShipDTOList = new ArrayList<>();
-                memberShipDTOList = membershipService.getMembershipsByMemberId(memberId);
-                return ResponseEntity.status(HttpStatus.OK).body(memberShipDTOList);
-            } catch (Exception e) {
-                CustomErrorType customErrorType = new CustomErrorType("Error retrieving memberships for memberID " + memberId + ": " + e.getMessage());
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
-            }
+    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable long memberId) {
+        try {
+            List<MembershipPlanResponseDto> memberShipDTOList = new ArrayList<>();
+            memberShipDTOList = membershipService.getMembershipsByMemberId(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(memberShipDTOList);
+        } catch (Exception e) {
+            CustomErrorType customErrorType = new CustomErrorType("Error retrieving memberships for memberID " + memberId + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
+        }
     }
 }

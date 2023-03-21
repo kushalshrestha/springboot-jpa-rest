@@ -19,6 +19,7 @@ public interface IMembershipService {
     MembershipResponseDto updateMembership(long id, MembershipRequestDto membershipRequestDto);
 
     String deleteMembership(long id);
+
     List<MembershipPlanResponseDto> getMembershipsByMemberId(Long memberId);
 
 }
