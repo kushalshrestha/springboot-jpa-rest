@@ -1,19 +1,28 @@
 package id_authentication.controller;
+
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.errorhandler.MemberNotFoundException;
+import id_authentication.service.IMembershipService;
 import id_authentication.service.MemberService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 @RestController
 @RequestMapping("/api/v1/members")
 public class MemberController {
 
+    @Autowired
+    private IMembershipService membershipService;
     @Autowired
     MemberService memberService;
         @GetMapping("/{id}")
@@ -55,4 +64,10 @@ public class MemberController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
+
+    @GetMapping("{memberId}/memberships")
+    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId){
+        List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMemberId(memberId);
+        return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
+    }
 }
