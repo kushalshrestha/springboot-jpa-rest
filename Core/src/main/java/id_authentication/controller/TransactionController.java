@@ -13,6 +13,7 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<?> getTransactions() {
         try {
+            //TODO
             return ResponseEntity.status(HttpStatus.OK).body("HELLO");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -23,6 +24,7 @@ public class TransactionController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getTransaction(@PathVariable("id") long id) {
         try {
+            //TODO
             return ResponseEntity.status(HttpStatus.OK).body("GET METHOD - by ID");
         } catch (Exception e) {
             CustomErrorType customErrorType = new CustomErrorType("Error retrieving transaction with id " + id + ": " + e.getMessage());
@@ -33,6 +35,7 @@ public class TransactionController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTransaction(@PathVariable long id, @RequestBody String text) {
         try {
+            //TODO !!!Change RequestBody (See other controller)
             return ResponseEntity.status(HttpStatus.OK)
                     .body(text);
         } catch (ResourceNotFoundException e) {
@@ -44,6 +47,7 @@ public class TransactionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable long id) {
         try {
+            //TODO
             return ResponseEntity.status(HttpStatus.OK).body("Successfully Deleted!!");
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
