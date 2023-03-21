@@ -1,22 +1,14 @@
 package id_authentication.service;
 
-import id_authentication.domain.Member;
 import id_authentication.dto.MemberDTO;
-import id_authentication.repositories.MemberRepository;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import id_authentication.dto.collection.MemberCreateDTO;
+import id_authentication.dto.collection.MemberDTOs;
 
-@Service
-public class MemberService {
-    @Autowired
-    MemberRepository memberRepository;
-    @Autowired
-    ModelMapper modelMapper;
-    public MemberDTO createMember(MemberDTO memberDTO){
-        Member member=modelMapper.map(memberDTO, Member.class);
-       memberRepository.save(member);
-       MemberDTO createdMemberDTO= modelMapper.map(member, MemberDTO.class);
-       return createdMemberDTO;
-    }
+public interface MemberService {
+    MemberDTO createMember(MemberCreateDTO memberDTO);
+    MemberDTO getMember(Long id);
+    MemberDTO updateMember(Long memberId,MemberDTO memberDTO);
+    MemberDTOs getAllMembers();
+    MemberDTO authenticate(String username, String password);
+    void deleteMember(long parseLong);
 }
