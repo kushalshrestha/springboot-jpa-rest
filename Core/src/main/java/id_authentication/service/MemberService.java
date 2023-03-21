@@ -20,5 +20,5 @@ public interface MemberService {
 
     void deleteMember(long parseLong);
 
-    List<BadgeOnlyDTO> getBadgesByMemberId(long memberId);
+    List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status);
 }

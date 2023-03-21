@@ -107,11 +107,19 @@ public class MemberServiceImp implements MemberService {
     }
 
     @Override
-    public List<BadgeOnlyDTO> getBadgesByMemberId(long memberId) {
+    public List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status) {
         List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
-        return badgeRepository.findBadgesByMemberId(memberId).stream()
-                .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
-                .collect(Collectors.toList());
+        if (status != null &&
+                (status.toLowerCase().equals("active") || status.toLowerCase().equals("inactive"))
+        ) {
+            return badgeRepository.findMemberBadgesByStatus(memberId, status).stream()
+                    .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                    .collect(Collectors.toList());
+        } else {
+            return badgeRepository.findBadgesByMemberId(memberId).stream()
+                    .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                    .collect(Collectors.toList());
+        }
     }
 
 }

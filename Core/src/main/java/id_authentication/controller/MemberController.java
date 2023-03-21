@@ -88,10 +88,11 @@ public class MemberController {
     }
 
     @GetMapping("{memberId}/badges")
-    public ResponseEntity<?> findBadgesForMemberId(@PathVariable long memberId) {
+    public ResponseEntity<?> findBadgesForMemberId(@PathVariable long memberId,
+                                                   @RequestParam(value="filter", required = false) String filter) {
         try {
             List<BadgeOnlyDTO> badgeList = new ArrayList<>();
-            badgeList = memberService.getBadgesByMemberId(memberId);
+            badgeList = memberService.getMemberBadgesByMemberId(memberId, filter);
             return ResponseEntity.status(HttpStatus.OK).body(badgeList);
         } catch (Exception e) {
             CustomErrorType customErrorType = new CustomErrorType("Error Retrieving Badges : " + e.getMessage());
