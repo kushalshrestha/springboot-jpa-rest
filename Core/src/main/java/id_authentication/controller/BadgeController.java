@@ -2,6 +2,7 @@ package id_authentication.controller;
 import id_authentication.domain.Badge;
 import id_authentication.dto.BadgeDTO;
 import id_authentication.errorhandler.CustomErrorType;
+import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.service.BadgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/badge")
+@RequestMapping("/api/v1/badges")
 public class BadgeController {
     @Autowired
     private BadgeService badgeService;
@@ -20,9 +21,6 @@ public class BadgeController {
     private Map<String, BadgeDTO> badges= new HashMap<>();
 
     public BadgeController (){
-        badges.put(123, new BadgeDTO("B001", 05/30/2023, "ACTIVE", "M001", "001") );
-        badges.put(124, new BadgeDTO("B002", 05/30/2024, "ACTIVE", "M002", "002") );
-
     }
     @GetMapping("/badges/{badgeNumber}")
     public ResponseEntity<?> getBadge(@PathVariable String badgeNumber) {
@@ -31,7 +29,7 @@ public class BadgeController {
             return new ResponseEntity<CustomErrorType>(new CustomErrorType("Badge Not Found"),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Badge>(badge, HttpStatus.OK);
+        return new ResponseEntity<BadgeDTO>(badge, HttpStatus.OK);
     }
 
     @GetMapping
@@ -46,11 +44,11 @@ public class BadgeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBadge(@PathVariable Long badgeNumber, @RequestBody BadgeDTO badgeDTO){
+    public ResponseEntity<?> updateBadge(@PathVariable Long id, @RequestBody BadgeDTO badgeDTO){
         try {
-            return new ResponseEntity<>(badgeService.updateBadge(badgeNumber, badgeDTO), HttpStatus.OK);
-        }catch(CustomErrorType e){
-        return new ResponseEntity<>(new CustomErrorType(e.getErrorMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(badgeService.updateBadge(badgeDTO, id), HttpStatus.OK);
+        }catch(ResourceNotFoundException e){
+        return new ResponseEntity<>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         }
 
     }
