@@ -6,6 +6,7 @@ import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.BadgeOnlyDTO;
+import id_authentication.dto.response.MemberDetailDTO;
 import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
@@ -36,8 +37,8 @@ public class MemberController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMember(@PathVariable String id) {
-        MemberDTO memberDTO = memberService.getMember(Long.parseLong(id));
-        return new ResponseEntity<MemberDTO>(memberDTO, HttpStatus.OK);
+        MemberDetailDTO memberDTO = memberService.getMember(Long.parseLong(id));
+        return new ResponseEntity<MemberDetailDTO>(memberDTO, HttpStatus.OK);
     }
 
     @PostMapping("")

@@ -6,6 +6,7 @@ import id_authentication.dto.MemberDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.BadgeOnlyDTO;
+import id_authentication.dto.response.MemberDetailDTO;
 import id_authentication.errorhandler.MemberNotFoundException;
 import id_authentication.repositories.*;
 import id_authentication.service.MemberService;
@@ -50,10 +51,10 @@ public class MemberServiceImp implements MemberService {
         return createdMemberDTO;
     }
 
-    public MemberDTO getMember(Long id) {
+    public MemberDetailDTO getMember(Long id) {
         Optional<Member> locationOptional = memberRepository.findById(id);
         if (locationOptional.isPresent()) {
-            return modelMapper.map(locationOptional.get(), MemberDTO.class);
+            return modelMapper.map(locationOptional.get(), MemberDetailDTO.class);
         } else {
             throw new RuntimeException("Location not found " + id);
         }
