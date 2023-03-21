@@ -1,11 +1,10 @@
 package id_authentication.controller;
-
-import id_authentication.dto.BadgeDTO;
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.collection.TransactionDTOs;
 import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.BadgeOnlyDTO;
+import id_authentication.dto.response.MemberDetailDTO;
 import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.service.IMembershipService;
@@ -14,26 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/v1/members")
 public class MemberController {
-
     @Autowired
     private IMembershipService membershipService;
-
     @Autowired
-    MemberService memberService;
-
+    private MemberService memberService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMember(@PathVariable String id) {
-        MemberDTO memberDTO = memberService.getMember(Long.parseLong(id));
-        return new ResponseEntity<MemberDTO>(memberDTO, HttpStatus.OK);
+        MemberDetailDTO memberDTO = memberService.getMember(Long.parseLong(id));
+        return new ResponseEntity<MemberDetailDTO>(memberDTO, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -80,6 +74,11 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/{memberId}/plans")
+    public ResponseEntity<?>getPlansForMember(@PathVariable Long memberId){
+            return new ResponseEntity<>(memberService.getAllPlansForMember(memberId), HttpStatus.OK);
+    }
+
     @GetMapping("/{memberId}/transactions")
     public ResponseEntity<?> findTransactionsByMemberId(@PathVariable String memberId){
         TransactionDTOs transactionDTOS = memberService.findAllTransactionsByMemberId(Long.parseLong(memberId));
@@ -88,10 +87,11 @@ public class MemberController {
 
 
     @GetMapping("{memberId}/badges")
-    public ResponseEntity<?> findBadgesForMemberId(@PathVariable long memberId) {
+    public ResponseEntity<?> findBadgesForMemberId(@PathVariable long memberId,
+                                                   @RequestParam(value="filter", required = false) String filter) {
         try {
             List<BadgeOnlyDTO> badgeList = new ArrayList<>();
-            badgeList = memberService.getBadgesByMemberId(memberId);
+            badgeList = memberService.getMemberBadgesByMemberId(memberId, filter);
             return ResponseEntity.status(HttpStatus.OK).body(badgeList);
         } catch (Exception e) {
             CustomErrorType customErrorType = new CustomErrorType("Error Retrieving Badges : " + e.getMessage());
