@@ -3,6 +3,7 @@ package id_authentication.controller;
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.collection.PlanMemberDTOs;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.errorhandler.MemberNotFoundException;
@@ -75,6 +76,6 @@ public class MemberController {
 
     @GetMapping("/{memberId}/plans")
     public ResponseEntity<?>getPlansForMember(@PathVariable Long memberId){
-            return new ResponseEntity<>(membershipService.getAllPlansForMember(memberId), HttpStatus.OK);
+            return new ResponseEntity<PlanMemberDTOs>(membershipService.getAllPlansForMember(memberId), HttpStatus.OK);
     }
 }

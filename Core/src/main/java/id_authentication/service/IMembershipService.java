@@ -1,7 +1,7 @@
 package id_authentication.service;
 
 import id_authentication.domain.Membership;
-import id_authentication.dto.PlanDTO;
+import id_authentication.dto.collection.PlanMemberDTOs;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.exceptions.ResourceNotFoundException;
@@ -21,6 +21,6 @@ public interface IMembershipService {
 
     List<MembershipResponseDto> findAllByMemberId(String memberId);
 
-    List<PlanDTO> getAllPlansForMember(long memberId);
+    PlanMemberDTOs getAllPlansForMember(long memberId);
 
 }
