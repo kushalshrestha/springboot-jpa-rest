@@ -8,5 +8,6 @@ public interface MemberService {
     MemberDTO getMember(Long id);
     MemberDTO updateMember(Long memberId,MemberDTO memberDTO);
     MemberDTOs getAllMembers();
+    MemberDTO authenticate(String username, String password);
     void deleteMember(long parseLong);
 }

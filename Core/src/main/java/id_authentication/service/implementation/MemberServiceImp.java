@@ -4,10 +4,12 @@ import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.errorhandler.MemberNotFoundException;
 import id_authentication.repositories.*;
 import id_authentication.service.MemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,9 +22,14 @@ public class MemberServiceImp implements MemberService {
     MemberRepository memberRepository;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
     ModelMapper modelMapper;
     public MemberDTO createMember(MemberDTO memberDTO){
         Member member=modelMapper.map(memberDTO, Member.class);
+        //System.out.println(member.getMemberNumber()+"-----------");
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        //System.out.println("_________member.getPassword()__________"+member.getPassword());
         Member createdMember=memberRepository.save(member);
        //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
        MemberDTO createdMemberDTO= modelMapper.map(createdMember, MemberDTO.class);
@@ -63,7 +70,21 @@ public class MemberServiceImp implements MemberService {
         return memberDTOs;
     }
 
-    @Transactional
+    public MemberDTO authenticate(String username, String password) {
+
+         Member member= memberRepository.findMemberByUserName(username);
+        String encodedPassword = member.getPassword();
+        if(passwordEncoder.matches(password,encodedPassword ))
+        {
+            return modelMapper.map(member, MemberDTO.class);
+        }
+        else
+        {
+            throw new MemberNotFoundException("Invalid username or password");
+        }
+    }
+
+
     public void deleteMember(long id) {
         Optional<Member> memberOptional = memberRepository.findById(id);
         if (memberOptional.isPresent()) {
