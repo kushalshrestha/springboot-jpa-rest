@@ -4,6 +4,7 @@ import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
+import id_authentication.dto.MemberShipDTO;
 import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.errorhandler.MemberNotFoundException;
@@ -15,8 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImp implements MemberService {
@@ -24,34 +27,38 @@ public class MemberServiceImp implements MemberService {
     MemberRepository memberRepository;
 
     @Autowired
+    MembershipRepository membershipRepository;
+
+    @Autowired
     RoleRepository roleRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     ModelMapper modelMapper;
-    public MemberDTO createMember(MemberCreateDTO memberDTO){
-        Member member=modelMapper.map(memberDTO, Member.class);
-        Role role=roleRepository.findById(memberDTO.getRoleId()).get();
+
+    public MemberDTO createMember(MemberCreateDTO memberDTO) {
+        Member member = modelMapper.map(memberDTO, Member.class);
+        Role role = roleRepository.findById(memberDTO.getRoleId()).get();
         member.setRole(role);
         //System.out.println(member.getMemberNumber()+"-----------");
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         //System.out.println("_________member.getPassword()__________"+member.getPassword());
-        Member createdMember=memberRepository.save(member);
-       //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
-       MemberDTO createdMemberDTO= modelMapper.map(createdMember, MemberDTO.class);
-       return createdMemberDTO;
+        Member createdMember = memberRepository.save(member);
+        //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
+        MemberDTO createdMemberDTO = modelMapper.map(createdMember, MemberDTO.class);
+        return createdMemberDTO;
     }
 
-    public MemberDTO getMember(Long id){
+    public MemberDTO getMember(Long id) {
         Optional<Member> locationOptional = memberRepository.findById(id);
-        if(locationOptional.isPresent()){
+        if (locationOptional.isPresent()) {
             return modelMapper.map(locationOptional.get(), MemberDTO.class);
-        }else{
+        } else {
             throw new RuntimeException("Location not found " + id);
         }
     }
 
-    public MemberDTO updateMember(Long memberId,MemberDTO memberDTO){
+    public MemberDTO updateMember(Long memberId, MemberDTO memberDTO) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
         if (memberOptional.isPresent()) {
@@ -62,15 +69,15 @@ public class MemberServiceImp implements MemberService {
             foundMember.setUserName(memberDTO.getUserName());
             foundMember.setPassword(memberDTO.getPassword());
             return modelMapper.map(memberRepository.save(foundMember), MemberDTO.class);
-        }else {
+        } else {
             throw new RuntimeException("Member not found" + memberId);
         }
     }
 
     public MemberDTOs getAllMembers() {
-        MemberDTOs memberDTOs=new MemberDTOs();
+        MemberDTOs memberDTOs = new MemberDTOs();
         memberRepository.findAll().forEach(member -> {
-            MemberDTO memberDTO=modelMapper.map(member, MemberDTO.class);
+            MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
             memberDTOs.addMemberDTO(memberDTO);
         });
         return memberDTOs;
@@ -78,14 +85,11 @@ public class MemberServiceImp implements MemberService {
 
     public MemberDTO authenticate(String username, String password) {
 
-         Member member= memberRepository.findMemberByUserName(username);
+        Member member = memberRepository.findMemberByUserName(username);
         String encodedPassword = member.getPassword();
-        if(passwordEncoder.matches(password,encodedPassword ))
-        {
+        if (passwordEncoder.matches(password, encodedPassword)) {
             return modelMapper.map(member, MemberDTO.class);
-        }
-        else
-        {
+        } else {
             throw new MemberNotFoundException("Invalid username or password");
         }
     }
@@ -100,4 +104,5 @@ public class MemberServiceImp implements MemberService {
             throw new RuntimeException("Member not found" + id);
         }
     }
+
 }
