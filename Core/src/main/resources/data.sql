@@ -128,3 +128,12 @@ values
 
 
 
+INSERT INTO [dbo].[CheckinInformation] (transaction_type, dateTime, location_id, plan_id, badge_id)
+values
+    ('ACCEPTED','2022-11-29 00:00:00.0000000',1 , 1, 2),
+    ('ACCEPTED','2022-12-01 08:00:00.0000000',1 , 1, 2),
+    ('ACCEPTED','2022-12-02 08:00:00.0000000',1 , 1, 2),
+    ('ACCEPTED','2022-12-03 08:00:00.0000000',1 , 1, 2),
+    ('ACCEPTED','2022-12-04 08:00:00.0000000',1 , 1, 2),
+    ('ACCEPTED','2022-12-05 08:00:00.0000000',1 , 1, 2),
+    ('ACCEPTED','2022-12-06 08:00:00.0000000',1 , 1, 2);
