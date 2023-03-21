@@ -21,11 +21,7 @@ public class MemberController {
 
     @GetMapping("{memberId}/memberships")
     public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId){
-        List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMembershipNumber(memberId);
+        List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMemberId(memberId);
         return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
     }
-
-
-
-
 }
