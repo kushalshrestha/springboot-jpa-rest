@@ -1,6 +1,7 @@
 package id_authentication.dto;
 import id_authentication.domain.Badge;
 import id_authentication.domain.Membership;
+import id_authentication.domain.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,22 +17,23 @@ public class MemberDTO {
     private String lastName;
     private String userName;
     private String password;
-    private List<Membership> memberships;
-    private List<Badge> badges = new ArrayList<Badge>();
+    private Role role;
+   // private List<MemberShipDTO> memberships;
+   // private List<BadgeDTO> badges = new ArrayList<BadgeDTO>();
 
-    public MemberDTO(List<Membership> memberships, List<Badge> badges) {
-
-    }
-
-    public MemberDTO(long id, String firstName, String lastName, List<Membership> memberships,
-                     List<Badge> badges, String userName, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
-        this.memberships = memberships;
-        this.badges = badges;
-    }
+//    public MemberDTO(List<MemberShipDTO> memberships, List<BadgeDTO>badges) {
+//
+//    }
+//
+//    public MemberDTO(long id, String firstName, String lastName, List<MemberShipDTO> memberships,
+//                     List<BadgeDTO> badges, String userName, String password) {
+//        this.id = id;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.userName = userName;
+//        this.password = password;
+//        this.memberships = memberships;
+//        this.badges = badges;
+//    }
 
 }

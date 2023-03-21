@@ -25,6 +25,7 @@ public class LocationTimeSlot {
     private LocalTime endTime;
 
 
+
     public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalTime startTime, @NonNull LocalTime endTime){
 
             this.dayOfWeek = dayOfWeek;
@@ -33,3 +34,4 @@ public class LocationTimeSlot {
         }
 
 }
+

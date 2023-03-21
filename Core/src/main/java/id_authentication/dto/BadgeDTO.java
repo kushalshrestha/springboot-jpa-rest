@@ -19,10 +19,10 @@ public class BadgeDTO {
     private LocalDate expiryDate;
     private String status;
     private Member member;
-    private List<Transaction> transactions;
+    private List<TransactionDTO> transactions;
 
     public BadgeDTO(long id, LocalDate expiryDate, String status,
-                    Member member, List<Transaction> transactions) {
+                    Member member, List<TransactionDTO> transactions) {
         this.id = id;
         this.expiryDate = expiryDate;
         this.status = status;

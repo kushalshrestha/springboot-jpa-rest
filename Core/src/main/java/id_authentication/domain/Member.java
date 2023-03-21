@@ -27,21 +27,21 @@ public class Member {
     @Column(name = "user_name", length=100)
     @NonNull
     private String userName;
-    @Column(name = "password", length=50)
+    @Column(name = "password")
     @NonNull
     private String password;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "member_id")
     private List<Membership> memberships;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Badge> badges=new ArrayList<Badge>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "member_id")
     private List<CheckInRecord> checkInRecords;
 
