@@ -1,4 +1,4 @@
-package id_authentication.service;
+package id_authentication.service.implementation;
 
 import id_authentication.domain.Member;
 import id_authentication.domain.Membership;
@@ -6,6 +6,7 @@ import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.MembershipRepository;
+import id_authentication.service.IMembershipService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

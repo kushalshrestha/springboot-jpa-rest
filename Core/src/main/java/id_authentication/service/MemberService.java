@@ -1,4 +1,4 @@
-package id_authentication.service.implementation;
+package id_authentication.service;
 
 import id_authentication.domain.Member;
 import id_authentication.dto.MemberDTO;
