@@ -2,18 +2,15 @@ package id_authentication.controller;
 
 import id_authentication.dto.BadgeDTO;
 import id_authentication.dto.MemberDTO;
-import id_authentication.dto.MemberShipDTO;
-import id_authentication.dto.collection.MemberCreateDTO;
+import id_authentication.dto.collection.TransactionDTOs;
+import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.BadgeOnlyDTO;
+import id_authentication.dto.response.MemberDetailDTO;
 import id_authentication.dto.response.MembershipPlanResponseDto;
-import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
-import id_authentication.errorhandler.MemberNotFoundException;
 import id_authentication.service.IMembershipService;
 import id_authentication.service.MemberService;
-
-import id_authentication.service.implementation.BadgeServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +33,8 @@ public class MemberController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMember(@PathVariable String id) {
-        MemberDTO memberDTO = memberService.getMember(Long.parseLong(id));
-        return new ResponseEntity<MemberDTO>(memberDTO, HttpStatus.OK);
+        MemberDetailDTO memberDTO = memberService.getMember(Long.parseLong(id));
+        return new ResponseEntity<MemberDetailDTO>(memberDTO, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -48,13 +45,10 @@ public class MemberController {
 
     @PostMapping("/authentication")
     public ResponseEntity<?> authentication(@RequestBody MemberDTO memberDTO) {
-        try {
-            MemberDTO createdMemberDTO = memberService.authenticate(memberDTO.getUserName(), memberDTO.getPassword());
-            return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
-        } catch (MemberNotFoundException e) {
-            return new ResponseEntity<CustomErrorType>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
-        }
+        MemberDTO createdMemberDTO = memberService.authenticate(memberDTO.getUserName(), memberDTO.getPassword());
+        return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateMember(@PathVariable String id, @RequestBody MemberDTO memberDTO) {
@@ -87,6 +81,14 @@ public class MemberController {
         }
     }
 
+
+    @GetMapping("/{memberId}/transactions")
+    public ResponseEntity<?> findTransactionsByMemberId(@PathVariable String memberId){
+        TransactionDTOs transactionDTOS = memberService.findAllTransactionsByMemberId(Long.parseLong(memberId));
+        return new ResponseEntity<TransactionDTOs>(transactionDTOS, HttpStatus.OK);
+    }
+
+
     @GetMapping("{memberId}/badges")
     public ResponseEntity<?> findBadgesForMemberId(@PathVariable long memberId,
                                                    @RequestParam(value="filter", required = false) String filter) {
@@ -99,4 +101,5 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
         }
     }
+
 }
