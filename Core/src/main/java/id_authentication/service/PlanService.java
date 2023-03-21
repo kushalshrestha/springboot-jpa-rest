@@ -1,4 +1,5 @@
 package id_authentication.service;
+import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
 
 
@@ -13,6 +14,8 @@ public interface PlanService {
      void deletePlanForMember(Long id);
 
      PlanDTO updatePlanForMember(Long id , PlanDTO planDTO);
+
+     List<LocationDTO> getLocationsByPlanId(Long id);
 
 
 }

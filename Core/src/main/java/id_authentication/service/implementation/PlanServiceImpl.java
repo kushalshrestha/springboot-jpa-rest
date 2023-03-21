@@ -2,6 +2,7 @@ package id_authentication.service.implementation;
 
 
 import id_authentication.domain.Plan;
+import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
 import id_authentication.errorhandler.ResourceNotFoundException;
 import id_authentication.repositories.*;
@@ -63,5 +64,13 @@ public class PlanServiceImpl implements PlanService {
         else
             throw new ResourceNotFoundException("No Plan to Update For Member :" + id);
 
+    }
+
+    @Override
+    public List<LocationDTO> getLocationsByPlanId(Long id) {
+        PlanDTO planDTO = new PlanDTO();
+        Plan plan = modelMapper.map(planDTO,Plan.class);
+
+        return null;
     }
 }
