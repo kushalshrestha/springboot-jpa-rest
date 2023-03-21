@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface BadgeService {
     public BadgeDTO createBadge(BadgeDTO badgeDTO);
-    BadgeDTO updateBadge(BadgeDTO badge, Long BadgeId);
+
     BadgeDTO getBadge(Long BadgeId);
-     List<BadgeDTO> getAllBadges();
+
+    List<BadgeDTO> getAllBadges();
+
+    BadgeDTO updateBadge(BadgeDTO badge, Long BadgeId);
+
     BadgeDTO deleteBadge(Long BadgeId);
 
 
