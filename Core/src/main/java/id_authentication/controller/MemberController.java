@@ -78,6 +78,7 @@ public class MemberController {
     public ResponseEntity<?>getPlansForMember(@PathVariable Long memberId){
             return new ResponseEntity<>(memberService.getAllPlansForMember(memberId), HttpStatus.OK);
     }
+
     @GetMapping("/{memberId}/transactions")
     public ResponseEntity<?> findTransactionsByMemberId(@PathVariable String memberId){
         TransactionDTOs transactionDTOS = memberService.findAllTransactionsByMemberId(Long.parseLong(memberId));
@@ -97,5 +98,4 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
         }
     }
-
 }
