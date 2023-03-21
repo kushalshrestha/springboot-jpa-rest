@@ -19,7 +19,7 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     List<Plan> getMemberPlansById(Long id);
 
-    @Query( "select  p.locations from Plan p where p.id = :id")
+    @Query( "select  p.locations from Plan p where p.id =:id")
     List<Location> findLocationsByPlanId(Long id);
 
 
