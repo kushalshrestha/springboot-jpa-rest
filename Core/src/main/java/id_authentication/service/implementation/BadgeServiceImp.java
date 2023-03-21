@@ -45,15 +45,12 @@ public class BadgeServiceImp implements BadgeService {
         } else {
             throw new RuntimeException("BadgeNumber Doesn't Exist");
         }
-
-
-
+        
         }
 
     @Override
     public BadgeDTO getBadge(Long id) {
         Optional<Badge> oldBadge = badgeRepository.findById(id);
-        System.out.println("-----------------------------"+oldBadge.get().getBadgeNumber());
         if (oldBadge.isPresent()) {
             return modelMapper.map(oldBadge.get(), BadgeDTO.class);
         } else {

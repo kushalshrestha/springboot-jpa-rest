@@ -14,9 +14,6 @@ import java.util.List;
 @Transactional
 @Repository
 public interface BadgeRepository extends JpaRepository<Badge, Long> {
-    // public void getBadgeByBadgeId(Long BadgeId);
-
-   // public void deleteByBadgeId(Long badgeId);
 
     @Query("Select b from Badge b")
     public List<Badge> findBadges();

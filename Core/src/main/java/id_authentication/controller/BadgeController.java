@@ -20,10 +20,6 @@ public class BadgeController {
     @Autowired
     private BadgeService badgeService;
 
-    private Map<String, BadgeDTO> badges= new HashMap<>();
-
-    public BadgeController (){
-    }
     @GetMapping("/{badgeId}")
     public ResponseEntity<?> getBadge(@PathVariable String badgeId) {
         BadgeDTO badge = badgeService.getBadge(Long.parseLong(badgeId));
