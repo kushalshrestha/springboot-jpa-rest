@@ -11,14 +11,4 @@ import java.util.List;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     public Member findMemberByMemberNumber(String memberNumber);
-
-    @Query("select m from Member m  join fetch m.memberships" )
-    public Member findByIdEagerFetchMembership(@Param("memberId") Long memberId);
-
-
-    @Query("select m from Member m  join fetch m.badges" )
-    public Member findByIdEagerFetchBadge(@Param("memberId") Long memberId);
-
-    @Query("select m from Member m  join fetch m.checkInRecords" )
-    public Member findByIdEagerFetchCheckInRecords(@Param("memberId") Long memberId);
 }
