@@ -75,7 +75,9 @@ public class BadgeServiceImp implements BadgeService {
         Optional<Badge> oldBadge = badgeRepository.findById(id);
         if (oldBadge.isPresent()) {
             oldBadge.get().setStatus("INACTIVE");
-            return modelMapper.map(oldBadge.get(), BadgeDTO.class);
+            Badge updatedBadge = oldBadge.get();
+            badgeRepository.save(updatedBadge);
+            return modelMapper.map(updatedBadge, BadgeDTO.class);
         } else {
             throw new RuntimeException("Badge Doesn't Exist");
         }
