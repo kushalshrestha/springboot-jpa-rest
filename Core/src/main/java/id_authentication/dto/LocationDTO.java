@@ -15,7 +15,6 @@ public class LocationDTO {
     private int capacity;
 
     private LocationType locationType;
-    private List<LocationTimeSlotDTO> timeSlots=new ArrayList<LocationTimeSlotDTO>();
 
 
 }
