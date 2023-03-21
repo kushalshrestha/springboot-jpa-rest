@@ -24,6 +24,7 @@ public interface MemberService {
 
     void deleteMember(long parseLong);
 
+    List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status);
 
     TransactionDTOs findAllTransactionsByMemberId(Long memberId);
 

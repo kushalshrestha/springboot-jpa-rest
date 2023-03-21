@@ -1,5 +1,6 @@
 package id_authentication.service.implementation;
 
+import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
@@ -124,16 +125,26 @@ public class MemberServiceImp implements MemberService {
     }
 
     @Override
+    public List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status) {
+        List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
+        if (status != null &&
+                (status.toLowerCase().equals("active") || status.toLowerCase().equals("inactive"))
+        ) {
+            return badgeRepository.findMemberBadgesByStatus(memberId, status).stream()
+                    .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                    .collect(Collectors.toList());
+        } else {
+            return badgeRepository.findBadgesByMemberId(memberId).stream()
+                    .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                    .collect(Collectors.toList());
+        }
+    }
+
     public TransactionDTOs findAllTransactionsByMemberId(Long memberId) {
         TransactionDTOs transactionDTOs = new TransactionDTOs();
         memberRepository.findTransactionsByMemberId(memberId).forEach(transaction -> {
             transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
         });
-
-//         transactionRepository.findAllTransactionsByMemberId(memberId).forEach(transaction -> {
-//            transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
-//        });
-
         if (transactionDTOs.getTransactions().size() == 0) {
             throw new ResourceNotFoundException("No transactions found for member id " + memberId);
         }
@@ -145,7 +156,6 @@ public class MemberServiceImp implements MemberService {
         return badgeRepository.findBadgesByMemberId(memberId).stream()
                 .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
                 .collect(Collectors.toList());
-
     }
 
 }
