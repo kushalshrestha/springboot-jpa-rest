@@ -70,4 +70,5 @@ public class MemberController {
         List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMemberId(memberId);
         return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
     }
+
 }

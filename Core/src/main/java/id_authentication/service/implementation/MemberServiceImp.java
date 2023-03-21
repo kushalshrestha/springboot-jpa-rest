@@ -100,4 +100,6 @@ public class MemberServiceImp implements MemberService {
             throw new RuntimeException("Member not found" + id);
         }
     }
+
+
 }

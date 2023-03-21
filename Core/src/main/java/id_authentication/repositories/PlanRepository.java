@@ -3,6 +3,7 @@ package id_authentication.repositories;
 import id_authentication.domain.Location;
 import id_authentication.domain.Plan;
 import id_authentication.domain.RolePlanLimit;
+import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
