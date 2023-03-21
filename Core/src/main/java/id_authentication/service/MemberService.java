@@ -1,7 +1,10 @@
 package id_authentication.service;
 
 import id_authentication.dto.MemberDTO;
-import id_authentication.dto.collection.MemberCreateDTO;
+
+import id_authentication.dto.collection.TransactionDTOs;
+import id_authentication.dto.request.MemberCreateDTO;
+
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.BadgeOnlyDTO;
 
@@ -20,5 +23,9 @@ public interface MemberService {
 
     void deleteMember(long parseLong);
 
+
+    TransactionDTOs findAllTransactionsByMemberId(Long memberId);
+
     List<BadgeOnlyDTO> getBadgesByMemberId(long memberId);
+
 }

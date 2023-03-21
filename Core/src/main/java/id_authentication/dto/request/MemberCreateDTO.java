@@ -1,4 +1,4 @@
-package id_authentication.dto.collection;
+package id_authentication.dto.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
