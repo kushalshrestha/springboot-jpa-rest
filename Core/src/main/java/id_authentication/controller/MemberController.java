@@ -1,5 +1,6 @@
 package id_authentication.controller;
 import id_authentication.dto.MemberDTO;
+import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.errorhandler.MemberNotFoundException;
@@ -22,7 +23,7 @@ public class MemberController {
         }
 
         @PostMapping("")
-        public ResponseEntity<?> createMember(@RequestBody MemberDTO memberDTO){
+        public ResponseEntity<?> createMember(@RequestBody MemberCreateDTO memberDTO){
             MemberDTO createdMemberDTO= memberService.createMember(memberDTO);
             return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
         }

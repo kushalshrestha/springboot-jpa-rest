@@ -2,7 +2,9 @@ package id_authentication.service.implementation;
 
 import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
+import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
+import id_authentication.dto.collection.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.errorhandler.MemberNotFoundException;
 import id_authentication.repositories.*;
@@ -22,11 +24,15 @@ public class MemberServiceImp implements MemberService {
     MemberRepository memberRepository;
 
     @Autowired
+    RoleRepository roleRepository;
+    @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     ModelMapper modelMapper;
-    public MemberDTO createMember(MemberDTO memberDTO){
+    public MemberDTO createMember(MemberCreateDTO memberDTO){
         Member member=modelMapper.map(memberDTO, Member.class);
+        Role role=roleRepository.findById(memberDTO.getRoleId()).get();
+        member.setRole(role);
         //System.out.println(member.getMemberNumber()+"-----------");
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         //System.out.println("_________member.getPassword()__________"+member.getPassword());
