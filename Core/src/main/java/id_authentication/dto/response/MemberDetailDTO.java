@@ -15,7 +15,6 @@ public class MemberDetailDTO {
     private String firstName;
     private String lastName;
     private String userName;
-    private String password;
     private Role role;
      private List<MemberBadgeDTO> badges = new ArrayList<MemberBadgeDTO>();
 }
