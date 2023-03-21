@@ -23,8 +23,9 @@ public class MemberController {
 
     @Autowired
     private IMembershipService membershipService;
+
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
         @GetMapping("/{id}")
         public ResponseEntity<?> getMember(@PathVariable String id){
             MemberDTO memberDTO= memberService.getMember(Long.parseLong(id));
@@ -69,5 +70,11 @@ public class MemberController {
     public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId){
         List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMemberId(memberId);
         return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/{memberid/plans")
+    public ResponseEntity<?>getPlansForMember(@PathVariable  long memberId){
+            return new ResponseEntity<>(membershipService.getAllPlansForMember(memberId), HttpStatus.OK);
     }
 }

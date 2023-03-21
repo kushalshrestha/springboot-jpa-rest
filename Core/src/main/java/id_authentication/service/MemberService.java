@@ -11,4 +11,5 @@ public interface MemberService {
     MemberDTOs getAllMembers();
     MemberDTO authenticate(String username, String password);
     void deleteMember(long parseLong);
+
 }

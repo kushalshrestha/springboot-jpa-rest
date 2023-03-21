@@ -2,6 +2,7 @@ package id_authentication.service.implementation;
 
 import id_authentication.domain.Member;
 import id_authentication.domain.Membership;
+import id_authentication.dto.PlanDTO;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.exceptions.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,5 +81,9 @@ public class MembershipService implements IMembershipService {
         membershipRepository.save(membership);
     }
 
+    public List<PlanDTO> getAllPlansForMember(long memberId){
+        return membershipRepository.findPlansByMemberId(memberId).stream()
+                .map(plan->modelMapper.map(plan, PlanDTO.class)).collect(Collectors.toList());
+    }
 
 }
