@@ -1,11 +1,12 @@
 package id_authentication.controller;
 
 import id_authentication.dto.MemberDTO;
-import id_authentication.dto.collection.MemberCreateDTO;
+import id_authentication.dto.collection.TransactionDTOs;
+import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
-import id_authentication.errorhandler.MemberNotFoundException;
+import id_authentication.exceptions.MemberNotFoundException;
 import id_authentication.service.IMembershipService;
 import id_authentication.service.MemberService;
 
@@ -38,13 +39,8 @@ public class MemberController {
         }
     @PostMapping("/authentication")
     public ResponseEntity<?> authentication(@RequestBody MemberDTO memberDTO){
-        try{
             MemberDTO createdMemberDTO= memberService.authenticate(memberDTO.getUserName(),memberDTO.getPassword());
             return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
-        }
-        catch (MemberNotFoundException e){
-            return new ResponseEntity<CustomErrorType>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
-        }
     }
         @PutMapping("/{id}")
         public ResponseEntity<?> updateMember(@PathVariable String id,@RequestBody MemberDTO memberDTO){
@@ -70,4 +66,11 @@ public class MemberController {
         List<MembershipResponseDto> membershipResponseDto = membershipService.findAllByMemberId(memberId);
         return new ResponseEntity<List<MembershipResponseDto>>(membershipResponseDto, HttpStatus.OK);
     }
+
+    @GetMapping("/{memberId}/transactions")
+    public ResponseEntity<?> findTransactionsByMemberId(@PathVariable String memberId){
+        TransactionDTOs transactionDTOS = memberService.findAllTransactionsByMemberId(Long.parseLong(memberId));
+        return new ResponseEntity<TransactionDTOs>(transactionDTOS, HttpStatus.OK);
+    }
+
 }

@@ -1,12 +1,14 @@
 package id_authentication.service.implementation;
 
-import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
-import id_authentication.dto.collection.MemberCreateDTO;
+import id_authentication.dto.TransactionDTO;
+import id_authentication.dto.collection.TransactionDTOs;
+import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
-import id_authentication.errorhandler.MemberNotFoundException;
+import id_authentication.exceptions.MemberNotFoundException;
+import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.*;
 import id_authentication.service.MemberService;
 import org.modelmapper.ModelMapper;
@@ -14,15 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class MemberServiceImp implements MemberService {
     @Autowired
     MemberRepository memberRepository;
-
+    @Autowired
+    TransactionRepository transactionRepository;
     @Autowired
     RoleRepository roleRepository;
     @Autowired
@@ -78,15 +79,24 @@ public class MemberServiceImp implements MemberService {
 
     public MemberDTO authenticate(String username, String password) {
 
-         Member member= memberRepository.findMemberByUserName(username);
-        String encodedPassword = member.getPassword();
-        if(passwordEncoder.matches(password,encodedPassword ))
-        {
-            return modelMapper.map(member, MemberDTO.class);
+        try{
+            Member member= memberRepository.findMemberByUserName(username);
+            if(member.getMemberNumber()==null)
+            {
+                throw new MemberNotFoundException("User Not Found");
+            }
+            String encodedPassword = member.getPassword();
+            if(passwordEncoder.matches(password,encodedPassword ))
+            {
+                return modelMapper.map(member, MemberDTO.class);
+            }
+            else
+            {
+                throw new MemberNotFoundException("Invalid password");
+            }
         }
-        else
-        {
-            throw new MemberNotFoundException("Invalid username or password");
+        catch (Exception e){
+            throw new MemberNotFoundException("Invalid Username or Password");
         }
     }
 
@@ -99,5 +109,22 @@ public class MemberServiceImp implements MemberService {
         } else {
             throw new RuntimeException("Member not found" + id);
         }
+    }
+
+    @Override
+    public TransactionDTOs findAllTransactionsByMemberId(Long memberId) {
+        TransactionDTOs transactionDTOs=new TransactionDTOs();
+        memberRepository.findTransactionsByMemberId(memberId).forEach(transaction -> {
+            transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
+        });
+
+//         transactionRepository.findAllTransactionsByMemberId(memberId).forEach(transaction -> {
+//            transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
+//        });
+
+        if(transactionDTOs.getTransactions().size()==0) {
+            throw new ResourceNotFoundException("No transactions found for member id " + memberId);
+        }
+         return transactionDTOs;
     }
 }

@@ -1,7 +1,8 @@
 package id_authentication.service;
 
 import id_authentication.dto.MemberDTO;
-import id_authentication.dto.collection.MemberCreateDTO;
+import id_authentication.dto.collection.TransactionDTOs;
+import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 
 public interface MemberService {
@@ -11,4 +12,6 @@ public interface MemberService {
     MemberDTOs getAllMembers();
     MemberDTO authenticate(String username, String password);
     void deleteMember(long parseLong);
+
+    TransactionDTOs findAllTransactionsByMemberId(Long memberId);
 }
