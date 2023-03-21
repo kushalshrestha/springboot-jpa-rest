@@ -1,5 +1,6 @@
 package id_authentication.service.implementation;
 
+import id_authentication.domain.Badge;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;

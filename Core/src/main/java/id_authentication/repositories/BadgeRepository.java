@@ -17,5 +17,5 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
     List<Badge> findBadgesByMemberId(long memberId);
 
     @Query(value = "select b.* from badge b where b.member_id= :memberId and UPPER(status) = UPPER(:status)", nativeQuery = true)
-    List<Membership> findMemberBadgesByStatus(@Param("memberId") long memberId, @Param("status") String status);
+    List<Badge> findMemberBadgesByStatus(@Param("memberId") long memberId, @Param("status") String status);
 }
