@@ -1,10 +1,9 @@
 package id_authentication.controller;
-
-import id_authentication.domain.Transaction;
-import id_authentication.dto.TransactionDTO;
+import id_authentication.dto.request.TransactionCreateDTO;
+import id_authentication.dto.response.TransactionStatusDTO;
+import id_authentication.service.TransactionService;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.exceptions.ResourceNotFoundException;
-import id_authentication.service.TransactionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +16,19 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/transactions")
 public class TransactionController {
+
     @Autowired
     private TransactionService transactionService;
     @Autowired
     private ModelMapper modelMapper;
 
+    @PostMapping
+    public ResponseEntity<?> addTransaction(@RequestBody TransactionCreateDTO transactionCreateDTO){
+        TransactionStatusDTO transactionDTO= transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(transactionDTO);
+
+    }
     @GetMapping
     public ResponseEntity<?> getTransactions() {
         return ResponseEntity.status(HttpStatus.OK).body(transactionService.getAllTransactions());
