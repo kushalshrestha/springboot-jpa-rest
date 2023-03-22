@@ -38,14 +38,14 @@ public class MemberController {
     }
 
     @PostMapping("/authentication")
-    public ResponseEntity<?> authentication(@RequestBody MemberDTO memberDTO) {
-        MemberDTO createdMemberDTO = memberService.authenticate(memberDTO.getUserName(), memberDTO.getPassword());
+    public ResponseEntity<?> authentication(@RequestBody MemberCreateDTO memberCreateDTODTO) {
+        MemberDTO createdMemberDTO = memberService.authenticate(memberCreateDTODTO.getUserName(), memberCreateDTODTO.getPassword());
         return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMember(@PathVariable String id, @RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<?> updateMember(@PathVariable String id, @RequestBody MemberCreateDTO memberDTO) {
         MemberDTO updatedMemberDTO = memberService.updateMember(Long.parseLong(id), memberDTO);
         return new ResponseEntity<MemberDTO>(updatedMemberDTO, HttpStatus.OK);
     }

@@ -14,7 +14,7 @@ public interface MemberService {
 
     MemberDetailDTO getMember(Long id);
 
-    MemberDTO updateMember(Long memberId, MemberDTO memberDTO);
+    MemberDTO updateMember(Long memberId, MemberCreateDTO memberDTO);
 
     MemberDTOs getAllMembers();
 
