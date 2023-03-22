@@ -7,14 +7,23 @@ import id_authentication.dto.response.BadgeOnlyDTO;
 import id_authentication.dto.response.MemberDetailDTO;
 import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
+import id_authentication.exceptions.PayloadNotValidException;
 import id_authentication.service.IMembershipService;
 import id_authentication.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -24,6 +33,8 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+//    @Autowired
+//    Validator validator;
     @GetMapping("/{id}")
     public ResponseEntity<?> getMember(@PathVariable String id) {
         MemberDetailDTO memberDTO = memberService.getMember(Long.parseLong(id));
@@ -32,8 +43,19 @@ public class MemberController {
 
     @PostMapping("")
     public ResponseEntity<?> createMember(@RequestBody MemberCreateDTO memberDTO) {
+
+//            ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+//            Validator validator = validatorFactory.getValidator();
+//
+//        Set<ConstraintViolation<MemberCreateDTO>> violations = validator.validate(memberDTO);
+//        if (!violations.isEmpty())
+//        { List<String> violationMsglist=violations.stream().map(violation -> violation.getMessage()).collect(Collectors.toList());
+//            String violationMessage = String.join(",", violationMsglist);
+//            throw new PayloadNotValidException(violationMessage);
+//        }
         MemberDTO createdMemberDTO = memberService.createMember(memberDTO);
         return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
+
     }
 
     @PostMapping("/authentication")

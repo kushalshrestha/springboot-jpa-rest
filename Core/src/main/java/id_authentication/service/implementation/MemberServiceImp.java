@@ -43,13 +43,13 @@ public class MemberServiceImp implements MemberService {
 
     public MemberDTO createMember(MemberCreateDTO memberDTO) {
         Member member = modelMapper.map(memberDTO, Member.class);
+        if(memberDTO.getRoleId() == null ){
+            throw new RuntimeException("RoleId required");
+        }
         Role role = roleRepository.findById(memberDTO.getRoleId()).get();
         member.setRole(role);
-        //System.out.println(member.getMemberNumber()+"-----------");
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        //System.out.println("_________member.getPassword()__________"+member.getPassword());
         Member createdMember = memberRepository.save(member);
-        //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
         MemberDTO createdMemberDTO = modelMapper.map(createdMember, MemberDTO.class);
         return createdMemberDTO;
     }
