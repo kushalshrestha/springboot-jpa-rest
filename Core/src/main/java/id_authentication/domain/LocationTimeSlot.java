@@ -3,10 +3,6 @@ package id_authentication.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import javax.persistence.*;
 import java.time.LocalTime;
 
@@ -28,14 +24,10 @@ public class LocationTimeSlot {
     @NonNull
     private LocalTime endTime;
 
+    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalTime startTime, @NonNull LocalTime endTime) {
 
-
-    public LocationTimeSlot(@NonNull int dayOfWeek, @NonNull LocalTime startTime, @NonNull LocalTime endTime){
-
-            this.dayOfWeek = dayOfWeek;
-            this.startTime = startTime;
-            this.endTime = endTime;
-        }
-
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }
-

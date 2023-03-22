@@ -1,6 +1,7 @@
 package id_authentication.repositories;
 
 import id_authentication.domain.Membership;
+import id_authentication.dto.LocationDTO;
 import id_authentication.dto.MemberShipDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,6 +24,4 @@ public interface MembershipRepository extends JpaRepository<Membership, Long> {
     @Modifying
     @Query(value = "update membership set member_id=:memberId where id=:id", nativeQuery = true)
     void updateMemberId(long id, long memberId);
-
-
 }
