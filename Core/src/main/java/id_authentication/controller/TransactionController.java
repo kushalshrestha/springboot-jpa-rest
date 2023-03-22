@@ -1,4 +1,12 @@
 package id_authentication.controller;
+
+import id_authentication.dto.LocationDTO;
+import id_authentication.dto.TransactionDTO;
+import id_authentication.dto.request.MembershipRequestDto;
+import id_authentication.dto.response.MembershipResponseDto;
+import id_authentication.errorhandler.CustomErrorType;
+import id_authentication.exceptions.ResourceNotFoundException;
+import id_authentication.repositories.TransactionRepository;
 import id_authentication.dto.request.TransactionCreateDTO;
 import id_authentication.dto.response.TransactionStatusDTO;
 import id_authentication.service.TransactionService;
@@ -40,17 +48,17 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTransaction(@PathVariable long id, @RequestBody String text) {
+    public ResponseEntity<?> updateTransaction(@PathVariable long id, @RequestBody TransactionDTO transactionRequestDto) {
         try {
-            //TODO !!!Change RequestBody (See other controller)
+            TransactionDTO transactionRepositoryDto =transactionService.updateTransaction(id,transactionRequestDto);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(text);
+                    .body(transactionRepositoryDto);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomErrorType(e.getMessage()));
         }
-    }
 
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable long id) {
         try {

@@ -1,21 +1,25 @@
 package id_authentication.service.implementation;
 
-import id_authentication.domain.*;
-import id_authentication.dto.response.TransactionStatusDTO;
-import id_authentication.repositories.*;
+import id_authentication.domain.Transaction;
+import id_authentication.dto.LocationDTO;
+import id_authentication.dto.TransactionDTO;
+import id_authentication.exceptions.ResourceNotFoundException;
+import id_authentication.repositories.TransactionRepository;
 import id_authentication.service.TransactionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+
+//import javax.transaction.Transaction;
+import java.util.Optional;
+import id_authentication.domain.*;
+import id_authentication.dto.response.TransactionStatusDTO;
+import id_authentication.repositories.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import id_authentication.domain.Transaction;
-import id_authentication.dto.TransactionDTO;
-import id_authentication.exceptions.ResourceNotFoundException;
-import id_authentication.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
@@ -28,23 +32,33 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TransactionServiceImp implements TransactionService {
     @Autowired
-    TransactionRepository transactionRepository;
+     private  ModelMapper modelMapper;
+    @Autowired
+    private TransactionRepository transactionRepository;
     @Autowired
     BadgeRepository badgeRepository;
-
     @Autowired
     LocationRepository locationRepository;
-
     @Autowired
     PlanRepository planRepository;
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     CheckInRecordRepository checkInRecordRepository;
-
     @Autowired
     RolePlanLimitRepository rolePlanLimitRepository;
+
+    @Override
+    public TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO) {
+        Optional<Transaction> transactionOptional = transactionRepository.findById(id);
+        if (transactionOptional.isPresent()) {
+            Transaction foundTran = transactionOptional.get();
+            foundTran.setDateTime(transactionDTO.getDateTime());
+            foundTran.setTransactionType(transactionDTO.getTransactionType());
+            return modelMapper.map(transactionRepository.save(foundTran), TransactionDTO.class);
+        } else {
+            throw new ResourceNotFoundException("Transaction not found" + id);
+
+        }
+    }
 
     private Boolean isAllowed(LocalDateTime dateTime, long badgeId, long planId, long locationId) {
         LocalTime time = dateTime.toLocalTime();

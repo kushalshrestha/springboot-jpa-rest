@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +33,16 @@ public class BadgeServiceImp implements BadgeService {
         return createdBadgeDTO;
     }
 
+    //    @Override
+//    public Badge updateBadge(Badge badge, Long BadgeNumber) {
+//        var oldBatch = badgeRepository.findById(BadgeNumber);
+//        if (oldBatch.isPresent()) {
+//            Badge badge1 = oldBatch.get();
+//            badge1.setExpiryDate(badge.getExpiryDate());
+//            badge1.setStatus(badge.getStatus());
+//            return badgeRepository.save(badge1);
+//        }
+//    }
     @Override
     public BadgeDTO updateBadge(BadgeDTO badgeDTO, Long BadgeNumber) {
         var oldBadge = badgeRepository.findById(BadgeNumber);
@@ -45,8 +56,8 @@ public class BadgeServiceImp implements BadgeService {
         } else {
             throw new RuntimeException("BadgeNumber Doesn't Exist");
         }
-        
-        }
+
+    }
 
     @Override
     public BadgeDTO getBadge(Long id) {
@@ -60,7 +71,7 @@ public class BadgeServiceImp implements BadgeService {
 
     @Override
     public List<BadgeDTO> getAllBadges() {
-        List<Badge> testBadge=badgeRepository.findBadges();
+        List<Badge> testBadge = badgeRepository.findBadges();
 
         return testBadge.stream()
                 .map(badge -> modelMapper.map(badge, BadgeDTO.class))

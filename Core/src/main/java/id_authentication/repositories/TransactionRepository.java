@@ -11,6 +11,9 @@ import javax.transaction.Transactional;
 @Transactional
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long>{
+
+    @Query(value = "update transaction set transaction_id=:transactionId where id=:id", nativeQuery = true)
+    void updateTransactionId(long id, long transactionId);
     @Modifying
     @Query(value="update CheckinInformation  set plan_id= :planId, " +
             "location_id= :locationId,badge_id= :badgeId where id= :transactionId" , nativeQuery = true)
