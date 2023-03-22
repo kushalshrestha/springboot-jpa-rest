@@ -1,16 +1,22 @@
 package id_authentication.service.implementation;
 
+import id_authentication.domain.Member;
 import id_authentication.domain.Membership;
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.MemberShipDTO;
+import id_authentication.dto.TransactionDTO;
+import id_authentication.dto.collection.MembershipPlanResponseDTOs;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
+import id_authentication.dto.response.PlanWithLocationDTO;
 import id_authentication.exceptions.ResourceNotFoundException;
+import id_authentication.repositories.MemberRepository;
 import id_authentication.repositories.MembershipRepository;
 import id_authentication.service.IMembershipService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,8 +28,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MembershipService implements IMembershipService {
 
+    @Autowired
     private final ModelMapper modelMapper;
+    @Autowired
     private final MembershipRepository membershipRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Override
     public MembershipResponseDto save(MembershipRequestDto membershipRequestDto) {
@@ -73,11 +84,23 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public List<MembershipPlanResponseDto> getMembershipsByMemberId(Long memberId) {
-        List<MemberShipDTO> membershipsList = new ArrayList<MemberShipDTO>();
-        return membershipRepository.findMembershipsByMemberId(memberId).stream()
-                .map(membership -> modelMapper.map(membership, MembershipPlanResponseDto.class))
-                .collect(Collectors.toList());
+    public MembershipPlanResponseDTOs getMembershipsByMemberId(long memberId) {
+        MembershipPlanResponseDTOs membershipPlanResponseDTOs = new MembershipPlanResponseDTOs();
+        System.out.println("getting member for:"+memberId);
+        Member member=memberRepository.findById(memberId).get();
+        System.out.println("got member");
+        member.getMemberships().forEach(membership -> System.out.println(membership.getPlan()));
+        if (member.getMemberships().size() == 0) {
+            throw new ResourceNotFoundException("No memberships found for member id " + memberId);
+        }
+        member.getMemberships().forEach(membership -> {
+            MembershipPlanResponseDto dto = modelMapper.map(membership, MembershipPlanResponseDto.class);
+            PlanWithLocationDTO plan = modelMapper.map(membership.getPlan(), PlanWithLocationDTO.class);
+            membershipPlanResponseDTOs.add(modelMapper.map(membership, MembershipPlanResponseDto.class));
+        });
+
+
+        return membershipPlanResponseDTOs;
     }
 
     public void update(long id, Membership membership) {

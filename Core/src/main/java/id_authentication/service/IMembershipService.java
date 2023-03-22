@@ -1,5 +1,6 @@
 package id_authentication.service;
 import id_authentication.domain.Membership;
+import id_authentication.dto.collection.MembershipPlanResponseDTOs;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
@@ -18,7 +19,7 @@ public interface IMembershipService {
 
     String deleteMembership(long id);
 
-    List<MembershipPlanResponseDto> getMembershipsByMemberId(Long memberId);
+    MembershipPlanResponseDTOs getMembershipsByMemberId(long memberId);
 
 
 

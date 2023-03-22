@@ -10,6 +10,7 @@ import java.util.Set;
 @Table(name = "PlanInfo")
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Plan {
