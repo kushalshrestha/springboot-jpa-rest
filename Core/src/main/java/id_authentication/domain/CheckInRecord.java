@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,10 @@ public class CheckInRecord {
     @NonNull
     private Role role;
 
-    private Date lastCheckIn;
+    private LocalDateTime lastCheckIn;
 
+    public CheckInRecord(int count, LocalDateTime lastCheckIn) {
+        this.count = count;
+        this.lastCheckIn = lastCheckIn;
+    }
 }
