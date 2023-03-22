@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Data
 @NoArgsConstructor
 public class PlanDTO {
@@ -16,7 +15,7 @@ public class PlanDTO {
     private String description;
     private List<LocationDTO> locations=new ArrayList<>();
     private List<RolePlanLimitDTO> rolePlanLimit;
-
+    private List<LocationDTO> locationDTOList;
     public PlanDTO(long id, String name, String description, List<LocationDTO> locations,
                    List<RolePlanLimitDTO> rolePlanLimit) {
 

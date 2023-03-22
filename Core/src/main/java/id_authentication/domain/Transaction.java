@@ -28,4 +28,9 @@ public class Transaction {
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
+
+    public Transaction(@NonNull LocalDateTime dateTime, @NonNull String transactionType) {
+        this.dateTime = dateTime;
+        TransactionType = transactionType;
+    }
 }

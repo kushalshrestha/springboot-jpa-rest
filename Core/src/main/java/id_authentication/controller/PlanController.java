@@ -53,8 +53,8 @@ public class PlanController {
         return new ResponseEntity<>("success",HttpStatus.OK);
     }
 
-
-
-
-
+    @GetMapping("/{id}/locations")
+    public ResponseEntity<?> getLocationsByPlanId(@PathVariable Long id){
+        return new ResponseEntity<>(planService.getAllLocationsById(id),HttpStatus.OK);
+    }
 }
