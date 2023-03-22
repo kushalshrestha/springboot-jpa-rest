@@ -2,7 +2,6 @@ package id_authentication.controller;
 
 import id_authentication.domain.Transaction;
 import id_authentication.dto.TransactionDTO;
-import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.service.TransactionService;
@@ -18,11 +17,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/transactions")
 public class TransactionController {
-
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
     @Autowired
     private ModelMapper modelMapper;
+
     @GetMapping
     public ResponseEntity<?> getTransactions() {
         try {
@@ -72,11 +71,9 @@ public class TransactionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable long id) {
         try {
-            //TODO
-            return ResponseEntity.status(HttpStatus.OK).body("Successfully Deleted!!");
+            return new ResponseEntity<>(transactionService.deleteTransaction(id), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomErrorType(e.getMessage()));
+            return new ResponseEntity<>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 }
