@@ -22,7 +22,7 @@ public class MemberTemplate {
     @PostConstruct
     public void init(){
         headers = new HttpHeaders();
-        headers.setBasicAuth("username", "password");
+        headers.setBasicAuth("service", "d9c9a5fb-4fc6-4084-b0bb-66e1aaf6813b");
     }
 
     public MemberDTO getMember(String userName, String password){
