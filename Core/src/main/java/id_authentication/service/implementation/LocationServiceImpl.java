@@ -1,4 +1,4 @@
-package id_authentication.service.impl;
+package id_authentication.service.implementation;
 
 import id_authentication.domain.Location;
 import id_authentication.dto.LocationDTO;

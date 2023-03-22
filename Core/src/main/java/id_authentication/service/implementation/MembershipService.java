@@ -1,6 +1,5 @@
 package id_authentication.service.implementation;
 
-import id_authentication.domain.Member;
 import id_authentication.domain.Membership;
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.MemberShipDTO;

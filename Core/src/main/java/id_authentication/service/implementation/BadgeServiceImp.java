@@ -1,45 +1,94 @@
 package id_authentication.service.implementation;
 
 import id_authentication.domain.Badge;
+import id_authentication.dto.BadgeDTO;
 import id_authentication.repositories.BadgeRepository;
 import id_authentication.service.BadgeService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 
 public class BadgeServiceImp implements BadgeService {
-    private  final BadgeRepository badgeRepository;
-
-
+    @Autowired
+    private final BadgeRepository badgeRepository;
+    @Autowired
+    private final ModelMapper modelMapper;
 
     @Override
-    public Badge createBadge(Badge badge) {
+    public BadgeDTO createBadge(BadgeDTO badgeDTO) {
 
-       return badgeRepository.save(badge);
+        Badge badge2 = modelMapper.map(badgeDTO, Badge.class);
+        Badge updatedBadge = badgeRepository.save(badge2);
+        badgeRepository.updateMemberId(updatedBadge.getId(), badgeDTO.getMemberId());
+        BadgeDTO createdBadgeDTO = modelMapper.map(badge2, BadgeDTO.class);
+        return createdBadgeDTO;
     }
 
+    //    @Override
+//    public Badge updateBadge(Badge badge, Long BadgeNumber) {
+//        var oldBatch = badgeRepository.findById(BadgeNumber);
+//        if (oldBatch.isPresent()) {
+//            Badge badge1 = oldBatch.get();
+//            badge1.setExpiryDate(badge.getExpiryDate());
+//            badge1.setStatus(badge.getStatus());
+//            return badgeRepository.save(badge1);
+//        }
+//    }
     @Override
-    public Badge updateBadge(Badge badge, Long BadgeNumber) {
-        var oldBatch = badgeRepository.findById(BadgeNumber);
-        if (oldBatch.isPresent()) {
-            Badge badge1 = oldBatch.get();
-            badge1.setStatus(badge.getStatus());
-            badge1.setExpiryDate(badge.getExpiryDate());
-
-            return badgeRepository.save(badge1);
+    public BadgeDTO updateBadge(BadgeDTO badgeDTO, Long BadgeNumber) {
+        var oldBadge = badgeRepository.findById(BadgeNumber);
+        if (oldBadge.isPresent()) {
+            Badge badge1 = oldBadge.get();
+            badge1.setStatus(badgeDTO.getStatus());
+            badge1.setExpiryDate(badgeDTO.getExpiryDate());
+            badgeRepository.save(badge1);
+            BadgeDTO updateBadgeDTO = modelMapper.map(badge1, BadgeDTO.class);
+            return updateBadgeDTO;
+        } else {
+            throw new RuntimeException("BadgeNumber Doesn't Exist");
         }
-        else {return createBadge(badge);}
+
     }
 
     @Override
-    public Badge getBadge(Long BadgeNumber) {
-        return null;
+    public BadgeDTO getBadge(Long id) {
+        Optional<Badge> oldBadge = badgeRepository.findById(id);
+        if (oldBadge.isPresent()) {
+            return modelMapper.map(oldBadge.get(), BadgeDTO.class);
+        } else {
+            throw new RuntimeException("Badge Doesn't Exist");
+        }
     }
 
     @Override
-    public Badge removeBadge(Long BadgeNumber) {
-        return null;
+    public List<BadgeDTO> getAllBadges() {
+        List<Badge> testBadge = badgeRepository.findBadges();
+
+        return testBadge.stream()
+                .map(badge -> modelMapper.map(badge, BadgeDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public BadgeDTO deleteBadge(Long id) {
+        Optional<Badge> oldBadge = badgeRepository.findById(id);
+        if (oldBadge.isPresent()) {
+            oldBadge.get().setStatus("INACTIVE");
+            Badge updatedBadge = oldBadge.get();
+            badgeRepository.save(updatedBadge);
+            return modelMapper.map(updatedBadge, BadgeDTO.class);
+        } else {
+            throw new RuntimeException("Badge Doesn't Exist");
+        }
+
     }
 }

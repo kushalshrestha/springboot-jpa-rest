@@ -1,5 +1,4 @@
 package id_authentication.service.implementation;
-
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
@@ -7,6 +6,8 @@ import id_authentication.dto.TransactionDTO;
 import id_authentication.dto.collection.TransactionDTOs;
 import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
+import id_authentication.dto.response.MemberDetailDTO;
+import id_authentication.dto.response.PlanOnlyDTO;
 import id_authentication.exceptions.MemberNotFoundException;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.dto.response.BadgeOnlyDTO;
@@ -16,7 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,10 +54,10 @@ public class MemberServiceImp implements MemberService {
         return createdMemberDTO;
     }
 
-    public MemberDTO getMember(Long id) {
+    public MemberDetailDTO getMember(Long id) {
         Optional<Member> locationOptional = memberRepository.findById(id);
         if (locationOptional.isPresent()) {
-            return modelMapper.map(locationOptional.get(), MemberDTO.class);
+            return modelMapper.map(locationOptional.get(), MemberDetailDTO.class);
         } else {
             throw new RuntimeException("Location not found " + id);
         }
@@ -121,18 +121,38 @@ public class MemberServiceImp implements MemberService {
             throw new RuntimeException("Member not found" + id);
         }
     }
-
     @Override
+    public List<PlanOnlyDTO> getAllPlansForMember(long memberId) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (!memberOptional.isPresent()) {
+            throw new RuntimeException("Member not found" + memberId);
+        }
+        List<PlanOnlyDTO> planDTOs = memberOptional.get().getMemberships().stream()
+                .map(membership -> modelMapper.map(membership.getPlan(), PlanOnlyDTO.class))
+                .collect(Collectors.toList());
+        return planDTOs;
+    }
+
+    public List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status) {
+        List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
+        if (status != null &&
+                (status.toLowerCase().equals("active") || status.toLowerCase().equals("inactive"))
+        ) {
+            return badgeRepository.findMemberBadgesByStatus(memberId, status).stream()
+                    .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                    .collect(Collectors.toList());
+        } else {
+            return badgeRepository.findBadgesByMemberId(memberId).stream()
+                    .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
+                    .collect(Collectors.toList());
+        }
+    }
+
     public TransactionDTOs findAllTransactionsByMemberId(Long memberId) {
         TransactionDTOs transactionDTOs = new TransactionDTOs();
         memberRepository.findTransactionsByMemberId(memberId).forEach(transaction -> {
             transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
         });
-
-//         transactionRepository.findAllTransactionsByMemberId(memberId).forEach(transaction -> {
-//            transactionDTOs.addTransactionDTO(modelMapper.map(transaction, TransactionDTO.class));
-//        });
-
         if (transactionDTOs.getTransactions().size() == 0) {
             throw new ResourceNotFoundException("No transactions found for member id " + memberId);
         }
@@ -144,7 +164,6 @@ public class MemberServiceImp implements MemberService {
         return badgeRepository.findBadgesByMemberId(memberId).stream()
                 .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
                 .collect(Collectors.toList());
-
     }
 
 }

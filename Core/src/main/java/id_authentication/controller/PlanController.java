@@ -20,14 +20,13 @@ public class PlanController {
     private PlanService planService;
 
     @GetMapping("/{id}")
-
     public ResponseEntity<?> getPlan(@PathVariable Long id){
         List<PlanDTO> planDTO = planService.getPlansForMemberById(id);
         return new ResponseEntity<>(planDTO, HttpStatus.OK);
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createAPlan(@RequestBody PlanDTO planDTO){
         PlanDTO p = planService.createPlanForMember(planDTO);
         return new ResponseEntity<PlanDTO>(planDTO,HttpStatus.OK);
@@ -35,21 +34,19 @@ public class PlanController {
     }
 
 
-    @PutMapping("/update/{planId}")
+    @PutMapping("/{planId}")
     public ResponseEntity<?> updatePlan(@RequestBody PlanDTO planDTO,@PathVariable Long planId){
         PlanDTO p = planService.updatePlanForMember(planId,planDTO);
         return new ResponseEntity<>(p,HttpStatus.OK);
     }
 
-
-    @GetMapping("/plans")
-
+    @GetMapping
     public ResponseEntity<?> getAllPlans(){
         return new ResponseEntity<PlanDTOs>(planService.getAllPlans(),HttpStatus.FOUND);
     }
 
 
-    @DeleteMapping("/remove/{memberId}")
+    @DeleteMapping("/{memberId}")
 
     public ResponseEntity<?> deletePlan(@PathVariable Long memberId){
         planService.deletePlanForMember(memberId);

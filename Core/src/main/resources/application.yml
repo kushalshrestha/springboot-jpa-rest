@@ -2,7 +2,7 @@ spring:
   application:
     name: idAuthentication
   datasource:
-    url: jdbc:sqlserver://cs544.cs.miu.edu:1433;databaseName=CS544-202303-06;encrypt=true;trustServerCertificate=true;createDatabaseIfNotExist=true;
+    url: jdbc:sqlserver://cs544.cs.miu.edu:1433;databaseName=CS544-202303-06;encrypt=true;trustServerCertificate=true;
     username: CS544-202303-06
     password: 491d2748-7cf1-4585-813c-be592cdf1b4c
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -11,8 +11,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
-      drop: true
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl

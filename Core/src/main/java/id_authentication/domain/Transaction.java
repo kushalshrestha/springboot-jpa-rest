@@ -29,4 +29,8 @@ public class Transaction {
     private Plan plan;
 
 
+    public Transaction(@NonNull LocalDateTime dateTime, @NonNull String transactionType) {
+        this.dateTime = dateTime;
+        TransactionType = transactionType;
+    }
 }

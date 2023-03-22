@@ -7,9 +7,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PlanRepository extends JpaRepository<Plan, Long> {
-
+public interface PlanRepository extends JpaRepository<Plan, Long>{
     List<Plan> getMemberPlansById(Long id);
+
+    @Query("select l.plan.id from Membership l join l.plan.locations where l.plan.id =:id")
+    List<Location> findLocationsByPlanId(Long id);
+
 
 }
 
