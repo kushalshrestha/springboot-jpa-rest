@@ -14,6 +14,8 @@ public interface TransactionService {
 
     TransactionStatusDTO addTransaction(long badgeId, long planId, long locationId);
 
+    Object testAddTransaction(long badgeId, long planId, long locationId);
+
     List<TransactionDTO> getAllTransactions();
 
     TransactionDTO getTransaction(long id);

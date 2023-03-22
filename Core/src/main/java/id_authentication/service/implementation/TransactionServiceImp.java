@@ -153,6 +153,14 @@ public class TransactionServiceImp implements TransactionService {
     }
 
     @Override
+    public Object testAddTransaction(long badgeId, long planId, long locationId) {
+
+        Object[] test = transactionRepository.extractDetails(badgeId, planId, locationId);
+        String adsf = "test";
+        return null;
+    }
+
+    @Override
     public List<TransactionDTO> getAllTransactions() {
         List<Transaction> transactionList = transactionRepository.findAll();
         if (transactionList.isEmpty()) {
