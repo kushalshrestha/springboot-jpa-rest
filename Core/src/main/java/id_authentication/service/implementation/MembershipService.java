@@ -86,10 +86,7 @@ public class MembershipService implements IMembershipService {
     @Override
     public MembershipPlanResponseDTOs getMembershipsByMemberId(long memberId) {
         MembershipPlanResponseDTOs membershipPlanResponseDTOs = new MembershipPlanResponseDTOs();
-        System.out.println("getting member for:"+memberId);
         Member member=memberRepository.findById(memberId).get();
-        System.out.println("got member");
-        member.getMemberships().forEach(membership -> System.out.println(membership.getPlan()));
         if (member.getMemberships().size() == 0) {
             throw new ResourceNotFoundException("No memberships found for member id " + memberId);
         }

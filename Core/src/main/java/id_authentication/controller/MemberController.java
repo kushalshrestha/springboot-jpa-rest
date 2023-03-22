@@ -65,7 +65,6 @@ public class MemberController {
 
     @GetMapping("{memberId}/memberships")
     public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId) {
-        System.out.println(memberId+"------------------");
             MembershipPlanResponseDTOs membershipPlanResponseDTOs =
             membershipService.getMembershipsByMemberId(Long.parseLong(memberId));
             return ResponseEntity.status(HttpStatus.OK).body(membershipPlanResponseDTOs);
