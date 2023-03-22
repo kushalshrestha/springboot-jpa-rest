@@ -1,9 +1,8 @@
 package id_authentication.service;
 
-import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
+import id_authentication.dto.collection.LocationDTOs;
 import id_authentication.dto.collection.PlanDTOs;
-
 
 import java.util.List;
 
@@ -19,6 +18,5 @@ public interface PlanService {
 
 
     PlanDTOs getAllPlans();
-
-
+    LocationDTOs getAllLocationsById(Long id);
 }

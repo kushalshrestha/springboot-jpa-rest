@@ -1,9 +1,11 @@
 package id_authentication.service.implementation;
 
 
+import id_authentication.domain.Location;
 import id_authentication.domain.Plan;
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
+import id_authentication.dto.collection.LocationDTOs;
 import id_authentication.dto.collection.PlanDTOs;
 import id_authentication.errorhandler.ResourceNotFoundException;
 import id_authentication.repositories.*;
@@ -11,8 +13,8 @@ import id_authentication.service.PlanService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -67,7 +69,6 @@ public class PlanServiceImpl implements PlanService {
 
     }
 
-
     @Override
     public PlanDTOs getAllPlans(){
         PlanDTOs planDTOs = new PlanDTOs();
@@ -77,5 +78,16 @@ public class PlanServiceImpl implements PlanService {
         });
 
         return planDTOs;
+    }
+
+    @Override
+    public LocationDTOs getAllLocationsById(Long id) {
+
+        LocationDTOs locationDTOs = new LocationDTOs();
+        Plan plan= planRepository.findById(id).get();
+        Set<Location> locations = plan.getLocations();
+        locations.stream().forEach(location -> locationDTOs.addLocation(modelMapper.map(location,LocationDTO.class)));
+            return locationDTOs;
+
     }
 }
