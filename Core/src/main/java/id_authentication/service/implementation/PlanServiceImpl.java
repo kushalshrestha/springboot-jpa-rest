@@ -13,8 +13,8 @@ import id_authentication.service.PlanService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -69,7 +69,6 @@ public class PlanServiceImpl implements PlanService {
 
     }
 
-
     @Override
     public PlanDTOs getAllPlans(){
         PlanDTOs planDTOs = new PlanDTOs();
@@ -85,13 +84,10 @@ public class PlanServiceImpl implements PlanService {
     public LocationDTOs getAllLocationsById(Long id) {
 
         LocationDTOs locationDTOs = new LocationDTOs();
-        List<Location> testLst = planRepository.findLocationsByPlanId(id);
+        Plan plan= planRepository.findById(id).get();
+        Set<Location> locations = plan.getLocations();
+        locations.stream().forEach(location -> locationDTOs.addLocation(modelMapper.map(location,LocationDTO.class)));
+            return locationDTOs;
 
-        planRepository.findLocationsByPlanId(id).stream()
-                .map(loc->modelMapper.map(loc,LocationDTO.class))
-                .collect(Collectors.toList()).forEach(locationDTO -> locationDTOs.addLocation(locationDTO));
-
-
-        return locationDTOs;
     }
 }

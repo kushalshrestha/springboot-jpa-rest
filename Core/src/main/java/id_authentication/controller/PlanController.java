@@ -3,7 +3,6 @@ package id_authentication.controller;
 
 
 import id_authentication.dto.PlanDTO;
-import id_authentication.dto.collection.LocationDTOs;
 import id_authentication.dto.collection.PlanDTOs;
 import id_authentication.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,15 +57,7 @@ public class PlanController {
     }
 
     @GetMapping("/{id}/locations")
-
     public ResponseEntity<?> getLocationsByPlanId(@PathVariable Long id){
-        return new ResponseEntity<LocationDTOs>(planService.getAllLocationsById(id),HttpStatus.OK);
+        return new ResponseEntity<>(planService.getAllLocationsById(id),HttpStatus.OK);
     }
-
-
-
-
-
-
-
 }

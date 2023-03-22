@@ -28,4 +28,5 @@ public class Transaction {
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
+
 }

@@ -34,7 +34,7 @@ public class LocationServiceImpl implements LocationService {
             foundLoc.setName(locationDTO.getName());
             foundLoc.setDescription(locationDTO.getDescription());
             foundLoc.setCapacity(locationDTO.getCapacity());
-            foundLoc.setLocationType(locationDTO.getLocationType());
+//            foundLoc.setLocationType(locationDTO.getLocationType());
             return modelMapper.map(locationRepository.save(foundLoc), LocationDTO.class);
         }else {
             throw new ResourceNotFoundException("Location not found" + id);
