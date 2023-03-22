@@ -18,17 +18,5 @@ public class BadgeDTO {
     private String badgeNumber;
     private LocalDate expiryDate;
     private String status;
-    private Member member;
-    private List<TransactionDTO> transactions;
-
-    public BadgeDTO(long id, LocalDate expiryDate, String status,
-                    Member member, List<TransactionDTO> transactions) {
-        this.id = id;
-        this.expiryDate = expiryDate;
-        this.status = status;
-        this.member = member;
-        this.transactions = transactions;
-    }
-
-
+    private long memberId;
 }

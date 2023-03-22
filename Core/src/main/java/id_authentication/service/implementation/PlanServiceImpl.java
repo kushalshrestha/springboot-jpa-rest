@@ -4,6 +4,7 @@ package id_authentication.service.implementation;
 import id_authentication.domain.Plan;
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
+import id_authentication.dto.collection.PlanDTOs;
 import id_authentication.errorhandler.ResourceNotFoundException;
 import id_authentication.repositories.*;
 import id_authentication.service.PlanService;
@@ -66,11 +67,15 @@ public class PlanServiceImpl implements PlanService {
 
     }
 
-    @Override
-    public List<LocationDTO> getLocationsByPlanId(Long id) {
-        PlanDTO planDTO = new PlanDTO();
-        Plan plan = modelMapper.map(planDTO,Plan.class);
 
-        return null;
+    @Override
+    public PlanDTOs getAllPlans(){
+        PlanDTOs planDTOs = new PlanDTOs();
+        planRepository.findAll().forEach(plan ->{
+            PlanDTO planDTO = modelMapper.map(plan,PlanDTO.class);
+            planDTOs.addPlan(planDTO);
+        });
+
+        return planDTOs;
     }
 }
