@@ -1,6 +1,8 @@
 package id_authentication.service;
+
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
+import id_authentication.dto.collection.PlanDTOs;
 
 
 import java.util.List;
@@ -11,11 +13,12 @@ public interface PlanService {
 
     PlanDTO createPlanForMember(PlanDTO planDTO);
 
-     void deletePlanForMember(Long id);
+    void deletePlanForMember(Long id);
 
-     PlanDTO updatePlanForMember(Long id , PlanDTO planDTO);
+    PlanDTO updatePlanForMember(Long id, PlanDTO planDTO);
 
-     List<LocationDTO> getLocationsByPlanId(Long id);
+
+    PlanDTOs getAllPlans();
 
 
 }

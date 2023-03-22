@@ -7,34 +7,44 @@ import id_authentication.dto.response.MembershipResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.TransactionRepository;
+import id_authentication.dto.request.TransactionCreateDTO;
+import id_authentication.dto.response.TransactionStatusDTO;
+import id_authentication.service.TransactionService;
+import id_authentication.errorhandler.CustomErrorType;
+import id_authentication.exceptions.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
 public class TransactionController {
 
+    @Autowired
+    private TransactionService transactionService;
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @PostMapping
+    public ResponseEntity<?> addTransaction(@RequestBody TransactionCreateDTO transactionCreateDTO){
+        TransactionStatusDTO transactionDTO= transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(transactionDTO);
+
+    }
     @GetMapping
     public ResponseEntity<?> getTransactions() {
-        try {
-            //TODO
-            return ResponseEntity.status(HttpStatus.OK).body("HELLO");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomErrorType("Error retrieving transactions: " + e.getMessage()));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getAllTransactions());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTransaction(@PathVariable("id") long id) {
-        try {
-            //TODO
-            return ResponseEntity.status(HttpStatus.OK).body("GET METHOD - by ID");
-        } catch (Exception e) {
-            CustomErrorType customErrorType = new CustomErrorType("Error retrieving transaction with id " + id + ": " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransaction(id));
     }
 
     @PutMapping("/{id}")
@@ -52,11 +62,9 @@ public class TransactionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable long id) {
         try {
-            //TODO
-            return ResponseEntity.status(HttpStatus.OK).body("Successfully Deleted!!");
+            return new ResponseEntity<>(transactionService.deleteTransaction(id), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomErrorType(e.getMessage()));
+            return new ResponseEntity<>(new CustomErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 }
