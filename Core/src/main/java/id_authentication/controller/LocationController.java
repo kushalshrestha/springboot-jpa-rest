@@ -1,6 +1,7 @@
 package id_authentication.controller;
 
 import id_authentication.dto.LocationDTO;
+import id_authentication.dto.request.LocationCreateDTO;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.service.LocationService;
@@ -16,8 +17,8 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
     @PostMapping
-    public ResponseEntity<?> addLocation(@RequestBody LocationDTO locationDTO) {
-        return new ResponseEntity<>(locationService.addLocation(locationDTO), HttpStatus.OK);
+    public ResponseEntity<?> addLocation(@RequestBody LocationCreateDTO locationWithPlanDTO) {
+        return new ResponseEntity<>(locationService.addLocation(locationWithPlanDTO), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getLocation(@PathVariable("id") long id) {

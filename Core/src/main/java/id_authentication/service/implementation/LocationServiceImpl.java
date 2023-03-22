@@ -2,6 +2,7 @@ package id_authentication.service.implementation;
 
 import id_authentication.domain.Location;
 import id_authentication.dto.LocationDTO;
+import id_authentication.dto.request.LocationCreateDTO;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.LocationRepository;
 import id_authentication.service.LocationService;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,9 +22,12 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    public LocationDTO addLocation(LocationDTO locationDTO) {
-        Location location = modelMapper.map(locationDTO, Location.class);
-        return modelMapper.map(locationRepository.save(location), LocationDTO.class);
+    @Transactional
+    public LocationDTO addLocation(LocationCreateDTO locationWithPlanId) {
+        Location locationToBeSaved = modelMapper.map(locationWithPlanId, Location.class);
+        Location createdLocation=locationRepository.save(locationToBeSaved);
+        locationRepository.updatePlanId(createdLocation.getId(), locationWithPlanId.getPlanId());
+        return modelMapper.map(createdLocation, LocationDTO.class);
     }
 
     @Override
