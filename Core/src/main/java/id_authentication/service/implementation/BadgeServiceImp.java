@@ -6,6 +6,8 @@ import id_authentication.service.BadgeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @AllArgsConstructor
 
@@ -25,9 +27,8 @@ public class BadgeServiceImp implements BadgeService {
         var oldBatch = badgeRepository.findById(BadgeNumber);
         if (oldBatch.isPresent()) {
             Badge badge1 = oldBatch.get();
-            badge1.setStatus(badge.getStatus());
-            badge1.setExpiryDate(badge.getExpiryDate());
-
+                badge1.setExpiryDate(badge.getExpiryDate());
+                badge1.setStatus(badge.getStatus());
             return badgeRepository.save(badge1);
         }
         else {return createBadge(badge);}
