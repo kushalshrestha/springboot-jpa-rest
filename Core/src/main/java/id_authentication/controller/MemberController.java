@@ -1,5 +1,6 @@
 package id_authentication.controller;
 import id_authentication.dto.MemberDTO;
+import id_authentication.dto.collection.MembershipPlanResponseDTOs;
 import id_authentication.dto.collection.TransactionDTOs;
 import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
@@ -63,15 +64,10 @@ public class MemberController {
 
 
     @GetMapping("{memberId}/memberships")
-    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable long memberId) {
-        try {
-            List<MembershipPlanResponseDto> memberShipDTOList = new ArrayList<>();
-            memberShipDTOList = membershipService.getMembershipsByMemberId(memberId);
-            return ResponseEntity.status(HttpStatus.OK).body(memberShipDTOList);
-        } catch (Exception e) {
-            CustomErrorType customErrorType = new CustomErrorType("Error retrieving memberships for memberID " + memberId + ": " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
-        }
+    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId) {
+            MembershipPlanResponseDTOs membershipPlanResponseDTOs =
+            membershipService.getMembershipsByMemberId(Long.parseLong(memberId));
+            return ResponseEntity.status(HttpStatus.OK).body(membershipPlanResponseDTOs);
     }
 
     @GetMapping("/{memberId}/plans")

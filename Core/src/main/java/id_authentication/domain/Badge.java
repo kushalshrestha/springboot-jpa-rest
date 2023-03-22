@@ -18,7 +18,7 @@ public class Badge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "badge_number", length=50)
+    @Column(name = "badge_number", length=50, unique = true)
     @NonNull
     private String badgeNumber;
 

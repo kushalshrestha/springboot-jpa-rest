@@ -1,22 +1,20 @@
 package id_authentication.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "member_number", length=50)
+    @Column(name = "member_number", length=50,unique = true)
     @NonNull
     private String memberNumber;
     @Column(name = "first_name", length=100)
