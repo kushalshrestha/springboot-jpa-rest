@@ -1,12 +1,17 @@
 package id_authentication.repositories;
 
 import id_authentication.domain.Transaction;
+import id_authentication.dto.CheckInValidatorDTO;
+import id_authentication.dto.ICheckValidatorDTO;
+import id_authentication.dto.collection.CheckInValidatorDTOs;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Repository
@@ -22,7 +27,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
 
 
     @Query(
-            value="select b.id as badgeId,b.expiry_date, b.status, m.id as member_id, m.role_id,ms.start_date as membership_startdate, ms.end_date as membership_enddate, ms.type ,p.id as plan_id, l.id as location_id, lts.day_of_week, lts.start_time, lts.end_time " +
+            value="select top 1 b.id as badgeId " +
+                    ",b.expiry_date as expiryDate, b.status as status, m.id as memberId, m.role_id as roleId,ms.start_date as membershipStartDate, ms.end_date as membershipEndDate, ms.type as type ,p.id as planId, l.id as locationId, lts.day_of_week as dayOfWeek, lts.start_time as startTime, lts.end_time as endTime " +
                     "from badge b " +
                     "inner join member m " +
                     "on b.member_id=m.id " +
@@ -35,12 +41,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
                     "inner join locationtimeslot lts " +
                     "on lts.location_id = l.id " +
                     "where b.id= :badgeId " +
+                    "and convert(Date, GetDate()) < b.expiry_date " +
+                    "and upper(status)='ACTIVE'" +
                     "and ms.plan_id= :planId " +
                     "and l.id= :locationId " +
                     "and lts.day_of_week=DATEPART(dw,GETDATE()) " +
-                    "and lts.start_time <= Convert(Time, GetDate()) " +
-                    "and lts.end_time >= Convert(Time, GetDate()); "
+                    "and convert(Time,lts.start_time) <= Convert(Time, GetDate()) " +
+                    "and convert(Time,lts.end_time) >= Convert(Time, GetDate()); "
             ,nativeQuery = true
     )
-    Object[] extractDetails(long badgeId, long planId, long locationId);
+    ICheckValidatorDTO extractDetails(@Param("badgeId") long badgeId, @Param("planId") long planId, @Param("locationId") long locationId);
 }

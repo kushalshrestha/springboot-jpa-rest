@@ -3,11 +3,19 @@ INSERT INTO [dbo].[Role] (name)
 VALUES ('Student'),('Faculty'),('Staff');
 
 
-INSERT INTO [dbo].[Member] (first_name, last_name, password, user_name, role_id)
+INSERT INTO [dbo].[Member] (first_name, last_name, member_number, password, user_name, role_id)
 values
-    ('Kushal','Shrestha', 'test123','kushal.shrestha', 1),
-    ('Jane', 'Andersen', 'bruce.lester', 'jane.andersen', 2),
-    ('Peter', 'Adley', 'peter.adley', 'peter.adley', 3);
+    ('Kushal','Shrestha', 'DFKLSDJFS', 'test123','kushal.shrestha', 1),
+    ('Jane', 'Andersen', 'FSJDKDSL','bruce.lester', 'jane.andersen', 2),
+    ('Peter', 'Adley', 'FJDSLKJWE','peter.adley', 'peter.adley', 3);
+
+
+insert into [dbo].[Badge] (expiry_date, status, member_id, badge_number)
+values
+    ('2023-07-15 23:59:59', 'INACTIVE', 1, 'CMDAELJGJEHONLDJL87C'),
+    ('2023-07-15 23:59:59', 'ACTIVE', 1, 'CMDAELDJKSGJEHONLDJL87C'),
+    ('2023-12-31 23:59:59', 'ACTIVE', 2, 'V2DAO2KB95MTJ34IHSVQ'),
+    ('2023-12-31 23:59:59', 'ACTIVE', 3, 'PF4SL5UYZ0OZYL11PH1A');
 
 
 insert into [dbo].[planInfo] (description, name)
@@ -30,12 +38,6 @@ values
     ('2023-12-31 23:59:59','2023-01-15 00:00:00', 'UNLIMITED', 2, 3),
     ('2025-07-15 23:59:59','2023-10-29 00:00:00', 'UNLIMITED', 3, 3);
 
-insert into [dbo].[Badge] (expiry_date, status, member_id, badge_number)
-values
-    ('2023-07-15 23:59:59', 'INACTIVE', 1, 'CMDAELJGJEHONLDJL87C'),
-    ('2023-07-15 23:59:59', 'ACTIVE', 1, 'CMDAELJGJEHONLDJL87C'),
-    ('2023-12-31 23:59:59', 'ACTIVE', 2, 'V2DAO2KB95MTJ34IHSVQ'),
-    ('2023-12-31 23:59:59', 'ACTIVE', 3, 'PF4SL5UYZ0OZYL11PH1A');
 
 
 insert into [dbo].[RolePlanLimit](limit_by, limit_value, role_id, plan_id)
@@ -137,3 +139,11 @@ values
     ('ACCEPTED','2022-12-04 08:00:00.0000000',1 , 1, 2),
     ('ACCEPTED','2022-12-05 08:00:00.0000000',1 , 1, 2),
     ('ACCEPTED','2022-12-06 08:00:00.0000000',1 , 1, 2);
+
+
+
+insert into [dbo].checkInRecord (count, plans_id, roles_id, member_id)
+values
+    (12, 1, 1, 1),
+    (29, 1, 2, 2),
+    (32, 1, 3, 3);

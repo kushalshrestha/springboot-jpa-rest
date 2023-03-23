@@ -1,25 +1,16 @@
 package id_authentication.controller;
 
-import id_authentication.dto.LocationDTO;
 import id_authentication.dto.TransactionDTO;
-import id_authentication.dto.request.MembershipRequestDto;
-import id_authentication.dto.response.MembershipResponseDto;
-import id_authentication.errorhandler.CustomErrorType;
-import id_authentication.exceptions.ResourceNotFoundException;
-import id_authentication.repositories.TransactionRepository;
-import id_authentication.dto.request.TransactionCreateDTO;
 import id_authentication.dto.response.TransactionStatusDTO;
-import id_authentication.service.TransactionService;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.exceptions.ResourceNotFoundException;
+import id_authentication.dto.request.TransactionCreateDTO;
+import id_authentication.service.TransactionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
@@ -32,10 +23,10 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<?> addTransaction(@RequestBody TransactionCreateDTO transactionCreateDTO){
-        transactionService.testAddTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
+        TransactionStatusDTO transactionDTO = transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
 //        TransactionStatusDTO transactionDTO= transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("HELLO");
+        return ResponseEntity.status(HttpStatus.CREATED).body(transactionDTO);
 
     }
     @GetMapping

@@ -1,16 +1,21 @@
 package id_authentication.service.implementation;
 
 import id_authentication.domain.Transaction;
+import id_authentication.dto.CheckInValidatorDTO;
+import id_authentication.dto.ICheckValidatorDTO;
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.TransactionDTO;
+import id_authentication.dto.collection.CheckInValidatorDTOs;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.TransactionRepository;
 import id_authentication.service.TransactionService;
+import org.hibernate.annotations.Check;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 //import javax.transaction.Transaction;
 import java.util.Optional;
+
 import id_authentication.domain.*;
 import id_authentication.dto.response.TransactionStatusDTO;
 import id_authentication.repositories.*;
@@ -32,7 +37,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TransactionServiceImp implements TransactionService {
     @Autowired
-     private  ModelMapper modelMapper;
+    private ModelMapper modelMapper;
     @Autowired
     private TransactionRepository transactionRepository;
     @Autowired
@@ -60,88 +65,12 @@ public class TransactionServiceImp implements TransactionService {
         }
     }
 
-    private Boolean isAllowed(LocalDateTime dateTime, long badgeId, long planId, long locationId) {
-        LocalTime time = dateTime.toLocalTime();
-        Badge badge = badgeRepository.findBadgeByIdAndStatus(badgeId, BadgeStatus.ACTIVE.getValue());
-        if (badge == null) {
-            return false;
-        }
-
-        Member member = badgeRepository.findById(badgeId).get().getMember();
-
-        //check if member has plan
-        List<Membership> memberships = member.getMemberships().stream()
-                .filter(membership -> membership.getPlan().getId() == planId).collect(Collectors.toList());
-        if (memberships.size() > 0) {
-            //check if location is open
-            Location location = locationRepository.findById(locationId).get();
-            List<LocationTimeSlot> locationTimeSlot = location.getTimeSlots().stream()
-                    .filter(timeSlot -> timeSlot.getStartTime().isAfter(time) && timeSlot.getEndTime().isBefore(time))
-                    .collect(Collectors.toList());
-            if (locationTimeSlot.size() > 0) {
-                //check if plan is unlimited
-                Boolean isUnlimited = memberships.stream().filter(membership -> membership.getType().equalsIgnoreCase(MembershipType.UNLIMITED.getValue())).findFirst().isPresent();
-                if (isUnlimited) {
-                    return true;
-                }
-
-                //check if member has reached limit
-                Boolean isInLimit;
-                List<CheckInRecord> checkInRecords = checkInRecordRepository.findCheckInRecordWithMember(member.getId(), planId);
-                if (checkInRecords.size() > 0) {
-                    Integer limit = rolePlanLimitRepository.findRolePlanLimitWithRoleAndPlan(member.getRole().getId(), planId)
-                            .stream()
-                            .map(rolePlanLimit -> rolePlanLimit.getLimitValue()).max(Integer::compareTo).get();
-
-                    isInLimit = checkInRecords.stream()
-                            .filter(checkInRecord -> checkInRecord.getCount() < limit).findFirst().isPresent();
-                } else {
-                    isInLimit = true;
-                }
-
-                if (isInLimit) {
-                    if (member.getRole().getName().equalsIgnoreCase(RoleType.FACULTY.getValue())) {
-                        return true;
-                    }
-
-                    //check if member has checked in within the time slot
-                    Boolean isSecondCheckIn = checkInRecords.stream()
-                            .filter(checkInRecord -> checkInRecord.getLastCheckIn().toLocalDate().equals(dateTime.toLocalDate())
-                                    && checkInRecord.getLastCheckIn().toLocalTime().isAfter(locationTimeSlot.get(0).getStartTime())
-                                    && checkInRecord.getLastCheckIn().toLocalTime().isBefore(locationTimeSlot.get(0).getEndTime())
-                            )
-                            .findFirst().isPresent();
-                    if (!isSecondCheckIn) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-
-    }
-
-    @Transactional
-    public Transaction saveTransaction(Transaction transaction, long badgeId, long planId, long locationId, long memberId, long roleId) {
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        transactionRepository.updateTransactionDetail(badgeId, planId, locationId, savedTransaction.getId());
-        List<CheckInRecord> checkInRecords = checkInRecordRepository.findCheckInRecordWithMember(memberId, planId);
-        if (checkInRecords.size() > 0) {
-            checkInRecordRepository.updateCheckInRecordCount(checkInRecords.get(0).getId());
-        } else {
-            CheckInRecord checkInRecord = new CheckInRecord(1, transaction.getDateTime());
-            CheckInRecord savedRecord = checkInRecordRepository.save(checkInRecord);
-            checkInRecordRepository.updateCheckInRecordDetail(savedRecord.getId(), planId, memberId, roleId);
-        }
-        return savedTransaction;
-    }
 
     @Override
     public TransactionStatusDTO addTransaction(long badgeId, long planId, long locationId) {
         LocalDateTime now = LocalDateTime.now();
         Transaction transaction;
-        if (true) {//isAllowed(now,badgeId, planId, locationId)
+        if (checkIsAllowed(badgeId, planId, locationId)) {
             transaction = new Transaction(now, TransactionType.ALLOWED.getValue());
         } else {
             transaction = new Transaction(now, TransactionType.DECLINED.getValue());
@@ -149,15 +78,45 @@ public class TransactionServiceImp implements TransactionService {
         Member member = badgeRepository.findById(badgeId).get().getMember();
         Transaction savedTransaction =
                 saveTransaction(transaction, badgeId, planId, locationId, member.getId(), member.getRole().getId());
-        return modelMapper.map(savedTransaction, TransactionStatusDTO.class);
+        TransactionStatusDTO transactionStatusDTO = modelMapper.map(savedTransaction, TransactionStatusDTO.class);
+        return transactionStatusDTO;
     }
 
     @Override
-    public Object testAddTransaction(long badgeId, long planId, long locationId) {
+    public boolean checkIsAllowed(long badgeId, long planId, long locationId) {
+        ICheckValidatorDTO checkValidator = transactionRepository.extractDetails(badgeId, planId, locationId);
+        if (checkValidator == null) {
+            return false;
+        }
+        if (checkValidator.getType().equalsIgnoreCase("UNLIMITED")) {
+            return true;
+        }
+        Boolean isInLimit = true;
+        List<CheckInRecord> checkInRecord = checkInRecordRepository
+                .findCheckInRecordWithMember(checkValidator.getMemberId(), checkValidator.getPlanId());
+        if (checkInRecord.size() > 0) {
+            int maxAllowedCount = rolePlanLimitRepository.findRolePlanLimitWithRoleAndPlan(checkValidator.getRoleId(), planId)
+                    .get(0).getLimitValue();
+            int currentCount = checkInRecord.get(0).getCount();
+            isInLimit = currentCount < maxAllowedCount;
+        }
+        return isInLimit;
+    }
 
-        Object[] test = transactionRepository.extractDetails(badgeId, planId, locationId);
-        String adsf = "test";
-        return null;
+    @Transactional
+    public Transaction saveTransaction(Transaction transaction, long badgeId, long planId, long locationId, long memberId, long roleId) {
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        transactionRepository.updateTransactionDetail(badgeId, planId, locationId, savedTransaction.getId());
+        List<CheckInRecord> checkInRecord = checkInRecordRepository.findCheckInRecordWithMember(memberId, planId);
+        if (checkInRecord.size() > 0) {
+            Long id = checkInRecord.get(0).getId();
+            checkInRecordRepository.updateCheckInRecordCount(checkInRecord.get(0).getId());
+        } else {
+            CheckInRecord newCheckInRecord = new CheckInRecord(1, transaction.getDateTime());
+            CheckInRecord savedRecord = checkInRecordRepository.save(newCheckInRecord);
+            checkInRecordRepository.updateCheckInRecordDetail(savedRecord.getId(), planId, memberId, roleId);
+        }
+        return savedTransaction;
     }
 
     @Override
