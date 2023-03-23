@@ -69,20 +69,6 @@ public class TransactionServiceImp implements TransactionService {
         Member member = badgeRepository.findById(badgeId).orElseThrow(() -> new IllegalArgumentException("Badge not found")).getMember();
         Transaction savedTransaction = saveTransaction(transaction, badgeId, planId, locationId, member.getId(), member.getRole().getId(), isTransactionAllowed);
         return modelMapper.map(savedTransaction, TransactionStatusDTO.class);
-//        LocalDateTime now = LocalDateTime.now();
-//        Transaction transaction;
-//        boolean isTransactionAllowed = false;
-//        if (checkIsAllowed(badgeId, planId, locationId)) {
-//            transaction = new Transaction(now, TransactionType.ALLOWED.getValue());
-//            isTransactionAllowed = true;
-//        } else {
-//            transaction = new Transaction(now, TransactionType.DECLINED.getValue());
-//        }
-//        Member member = badgeRepository.findById(badgeId).get().getMember();
-//        Transaction savedTransaction =
-//                saveTransaction(transaction, badgeId, planId, locationId, member.getId(), member.getRole().getId(), isTransactionAllowed);
-//        TransactionStatusDTO transactionStatusDTO = modelMapper.map(savedTransaction, TransactionStatusDTO.class);
-//        return transactionStatusDTO;
     }
 
     @Override
@@ -95,7 +81,6 @@ public class TransactionServiceImp implements TransactionService {
             return true;
         }
         Boolean isInLimit = true;
-        long id = checkValidator.getPlanId();
         List<CheckInRecord> checkInRecord = checkInRecordRepository
                 .findCheckInRecordWithMember(checkValidator.getMemberId(), checkValidator.getPlanId());
         if (checkInRecord.size() > 0) {
@@ -126,7 +111,6 @@ public class TransactionServiceImp implements TransactionService {
 
         List<CheckInRecord> checkInRecord = checkInRecordRepository.findCheckInRecordWithMember(memberId, planId);
         if (checkInRecord.size() > 0) {
-            Long id = checkInRecord.get(0).getId();
             checkInRecordRepository.updateCheckInRecordCount(checkInRecord.get(0).getId());
         } else {
             CheckInRecord newCheckInRecord = new CheckInRecord(1, transaction.getDateTime());
