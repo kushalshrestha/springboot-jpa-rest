@@ -13,8 +13,6 @@ import java.util.List;
 @Transactional
 @Repository
 public interface CheckInRecordRepository extends JpaRepository<CheckInRecord, Long> {
-
-//    @Query("select m.checkInRecords from Member m join m.checkInRecords c where m.id= :memberId and c.plan.id= :planId")
     @Query(value = "select c.* from checkinrecord c where plans_id= :planId and member_id= :memberId", nativeQuery = true)
     List<CheckInRecord> findCheckInRecordWithMember(@Param("memberId") long memberId, @Param("planId") long planId);
 
@@ -28,6 +26,4 @@ public interface CheckInRecordRepository extends JpaRepository<CheckInRecord, Lo
             "roles_id= :roleId, member_id= :memberId where id= :checkInRecordId", nativeQuery = true)
     void updateCheckInRecordDetail(Long checkInRecordId, long planId, long memberId, long roleId);
 
-//    @Query("select m.checkInRecords from Badge b join b.member m join m.checkInRecords c where m.id= :badgeId and ")
-//    List<CheckInRecord> findCheckInRecordWithBadge(@Param("badgeId") long badgeId, @Param("planId") long planId);
 }
