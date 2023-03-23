@@ -1,15 +1,11 @@
 package id_authentication.service.implementation;
 
 import id_authentication.domain.Transaction;
-import id_authentication.dto.CheckInValidatorDTO;
 import id_authentication.dto.ICheckValidatorDTO;
-import id_authentication.dto.LocationDTO;
 import id_authentication.dto.TransactionDTO;
-import id_authentication.dto.collection.CheckInValidatorDTOs;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.TransactionRepository;
 import id_authentication.service.TransactionService;
-import org.hibernate.annotations.Check;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,11 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
 
 import java.util.List;
 import java.util.stream.Collectors;

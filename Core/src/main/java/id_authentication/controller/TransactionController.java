@@ -22,13 +22,11 @@ public class TransactionController {
     private ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<?> addTransaction(@RequestBody TransactionCreateDTO transactionCreateDTO){
-        TransactionStatusDTO transactionDTO = transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
-//        TransactionStatusDTO transactionDTO= transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
-
+    public ResponseEntity<?> addTransaction(@RequestBody TransactionCreateDTO transactionCreateDTO) {
+        TransactionStatusDTO transactionDTO = transactionService.addTransaction(transactionCreateDTO.getBadgeId(), transactionCreateDTO.getPlanId(), transactionCreateDTO.getLocationId());
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionDTO);
-
     }
+
     @GetMapping
     public ResponseEntity<?> getTransactions() {
         return ResponseEntity.status(HttpStatus.OK).body(transactionService.getAllTransactions());
@@ -42,7 +40,7 @@ public class TransactionController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTransaction(@PathVariable long id, @RequestBody TransactionDTO transactionRequestDto) {
         try {
-            TransactionDTO transactionRepositoryDto =transactionService.updateTransaction(id,transactionRequestDto);
+            TransactionDTO transactionRepositoryDto = transactionService.updateTransaction(id, transactionRequestDto);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(transactionRepositoryDto);
         } catch (ResourceNotFoundException e) {
@@ -51,6 +49,7 @@ public class TransactionController {
         }
 
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable long id) {
         try {
