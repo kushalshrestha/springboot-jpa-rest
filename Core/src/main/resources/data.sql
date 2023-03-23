@@ -142,8 +142,8 @@ values
 
 
 
-insert into [dbo].checkInRecord (count, plans_id, roles_id, member_id)
+insert into [dbo].checkInRecord (count, lastCheckIn, plans_id, roles_id, member_id)
 values
-    (12, 1, 1, 1),
-    (29, 1, 2, 2),
-    (32, 1, 3, 3);
+    (12, '2023-03-22 22:12:36.4026647', 1, 1, 1),
+    (29, '2023-03-22 22:12:36.4026647', 1, 2, 2),
+    (32, '2023-03-22 22:12:36.4026647', 1, 3, 3);
