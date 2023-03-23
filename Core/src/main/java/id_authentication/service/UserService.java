@@ -1,5 +1,6 @@
 package id_authentication.service;
 
+import id_authentication.domain.Member;
 import id_authentication.domain.MyUserDetails;
 import id_authentication.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException , DataAccessException {
-        var user = memberRepository.findMemberByUserName(username);
-        var userDetails = new MyUserDetails(user);
+        Member user = memberRepository.findMemberByUserName(username);
+        UserDetails userDetails = new MyUserDetails(user);
         return userDetails;
     }
 
