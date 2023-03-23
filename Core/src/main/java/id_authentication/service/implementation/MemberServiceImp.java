@@ -1,4 +1,5 @@
 package id_authentication.service.implementation;
+import id_authentication.domain.BadgeStatus;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
@@ -138,9 +139,12 @@ public class MemberServiceImp implements MemberService {
 
     public List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status) {
         List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
-        if (status != null &&
-                (status.toLowerCase().equals("active") || status.toLowerCase().equals("inactive"))
-        ) {
+        status=status==null?"":status;
+        status=status.equalsIgnoreCase(BadgeStatus.ACTIVE.getValue())?BadgeStatus.ACTIVE.getValue():"";
+        status=status.equalsIgnoreCase(BadgeStatus.INACTIVE.getValue())?BadgeStatus.INACTIVE.getValue():"";
+
+        if (!status.equals(""))
+        {
             return badgeRepository.findMemberBadgesByStatus(memberId, status).stream()
                     .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
                     .collect(Collectors.toList());
