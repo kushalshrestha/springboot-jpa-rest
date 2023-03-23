@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 //import javax.transaction.Transaction;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import id_authentication.domain.*;
@@ -62,17 +64,11 @@ public class TransactionServiceImp implements TransactionService {
     @Override
     public TransactionStatusDTO addTransaction(long badgeId, long planId, long locationId) {
         LocalDateTime now = LocalDateTime.now();
-        Transaction transaction;
-        if (checkIsAllowed(badgeId, planId, locationId)) {
-            transaction = new Transaction(now, TransactionType.ALLOWED.getValue());
-        } else {
-            transaction = new Transaction(now, TransactionType.DECLINED.getValue());
-        }
-        Member member = badgeRepository.findById(badgeId).get().getMember();
-        Transaction savedTransaction =
-                saveTransaction(transaction, badgeId, planId, locationId, member.getId(), member.getRole().getId());
-        TransactionStatusDTO transactionStatusDTO = modelMapper.map(savedTransaction, TransactionStatusDTO.class);
-        return transactionStatusDTO;
+        boolean isTransactionAllowed = checkIsAllowed(badgeId, planId, locationId);
+        Transaction transaction = new Transaction(now, isTransactionAllowed ? TransactionType.ALLOWED.getValue() : TransactionType.DECLINED.getValue());
+        Member member = badgeRepository.findById(badgeId).orElseThrow(() -> new IllegalArgumentException("Badge not found")).getMember();
+        Transaction savedTransaction = saveTransaction(transaction, badgeId, planId, locationId, member.getId(), member.getRole().getId(), isTransactionAllowed);
+        return modelMapper.map(savedTransaction, TransactionStatusDTO.class);
     }
 
     @Override
@@ -88,20 +84,35 @@ public class TransactionServiceImp implements TransactionService {
         List<CheckInRecord> checkInRecord = checkInRecordRepository
                 .findCheckInRecordWithMember(checkValidator.getMemberId(), checkValidator.getPlanId());
         if (checkInRecord.size() > 0) {
+            Badge badge = badgeRepository.findById(badgeId).get();
+
             int maxAllowedCount = planRepository.findById(planId).get().getRolePlanLimit().stream().iterator().next().getLimitValue();
             int currentCount = checkInRecord.get(0).getCount();
             isInLimit = currentCount < maxAllowedCount;
+
+            if (badge.getMember().getRole().getName().equalsIgnoreCase(RoleType.FACULTY.getValue())) {
+                return isInLimit;
+            }
+
+            LocalDateTime lastEntered = checkInRecord.get(0).getLastCheckIn();
+            if (lastEntered.toLocalTime().isAfter(checkValidator.getStartTime())
+                    && lastEntered.toLocalTime().isBefore(checkValidator.getEndTime())
+                    && lastEntered.toLocalDate().isEqual(LocalDate.now())) {
+                isInLimit = false;
+            }
         }
         return isInLimit;
     }
 
     @Transactional
-    public Transaction saveTransaction(Transaction transaction, long badgeId, long planId, long locationId, long memberId, long roleId) {
+    public Transaction saveTransaction(Transaction transaction, long badgeId, long planId, long locationId, long memberId, long roleId, boolean isTransactionAllowed) {
         Transaction savedTransaction = transactionRepository.save(transaction);
         transactionRepository.updateTransactionDetail(badgeId, planId, locationId, savedTransaction.getId());
+
+        if (!isTransactionAllowed) return transaction;
+
         List<CheckInRecord> checkInRecord = checkInRecordRepository.findCheckInRecordWithMember(memberId, planId);
         if (checkInRecord.size() > 0) {
-            Long id = checkInRecord.get(0).getId();
             checkInRecordRepository.updateCheckInRecordCount(checkInRecord.get(0).getId());
         } else {
             CheckInRecord newCheckInRecord = new CheckInRecord(1, transaction.getDateTime());
