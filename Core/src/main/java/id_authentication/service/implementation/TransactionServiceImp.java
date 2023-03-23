@@ -85,13 +85,15 @@ public class TransactionServiceImp implements TransactionService {
                 .findCheckInRecordWithMember(checkValidator.getMemberId(), checkValidator.getPlanId());
         if (checkInRecord.size() > 0) {
             Badge badge = badgeRepository.findById(badgeId).get();
-            badge.getMember().getRole();
-            if (badge.getMember().getRole().getName().equalsIgnoreCase(RoleType.FACULTY.getValue())) {
-                return true;
-            }
+
             int maxAllowedCount = planRepository.findById(planId).get().getRolePlanLimit().stream().iterator().next().getLimitValue();
             int currentCount = checkInRecord.get(0).getCount();
             isInLimit = currentCount < maxAllowedCount;
+
+            if (badge.getMember().getRole().getName().equalsIgnoreCase(RoleType.FACULTY.getValue())) {
+                return isInLimit;
+            }
+
             LocalDateTime lastEntered = checkInRecord.get(0).getLastCheckIn();
             if (lastEntered.toLocalTime().isAfter(checkValidator.getStartTime())
                     && lastEntered.toLocalTime().isBefore(checkValidator.getEndTime())
