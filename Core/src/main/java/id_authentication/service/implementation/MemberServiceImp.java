@@ -45,11 +45,8 @@ public class MemberServiceImp implements MemberService {
         Member member = modelMapper.map(memberDTO, Member.class);
         Role role = roleRepository.findById(memberDTO.getRoleId()).get();
         member.setRole(role);
-        //System.out.println(member.getMemberNumber()+"-----------");
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        //System.out.println("_________member.getPassword()__________"+member.getPassword());
         Member createdMember = memberRepository.save(member);
-        //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
         MemberDTO createdMemberDTO = modelMapper.map(createdMember, MemberDTO.class);
         return createdMemberDTO;
     }
@@ -63,7 +60,7 @@ public class MemberServiceImp implements MemberService {
         }
     }
 
-    public MemberDTO updateMember(Long memberId, MemberDTO memberDTO) {
+    public MemberDTO updateMember(Long memberId, MemberCreateDTO memberDTO) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
         if (memberOptional.isPresent()) {
@@ -72,8 +69,14 @@ public class MemberServiceImp implements MemberService {
             foundMember.setFirstName(memberDTO.getFirstName());
             foundMember.setLastName(memberDTO.getLastName());
             foundMember.setUserName(memberDTO.getUserName());
-            foundMember.setPassword(memberDTO.getPassword());
+            foundMember.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+            if(memberDTO.getRoleId()!=null)
+            {
+                Role role = roleRepository.findById(memberDTO.getRoleId()).get();
+                foundMember.setRole(role);
+            }
             return modelMapper.map(memberRepository.save(foundMember), MemberDTO.class);
+
         } else {
             throw new RuntimeException("Member not found" + memberId);
         }

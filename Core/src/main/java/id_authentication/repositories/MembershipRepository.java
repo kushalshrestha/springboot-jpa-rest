@@ -17,10 +17,6 @@ import java.util.List;
 @Repository
 public interface MembershipRepository extends JpaRepository<Membership, Long> {
 
-    @Query(value = "select ms.* " +
-            "from member m left join membership ms on m.id = ms.member_id where ms.member_id= :memberId", nativeQuery = true)
-    List<Membership> findMembershipsByMemberId(@Param("memberId") long memberId);
-
     @Modifying
     @Query(value = "update membership set member_id=:memberId where id=:id", nativeQuery = true)
     void updateMemberId(long id, long memberId);
