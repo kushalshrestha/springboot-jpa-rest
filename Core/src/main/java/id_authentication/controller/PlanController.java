@@ -2,6 +2,7 @@ package id_authentication.controller;
 
 
 
+import id_authentication.domain.Plan;
 import id_authentication.dto.PlanDTO;
 import id_authentication.dto.collection.PlanDTOs;
 import id_authentication.service.PlanService;
@@ -26,10 +27,10 @@ public class PlanController {
     }
 
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public ResponseEntity<?> createAPlan(@RequestBody PlanDTO planDTO){
         PlanDTO p = planService.createPlanForMember(planDTO);
-        return new ResponseEntity<PlanDTO>(planDTO,HttpStatus.OK);
+        return new ResponseEntity<>(p,HttpStatus.OK);
 
     }
 

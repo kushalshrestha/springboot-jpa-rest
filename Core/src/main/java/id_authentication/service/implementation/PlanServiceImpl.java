@@ -43,7 +43,9 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public PlanDTO createPlanForMember(PlanDTO planDTO) {
         Plan plan = modelMapper.map(planDTO,Plan.class);
-        return modelMapper.map(planRepository.save(plan),PlanDTO.class);
+        Plan planCreating = planRepository.save(plan);
+        PlanDTO planCreatedDTO=modelMapper.map(planCreating,PlanDTO.class);
+        return planCreatedDTO;
     }
 
     @Override
@@ -90,4 +92,6 @@ public class PlanServiceImpl implements PlanService {
             return locationDTOs;
 
     }
+
+
 }

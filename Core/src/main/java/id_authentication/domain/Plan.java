@@ -8,10 +8,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "PlanInfo")
-@Setter
-@Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
