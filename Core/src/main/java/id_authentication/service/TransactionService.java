@@ -1,6 +1,5 @@
 package id_authentication.service;
 
-import id_authentication.domain.Transaction;
 import id_authentication.dto.TransactionDTO;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +12,8 @@ public interface TransactionService {
     TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO);
 
     TransactionStatusDTO addTransaction(long badgeId, long planId, long locationId);
+
+    boolean checkIsAllowed(long badgeId, long planId, long locationId);
 
     List<TransactionDTO> getAllTransactions();
 

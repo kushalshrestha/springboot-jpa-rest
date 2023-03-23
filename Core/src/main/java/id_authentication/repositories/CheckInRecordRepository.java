@@ -17,7 +17,7 @@ public interface CheckInRecordRepository extends JpaRepository<CheckInRecord,Lon
      List<CheckInRecord> findCheckInRecordWithMember(@Param("memberId") long memberId, @Param("planId") long planId);
 
     @Modifying
-    @Query(value="update CheckInRecord  set count= count+1, " +
+    @Query(value="update CheckInRecord  set count= count+1 " +
             " where id= :checkInRecordId" , nativeQuery = true)
     void updateCheckInRecordCount(Long checkInRecordId);
     @Modifying

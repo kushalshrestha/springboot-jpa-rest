@@ -1,5 +1,6 @@
 package id_authentication.controller;
 import id_authentication.dto.MemberDTO;
+import id_authentication.dto.collection.MembershipPlanResponseDTOs;
 import id_authentication.dto.collection.TransactionDTOs;
 import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
@@ -37,14 +38,14 @@ public class MemberController {
     }
 
     @PostMapping("/authentication")
-    public ResponseEntity<?> authentication(@RequestBody MemberDTO memberDTO) {
-        MemberDTO createdMemberDTO = memberService.authenticate(memberDTO.getUserName(), memberDTO.getPassword());
+    public ResponseEntity<?> authentication(@RequestBody MemberCreateDTO memberCreateDTODTO) {
+        MemberDTO createdMemberDTO = memberService.authenticate(memberCreateDTODTO.getUserName(), memberCreateDTODTO.getPassword());
         return new ResponseEntity<MemberDTO>(createdMemberDTO, HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMember(@PathVariable String id, @RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<?> updateMember(@PathVariable String id, @RequestBody MemberCreateDTO memberDTO) {
         MemberDTO updatedMemberDTO = memberService.updateMember(Long.parseLong(id), memberDTO);
         return new ResponseEntity<MemberDTO>(updatedMemberDTO, HttpStatus.OK);
     }
@@ -63,15 +64,10 @@ public class MemberController {
 
 
     @GetMapping("{memberId}/memberships")
-    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable long memberId) {
-        try {
-            List<MembershipPlanResponseDto> memberShipDTOList = new ArrayList<>();
-            memberShipDTOList = membershipService.getMembershipsByMemberId(memberId);
-            return ResponseEntity.status(HttpStatus.OK).body(memberShipDTOList);
-        } catch (Exception e) {
-            CustomErrorType customErrorType = new CustomErrorType("Error retrieving memberships for memberID " + memberId + ": " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(customErrorType);
-        }
+    public ResponseEntity<?> findMembershipsByMemberId(@PathVariable String memberId) {
+            MembershipPlanResponseDTOs membershipPlanResponseDTOs =
+            membershipService.getMembershipsByMemberId(Long.parseLong(memberId));
+            return ResponseEntity.status(HttpStatus.OK).body(membershipPlanResponseDTOs);
     }
 
     @GetMapping("/{memberId}/plans")
