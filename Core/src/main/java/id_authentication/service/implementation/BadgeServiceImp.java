@@ -1,6 +1,7 @@
 package id_authentication.service.implementation;
 
 import id_authentication.domain.Badge;
+import id_authentication.domain.BadgeStatus;
 import id_authentication.dto.BadgeDTO;
 import id_authentication.repositories.BadgeRepository;
 import id_authentication.service.BadgeService;
@@ -25,7 +26,9 @@ public class BadgeServiceImp implements BadgeService {
 
     @Override
     public BadgeDTO createBadge(BadgeDTO badgeDTO) {
-
+        String status=validateStatus(badgeDTO.getStatus());
+        badgeDTO.setStatus(status);
+        badgeRepository.deactivateAllBadgesByMemberId(badgeDTO.getMemberId());
         Badge badge2 = modelMapper.map(badgeDTO, Badge.class);
         Badge updatedBadge = badgeRepository.save(badge2);
         badgeRepository.updateMemberId(updatedBadge.getId(), badgeDTO.getMemberId());
@@ -33,18 +36,21 @@ public class BadgeServiceImp implements BadgeService {
         return createdBadgeDTO;
     }
 
-    //    @Override
-//    public Badge updateBadge(Badge badge, Long BadgeNumber) {
-//        var oldBatch = badgeRepository.findById(BadgeNumber);
-//        if (oldBatch.isPresent()) {
-//            Badge badge1 = oldBatch.get();
-//            badge1.setExpiryDate(badge.getExpiryDate());
-//            badge1.setStatus(badge.getStatus());
-//            return badgeRepository.save(badge1);
-//        }
-//    }
+    private String validateStatus(String status) {
+
+        status = status.equalsIgnoreCase(BadgeStatus.ACTIVE.getValue()) ? BadgeStatus.ACTIVE.getValue()
+                : status.equalsIgnoreCase(BadgeStatus.INACTIVE.getValue()) ? BadgeStatus.INACTIVE.getValue() : "";
+        if (!status.equals(BadgeStatus.ACTIVE.getValue())) {
+            if (!status.equals(BadgeStatus.INACTIVE.getValue())) throw new RuntimeException("InValid Status");
+        }
+        return status;
+    }
+
+
     @Override
     public BadgeDTO updateBadge(BadgeDTO badgeDTO, Long BadgeNumber) {
+        String status=validateStatus(badgeDTO.getStatus());
+        badgeDTO.setStatus(status);
         var oldBadge = badgeRepository.findById(BadgeNumber);
         if (oldBadge.isPresent()) {
             Badge badge1 = oldBadge.get();
