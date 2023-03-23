@@ -1,4 +1,5 @@
 package id_authentication.service.implementation;
+import id_authentication.domain.BadgeStatus;
 import id_authentication.domain.Member;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
@@ -45,11 +46,8 @@ public class MemberServiceImp implements MemberService {
         Member member = modelMapper.map(memberDTO, Member.class);
         Role role = roleRepository.findById(memberDTO.getRoleId()).get();
         member.setRole(role);
-        //System.out.println(member.getMemberNumber()+"-----------");
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        //System.out.println("_________member.getPassword()__________"+member.getPassword());
         Member createdMember = memberRepository.save(member);
-        //Member createdMember=memberRepository.findMemberByMemberNumber(member.getMemberNumber());
         MemberDTO createdMemberDTO = modelMapper.map(createdMember, MemberDTO.class);
         return createdMemberDTO;
     }
@@ -63,7 +61,7 @@ public class MemberServiceImp implements MemberService {
         }
     }
 
-    public MemberDTO updateMember(Long memberId, MemberDTO memberDTO) {
+    public MemberDTO updateMember(Long memberId, MemberCreateDTO memberDTO) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
         if (memberOptional.isPresent()) {
@@ -72,8 +70,14 @@ public class MemberServiceImp implements MemberService {
             foundMember.setFirstName(memberDTO.getFirstName());
             foundMember.setLastName(memberDTO.getLastName());
             foundMember.setUserName(memberDTO.getUserName());
-            foundMember.setPassword(memberDTO.getPassword());
+            foundMember.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+            if(memberDTO.getRoleId()!=null)
+            {
+                Role role = roleRepository.findById(memberDTO.getRoleId()).get();
+                foundMember.setRole(role);
+            }
             return modelMapper.map(memberRepository.save(foundMember), MemberDTO.class);
+
         } else {
             throw new RuntimeException("Member not found" + memberId);
         }
@@ -135,9 +139,12 @@ public class MemberServiceImp implements MemberService {
 
     public List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status) {
         List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
-        if (status != null &&
-                (status.toLowerCase().equals("active") || status.toLowerCase().equals("inactive"))
-        ) {
+        status=status==null?"":status;
+        status=status.equalsIgnoreCase(BadgeStatus.ACTIVE.getValue())?BadgeStatus.ACTIVE.getValue():"";
+        status=status.equalsIgnoreCase(BadgeStatus.INACTIVE.getValue())?BadgeStatus.INACTIVE.getValue():"";
+
+        if (!status.equals(""))
+        {
             return badgeRepository.findMemberBadgesByStatus(memberId, status).stream()
                     .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
                     .collect(Collectors.toList());

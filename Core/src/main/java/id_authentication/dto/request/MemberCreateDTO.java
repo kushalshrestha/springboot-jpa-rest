@@ -13,5 +13,5 @@ public class MemberCreateDTO {
     private String userName;
     private String password;
 
-    private long roleId;
+    private Long roleId;
 }
