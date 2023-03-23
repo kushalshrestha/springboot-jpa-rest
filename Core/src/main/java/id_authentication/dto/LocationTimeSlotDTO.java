@@ -12,11 +12,5 @@ public class LocationTimeSlotDTO {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    public LocationTimeSlotDTO(long id, int dayOfWeek,
-                               LocalTime startTime, LocalTime endTime) {
-        this.id = id;
-        this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+
 }

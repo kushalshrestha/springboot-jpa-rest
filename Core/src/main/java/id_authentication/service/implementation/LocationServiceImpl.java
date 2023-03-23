@@ -3,6 +3,7 @@ package id_authentication.service.implementation;
 import id_authentication.domain.Location;
 import id_authentication.dto.LocationDTO;
 import id_authentication.dto.request.LocationCreateDTO;
+import id_authentication.dto.response.LocationWithTimeDTO;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.LocationRepository;
 import id_authentication.service.LocationService;
@@ -23,11 +24,11 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    public LocationDTO addLocation(LocationCreateDTO locationWithPlanId) {
+    public LocationWithTimeDTO addLocation(LocationCreateDTO locationWithPlanId) {
         Location locationToBeSaved = modelMapper.map(locationWithPlanId, Location.class);
         Location createdLocation=locationRepository.save(locationToBeSaved);
         locationRepository.updatePlanId(createdLocation.getId(), locationWithPlanId.getPlanId());
-        return modelMapper.map(createdLocation, LocationDTO.class);
+        return modelMapper.map(createdLocation, LocationWithTimeDTO.class);
     }
 
     @Override
@@ -57,10 +58,10 @@ public class LocationServiceImpl implements LocationService {
         }
     }
     @Override
-    public LocationDTO getLocation(long id) {
+    public LocationWithTimeDTO getLocation(long id) {
         Optional<Location> locationOptional = locationRepository.findById(id);
         if(locationOptional.isPresent()){
-            return modelMapper.map(locationOptional.get(), LocationDTO.class);
+            return modelMapper.map(locationOptional.get(), LocationWithTimeDTO.class);
         }else{
             throw new ResourceNotFoundException("Location not found " + id);
         }
