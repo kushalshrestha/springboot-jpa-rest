@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 //import javax.transaction.Transaction;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import id_authentication.domain.*;
@@ -63,14 +65,16 @@ public class TransactionServiceImp implements TransactionService {
     public TransactionStatusDTO addTransaction(long badgeId, long planId, long locationId) {
         LocalDateTime now = LocalDateTime.now();
         Transaction transaction;
+        boolean isTransactionAllowed = false;
         if (checkIsAllowed(badgeId, planId, locationId)) {
             transaction = new Transaction(now, TransactionType.ALLOWED.getValue());
+            isTransactionAllowed = true;
         } else {
             transaction = new Transaction(now, TransactionType.DECLINED.getValue());
         }
         Member member = badgeRepository.findById(badgeId).get().getMember();
         Transaction savedTransaction =
-                saveTransaction(transaction, badgeId, planId, locationId, member.getId(), member.getRole().getId());
+                saveTransaction(transaction, badgeId, planId, locationId, member.getId(), member.getRole().getId(), isTransactionAllowed);
         TransactionStatusDTO transactionStatusDTO = modelMapper.map(savedTransaction, TransactionStatusDTO.class);
         return transactionStatusDTO;
     }
@@ -85,20 +89,41 @@ public class TransactionServiceImp implements TransactionService {
             return true;
         }
         Boolean isInLimit = true;
+        long id = checkValidator.getPlanId();
         List<CheckInRecord> checkInRecord = checkInRecordRepository
                 .findCheckInRecordWithMember(checkValidator.getMemberId(), checkValidator.getPlanId());
         if (checkInRecord.size() > 0) {
+            Badge badge = badgeRepository.findById(badgeId).get();
+            badge.getMember().getRole();
+            if (badge.getMember().getRole().getName().equalsIgnoreCase(RoleType.FACULTY.getValue())){
+                return true;
+            }
             int maxAllowedCount = planRepository.findById(planId).get().getRolePlanLimit().stream().iterator().next().getLimitValue();
             int currentCount = checkInRecord.get(0).getCount();
             isInLimit = currentCount < maxAllowedCount;
+            LocalDateTime lastEntered = checkInRecord.get(0).getLastCheckIn();
+            LocalTime a = checkValidator.getStartTime();
+            LocalTime b = checkValidator.getEndTime();
+            LocalDate c = LocalDate.now();
+            LocalTime d = lastEntered.toLocalTime();
+            LocalDate e = lastEntered.toLocalDate();
+
+            if (d.isAfter(a)
+            && d.isBefore(b)
+            && e.isEqual(c)) {
+                isInLimit = false;
+            }
         }
         return isInLimit;
     }
 
     @Transactional
-    public Transaction saveTransaction(Transaction transaction, long badgeId, long planId, long locationId, long memberId, long roleId) {
+    public Transaction saveTransaction(Transaction transaction, long badgeId, long planId, long locationId, long memberId, long roleId, boolean isTransactionAllowed) {
         Transaction savedTransaction = transactionRepository.save(transaction);
         transactionRepository.updateTransactionDetail(badgeId, planId, locationId, savedTransaction.getId());
+
+        if(!isTransactionAllowed) return transaction;
+
         List<CheckInRecord> checkInRecord = checkInRecordRepository.findCheckInRecordWithMember(memberId, planId);
         if (checkInRecord.size() > 0) {
             Long id = checkInRecord.get(0).getId();

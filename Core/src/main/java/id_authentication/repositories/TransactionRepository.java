@@ -39,7 +39,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
                     "on lts.location_id = l.id " +
                     "where b.id= :badgeId " +
                     "and convert(Date, GetDate()) < b.expiry_date " +
-                    "and upper(status)='ACTIVE'" +
+                    "and upper(b.status)='ACTIVE'" +
                     "and ms.plan_id= :planId " +
                     "and l.id= :locationId " +
                     "and lts.day_of_week=DATEPART(dw,GETDATE()) " +

@@ -9,21 +9,24 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
 @Transactional
 @Repository
-public interface CheckInRecordRepository extends JpaRepository<CheckInRecord,Long> {
+public interface CheckInRecordRepository extends JpaRepository<CheckInRecord, Long> {
 
-    @Query("select m.checkInRecords from Member m join m.checkInRecords c where m.id= :memberId and c.plan.id= :planId")
-     List<CheckInRecord> findCheckInRecordWithMember(@Param("memberId") long memberId, @Param("planId") long planId);
+//    @Query("select m.checkInRecords from Member m join m.checkInRecords c where m.id= :memberId and c.plan.id= :planId")
+    @Query(value = "select c.* from checkinrecord c where plans_id= :planId and member_id= :memberId", nativeQuery = true)
+    List<CheckInRecord> findCheckInRecordWithMember(@Param("memberId") long memberId, @Param("planId") long planId);
 
     @Modifying
-    @Query(value="update CheckInRecord  set count= count+1 " +
-            " where id= :checkInRecordId" , nativeQuery = true)
+    @Query(value = "update CheckInRecord  set count= count+1, lastCheckIn=getdate() " +
+            " where id= :checkInRecordId", nativeQuery = true)
     void updateCheckInRecordCount(Long checkInRecordId);
+
     @Modifying
-    @Query(value="update CheckInRecord  set plans_id= :planId, " +
-            "roles_id= :roleId, member_id= :memberId where id= :checkInRecordId" , nativeQuery = true)
-    void updateCheckInRecordDetail(Long checkInRecordId, long planId, long memberId,long roleId);
+    @Query(value = "update CheckInRecord  set plans_id= :planId, " +
+            "roles_id= :roleId, member_id= :memberId where id= :checkInRecordId", nativeQuery = true)
+    void updateCheckInRecordDetail(Long checkInRecordId, long planId, long memberId, long roleId);
 
 //    @Query("select m.checkInRecords from Badge b join b.member m join m.checkInRecords c where m.id= :badgeId and ")
 //    List<CheckInRecord> findCheckInRecordWithBadge(@Param("badgeId") long badgeId, @Param("planId") long planId);
