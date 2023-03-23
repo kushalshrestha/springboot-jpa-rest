@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 public class LocationDTOs {
-    List<LocationDTO> locationDTOS = new ArrayList<>();
+    List<LocationDTO> locations = new ArrayList<>();
     public void addLocation(LocationDTO locationDTO){
-        locationDTOS.add(locationDTO);
+        locations.add(locationDTO);
     }
 }

@@ -2,14 +2,10 @@ package id_authentication.service.implementation;
 
 import id_authentication.domain.Member;
 import id_authentication.domain.Membership;
-import id_authentication.dto.LocationDTO;
-import id_authentication.dto.MemberShipDTO;
-import id_authentication.dto.TransactionDTO;
 import id_authentication.dto.collection.MembershipPlanResponseDTOs;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.dto.response.MembershipResponseDto;
-import id_authentication.dto.response.PlanWithLocationDTO;
 import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.MemberRepository;
 import id_authentication.repositories.MembershipRepository;
@@ -91,12 +87,8 @@ public class MembershipService implements IMembershipService {
             throw new ResourceNotFoundException("No memberships found for member id " + memberId);
         }
         member.getMemberships().forEach(membership -> {
-            MembershipPlanResponseDto dto = modelMapper.map(membership, MembershipPlanResponseDto.class);
-            PlanWithLocationDTO plan = modelMapper.map(membership.getPlan(), PlanWithLocationDTO.class);
             membershipPlanResponseDTOs.add(modelMapper.map(membership, MembershipPlanResponseDto.class));
         });
-
-
         return membershipPlanResponseDTOs;
     }
 
