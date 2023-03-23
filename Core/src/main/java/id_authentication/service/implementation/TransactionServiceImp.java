@@ -95,22 +95,16 @@ public class TransactionServiceImp implements TransactionService {
         if (checkInRecord.size() > 0) {
             Badge badge = badgeRepository.findById(badgeId).get();
             badge.getMember().getRole();
-            if (badge.getMember().getRole().getName().equalsIgnoreCase(RoleType.FACULTY.getValue())){
+            if (badge.getMember().getRole().getName().equalsIgnoreCase(RoleType.FACULTY.getValue())) {
                 return true;
             }
             int maxAllowedCount = planRepository.findById(planId).get().getRolePlanLimit().stream().iterator().next().getLimitValue();
             int currentCount = checkInRecord.get(0).getCount();
             isInLimit = currentCount < maxAllowedCount;
             LocalDateTime lastEntered = checkInRecord.get(0).getLastCheckIn();
-            LocalTime a = checkValidator.getStartTime();
-            LocalTime b = checkValidator.getEndTime();
-            LocalDate c = LocalDate.now();
-            LocalTime d = lastEntered.toLocalTime();
-            LocalDate e = lastEntered.toLocalDate();
-
-            if (d.isAfter(a)
-            && d.isBefore(b)
-            && e.isEqual(c)) {
+            if (lastEntered.toLocalTime().isAfter(checkValidator.getStartTime())
+                    && lastEntered.toLocalTime().isBefore(checkValidator.getEndTime())
+                    && lastEntered.toLocalDate().isEqual(LocalDate.now())) {
                 isInLimit = false;
             }
         }
@@ -122,7 +116,7 @@ public class TransactionServiceImp implements TransactionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
         transactionRepository.updateTransactionDetail(badgeId, planId, locationId, savedTransaction.getId());
 
-        if(!isTransactionAllowed) return transaction;
+        if (!isTransactionAllowed) return transaction;
 
         List<CheckInRecord> checkInRecord = checkInRecordRepository.findCheckInRecordWithMember(memberId, planId);
         if (checkInRecord.size() > 0) {
