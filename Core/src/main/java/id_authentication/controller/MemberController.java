@@ -6,7 +6,6 @@ import id_authentication.dto.request.MemberCreateDTO;
 import id_authentication.dto.collection.MemberDTOs;
 import id_authentication.dto.response.BadgeOnlyDTO;
 import id_authentication.dto.response.MemberDetailDTO;
-import id_authentication.dto.response.MembershipPlanResponseDto;
 import id_authentication.errorhandler.CustomErrorType;
 import id_authentication.service.IMembershipService;
 import id_authentication.service.MemberService;

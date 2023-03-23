@@ -15,6 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     public Member findMemberByUserName(String userName);
 
-    @Query("select b.transactions from Badge b join b.transactions where b.member.id=:memberId")
+    @Query("select distinct b.transactions from Badge b join b.transactions where b.member.id=:memberId")
     List<Transaction> findTransactionsByMemberId(Long memberId);
 }

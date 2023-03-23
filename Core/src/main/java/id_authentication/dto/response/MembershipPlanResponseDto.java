@@ -12,5 +12,5 @@ public class MembershipPlanResponseDto {
     private String type;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private PlanWithLocationDTO plan;
+    private PlanOnlyDTO plan;
 }
