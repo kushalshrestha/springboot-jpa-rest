@@ -12,7 +12,5 @@ import java.util.Set;
 
 @Repository
 public interface RolePlanLimitRepository extends JpaRepository<RolePlanLimit, Long>{
-    @Query("Select p.rolePlanLimit from Plan p join p.rolePlanLimit l where l.role.id= :roleId and p.id = :planId")
-    Set<RolePlanLimitDTO> findRolePlanLimitWithRoleAndPlan(long roleId, long planId);
 
 }
