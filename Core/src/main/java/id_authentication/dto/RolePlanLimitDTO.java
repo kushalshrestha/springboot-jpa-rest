@@ -12,10 +12,4 @@ public class RolePlanLimitDTO {
     private int limitValue;
     public Role role;
 
-    public RolePlanLimitDTO(long id, String limitBy, int limitValue, Role role) {
-        this.id = id;
-        this.limitBy = limitBy;
-        this.limitValue = limitValue;
-        this.role = role;
-    }
 }
