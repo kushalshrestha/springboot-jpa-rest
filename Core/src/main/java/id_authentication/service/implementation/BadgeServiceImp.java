@@ -26,6 +26,7 @@ public class BadgeServiceImp implements BadgeService {
     @Override
     public BadgeDTO createBadge(BadgeDTO badgeDTO) {
 
+        badgeRepository.deactivateAllBadgesByMemberId(badgeDTO.getMemberId());
         Badge badge2 = modelMapper.map(badgeDTO, Badge.class);
         Badge updatedBadge = badgeRepository.save(badge2);
         badgeRepository.updateMemberId(updatedBadge.getId(), badgeDTO.getMemberId());
@@ -33,16 +34,7 @@ public class BadgeServiceImp implements BadgeService {
         return createdBadgeDTO;
     }
 
-    //    @Override
-//    public Badge updateBadge(Badge badge, Long BadgeNumber) {
-//        var oldBatch = badgeRepository.findById(BadgeNumber);
-//        if (oldBatch.isPresent()) {
-//            Badge badge1 = oldBatch.get();
-//            badge1.setExpiryDate(badge.getExpiryDate());
-//            badge1.setStatus(badge.getStatus());
-//            return badgeRepository.save(badge1);
-//        }
-//    }
+
     @Override
     public BadgeDTO updateBadge(BadgeDTO badgeDTO, Long BadgeNumber) {
         var oldBadge = badgeRepository.findById(BadgeNumber);

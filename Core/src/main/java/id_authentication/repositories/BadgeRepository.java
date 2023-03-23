@@ -21,6 +21,10 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
     @Query(value = "update badge set member_id=:memberId where id=:id", nativeQuery = true)
     void updateMemberId(long id, long memberId);
 
+    @Modifying
+    @Query(value = "update badge set status='INACTIVE' where member_id=:memberId", nativeQuery = true)
+    void deactivateAllBadgesByMemberId(long memberId);
+
     @Query(value = "select b.* from badge b where b.member_id= :memberId", nativeQuery = true)
     List<Badge> findBadgesByMemberId(long memberId);
 

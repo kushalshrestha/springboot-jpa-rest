@@ -32,7 +32,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<?> addTransaction(@RequestBody TransactionCreateDTO transactionCreateDTO){
-        TransactionStatusDTO transactionDTO= transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(),transactionCreateDTO.getLocationId());
+        TransactionStatusDTO transactionDTO= transactionService.addTransaction(transactionCreateDTO.getBadgeId(),transactionCreateDTO.getPlanId(), transactionCreateDTO.getLocationId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionDTO);
 
