@@ -81,7 +81,7 @@ public class TransactionServiceImp implements TransactionService {
         if (checkValidator == null) {
             return false;
         }
-        if (checkValidator.getType().equalsIgnoreCase("UNLIMITED")) {
+        if (checkValidator.getType().equalsIgnoreCase(MembershipType.UNLIMITED.getValue())) {
             return true;
         }
         Boolean isInLimit = true;
