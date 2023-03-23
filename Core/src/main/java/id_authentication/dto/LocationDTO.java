@@ -14,7 +14,7 @@ public class LocationDTO {
     private String name;
     private String description;
     private int capacity;
-    private LocationType locationType;
+    private String locationType;
 
 
 }

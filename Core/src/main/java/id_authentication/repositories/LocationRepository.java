@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
+
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
 
@@ -21,6 +21,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     List<LocationTimeSlot> getLocationsTimeSlotById(Long id);
 
    @Modifying
-    @Query(value = "update Location l set l.plan_id = :planId where l.id = :locationId", nativeQuery = true)
+   @Query(value = "update location  set plan_id = :planId where id = :locationId", nativeQuery = true)
    void updatePlanId(@Param("locationId")long locationId, @Param("planId") long planId);
 }

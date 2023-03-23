@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/locations")
+@RequestMapping("/api/v1/locations")
 public class LocationController {
     @Autowired
     private LocationService locationService;
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> addLocation(@RequestBody LocationCreateDTO locationWithPlanDTO) {
         return new ResponseEntity<>(locationService.addLocation(locationWithPlanDTO), HttpStatus.OK);
     }

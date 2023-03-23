@@ -16,13 +16,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationRepository locationRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    @Transactional
     public LocationDTO addLocation(LocationCreateDTO locationWithPlanId) {
         Location locationToBeSaved = modelMapper.map(locationWithPlanId, Location.class);
         Location createdLocation=locationRepository.save(locationToBeSaved);
