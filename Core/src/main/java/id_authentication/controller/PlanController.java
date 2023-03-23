@@ -29,7 +29,7 @@ public class PlanController {
     @PostMapping("/")
     public ResponseEntity<?> createAPlan(@RequestBody PlanDTO planDTO){
         PlanDTO p = planService.createPlanForMember(planDTO);
-        return new ResponseEntity<PlanDTO>(planDTO,HttpStatus.OK);
+        return new ResponseEntity<PlanDTO>(p,HttpStatus.OK);
 
     }
 
