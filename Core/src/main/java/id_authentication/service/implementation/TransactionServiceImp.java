@@ -95,8 +95,7 @@ public class TransactionServiceImp implements TransactionService {
         List<CheckInRecord> checkInRecord = checkInRecordRepository
                 .findCheckInRecordWithMember(checkValidator.getMemberId(), checkValidator.getPlanId());
         if (checkInRecord.size() > 0) {
-            int maxAllowedCount = rolePlanLimitRepository.findRolePlanLimitWithRoleAndPlan(checkValidator.getRoleId(), planId)
-                    .get(0).getLimitValue();
+            int maxAllowedCount = planRepository.findById(planId).get().getRolePlanLimit().stream().iterator().next().getLimitValue();
             int currentCount = checkInRecord.get(0).getCount();
             isInLimit = currentCount < maxAllowedCount;
         }
