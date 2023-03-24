@@ -52,7 +52,7 @@ public class MembershipService implements IMembershipService {
                         && !status.equals(MembershipType.UNLIMITED.getValue())
                         && !status.equals(MembershipType.CHECKER.getValue())
         ) {
-            throw new RuntimeException("InValid Status");
+            throw new RuntimeException("Invalid Status");
         }
         return status;
     }

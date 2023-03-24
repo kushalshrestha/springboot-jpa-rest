@@ -1,7 +1,7 @@
 package id_authentication.domain;
 
 public enum RoleType {
-    ADMIN("ADMIN"),STUDENT("STUDETN"),FACULTY("FACULTY"),STAFF("STAFF");
+    ADMIN("ADMIN"),STUDENT("STUDENT"),FACULTY("FACULTY"),STAFF("STAFF");
     private String value;
 
     private RoleType(String value) {
