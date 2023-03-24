@@ -1,7 +1,7 @@
 package id_authentication.domain;
 
 public enum MembershipType {
-    LIMITED("Limited"),UNLIMITED("Unlimited"),CHECKER("checker");
+    LIMITED("LIMITED"),UNLIMITED("UNLIMITED"),CHECKER("CHECKER");
 
     private String value;
 

@@ -1,7 +1,7 @@
 package id_authentication.domain;
 
 public enum BadgeStatus {
-ACTIVE("Active"),INACTIVE("Inactive");
+ACTIVE("ACTIVE"),INACTIVE("INACTIVE");
     private String value;
 
     private BadgeStatus(String value) {

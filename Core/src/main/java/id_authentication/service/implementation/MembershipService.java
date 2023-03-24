@@ -2,6 +2,7 @@ package id_authentication.service.implementation;
 
 import id_authentication.domain.Member;
 import id_authentication.domain.Membership;
+import id_authentication.domain.MembershipType;
 import id_authentication.dto.collection.MembershipPlanResponseDTOs;
 import id_authentication.dto.request.MembershipRequestDto;
 import id_authentication.dto.response.MembershipPlanResponseDto;
@@ -34,10 +35,26 @@ public class MembershipService implements IMembershipService {
 
     @Override
     public MembershipResponseDto save(MembershipRequestDto membershipRequestDto) {
+        String type = validateStatus(membershipRequestDto.getType());
+        membershipRequestDto.setType(type);
         Membership membership = modelMapper.map(membershipRequestDto, Membership.class);
         Membership savedMembership = membershipRepository.save(membership);
         membershipRepository.updateMemberId(savedMembership.getId(), membershipRequestDto.getMemberId());
         return modelMapper.map(savedMembership, MembershipResponseDto.class);
+    }
+
+    private String validateStatus(String status) {
+        status = status.equalsIgnoreCase(MembershipType.LIMITED.getValue()) ? MembershipType.LIMITED.getValue()
+                : status.equalsIgnoreCase(MembershipType.UNLIMITED.getValue()) ? MembershipType.UNLIMITED.getValue()
+                : status.equalsIgnoreCase(MembershipType.CHECKER.getValue()) ? MembershipType.CHECKER.getValue() : "";
+        if (
+                !status.equals(MembershipType.LIMITED.getValue())
+                        && !status.equals(MembershipType.UNLIMITED.getValue())
+                        && !status.equals(MembershipType.CHECKER.getValue())
+        ) {
+            throw new RuntimeException("Invalid Status");
+        }
+        return status;
     }
 
     @Override
@@ -55,6 +72,8 @@ public class MembershipService implements IMembershipService {
 
     @Override
     public MembershipResponseDto updateMembership(long id, MembershipRequestDto membershipRequestDto) {
+        String type = validateStatus(membershipRequestDto.getType());
+        membershipRequestDto.setType(type);
         Optional<Membership> membershipOptional = membershipRepository.findById(id);
         if (membershipOptional.isPresent()) {
             Membership membership = membershipOptional.get();
@@ -82,7 +101,7 @@ public class MembershipService implements IMembershipService {
     @Override
     public MembershipPlanResponseDTOs getMembershipsByMemberId(long memberId) {
         MembershipPlanResponseDTOs membershipPlanResponseDTOs = new MembershipPlanResponseDTOs();
-        Member member=memberRepository.findById(memberId).get();
+        Member member = memberRepository.findById(memberId).get();
         if (member.getMemberships().size() == 0) {
             throw new ResourceNotFoundException("No memberships found for member id " + memberId);
         }

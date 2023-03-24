@@ -1,7 +1,7 @@
 package id_authentication.domain;
 
 public enum TransactionType {
-    ALLOWED("Allowed"),DECLINED("Declined");
+    ALLOWED("ALLOWED"),DECLINED("DECLINED");
     private String value;
 
     private TransactionType(String value) {
