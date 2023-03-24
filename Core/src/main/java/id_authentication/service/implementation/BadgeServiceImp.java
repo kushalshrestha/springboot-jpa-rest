@@ -3,6 +3,7 @@ package id_authentication.service.implementation;
 import id_authentication.domain.Badge;
 import id_authentication.domain.BadgeStatus;
 import id_authentication.dto.BadgeDTO;
+import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.BadgeRepository;
 import id_authentication.service.BadgeService;
 import lombok.AllArgsConstructor;
@@ -60,7 +61,7 @@ public class BadgeServiceImp implements BadgeService {
             BadgeDTO updateBadgeDTO = modelMapper.map(badge1, BadgeDTO.class);
             return updateBadgeDTO;
         } else {
-            throw new RuntimeException("BadgeNumber Doesn't Exist");
+            throw new ResourceNotFoundException("BadgeNumber Doesn't Exist");
         }
 
     }
@@ -71,7 +72,7 @@ public class BadgeServiceImp implements BadgeService {
         if (oldBadge.isPresent()) {
             return modelMapper.map(oldBadge.get(), BadgeDTO.class);
         } else {
-            throw new RuntimeException("Badge Doesn't Exist");
+            throw new ResourceNotFoundException("Badge Doesn't Exist");
         }
     }
 
@@ -93,7 +94,7 @@ public class BadgeServiceImp implements BadgeService {
             badgeRepository.save(updatedBadge);
             return modelMapper.map(updatedBadge, BadgeDTO.class);
         } else {
-            throw new RuntimeException("Badge Doesn't Exist");
+            throw new ResourceNotFoundException("Badge Doesn't Exist");
         }
 
     }
