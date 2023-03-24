@@ -79,4 +79,7 @@ public class Member {
             checkInRecords.remove(checkInRecord);
         }
     }
+
+    public void addPlans(List<Plan> planList) {
+    }
 }

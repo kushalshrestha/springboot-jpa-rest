@@ -34,6 +34,15 @@ public class Plan {
     @JoinColumn(name = "plan_id")
     private Set<RolePlanLimit> rolePlanLimit ;
 
+    public Plan(long id, @NonNull String name, String description, List<Membership> membership, Set<Location> locations, Set<RolePlanLimit> rolePlanLimit) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.membership = membership;
+        this.locations = locations;
+        this.rolePlanLimit = rolePlanLimit;
+    }
+
     public void addRole(RolePlanLimit role) {
         if (rolePlanLimit == null) {
             rolePlanLimit = new HashSet<>();

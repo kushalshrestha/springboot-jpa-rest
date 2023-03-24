@@ -16,7 +16,6 @@ public class PlanDTO {
     private String name;
     private String description;
     private List<LocationDTO> locations=new ArrayList<>();
-    private List<RolePlanLimitDTO> rolePlanLimit;
 
 
 }
