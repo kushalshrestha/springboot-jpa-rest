@@ -1,6 +1,8 @@
 package id_authentication.service.implementation;
+
 import id_authentication.domain.BadgeStatus;
 import id_authentication.domain.Member;
+import id_authentication.domain.MembershipType;
 import id_authentication.domain.Role;
 import id_authentication.dto.MemberDTO;
 import id_authentication.dto.TransactionDTO;
@@ -18,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,8 +74,7 @@ public class MemberServiceImp implements MemberService {
             foundMember.setLastName(memberDTO.getLastName());
             foundMember.setUserName(memberDTO.getUserName());
             foundMember.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
-            if(memberDTO.getRoleId()!=null)
-            {
+            if (memberDTO.getRoleId() != null) {
                 Role role = roleRepository.findById(memberDTO.getRoleId()).get();
                 foundMember.setRole(role);
             }
@@ -93,23 +95,18 @@ public class MemberServiceImp implements MemberService {
     }
 
     public MemberDTO authenticate(String username, String password) {
-        try{
-            Member member= memberRepository.findMemberByUserName(username);
-            if(member.getMemberNumber()==null)
-            {
+        try {
+            Member member = memberRepository.findMemberByUserName(username);
+            if (member.getMemberNumber() == null) {
                 throw new MemberNotFoundException("User Not Found");
             }
             String encodedPassword = member.getPassword();
-            if(passwordEncoder.matches(password,encodedPassword ))
-            {
+            if (passwordEncoder.matches(password, encodedPassword)) {
                 return modelMapper.map(member, MemberDTO.class);
-            }
-            else
-            {
+            } else {
                 throw new MemberNotFoundException("Invalid password");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new MemberNotFoundException("Invalid Username or Password");
 
         }
@@ -125,6 +122,7 @@ public class MemberServiceImp implements MemberService {
             throw new RuntimeException("Member not found" + id);
         }
     }
+
     @Override
     public List<PlanOnlyDTO> getAllPlansForMember(long memberId) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
@@ -139,12 +137,11 @@ public class MemberServiceImp implements MemberService {
 
     public List<BadgeOnlyDTO> getMemberBadgesByMemberId(long memberId, String status) {
         List<BadgeOnlyDTO> badgeList = new ArrayList<BadgeOnlyDTO>();
-        status=status==null?"":status;
-        status=status.equalsIgnoreCase(BadgeStatus.ACTIVE.getValue())?BadgeStatus.ACTIVE.getValue():"";
-        status=status.equalsIgnoreCase(BadgeStatus.INACTIVE.getValue())?BadgeStatus.INACTIVE.getValue():"";
+        status = status == null ? "" : status;
+        status = status.equalsIgnoreCase(BadgeStatus.ACTIVE.getValue()) ? BadgeStatus.ACTIVE.getValue() : "";
+        status = status.equalsIgnoreCase(BadgeStatus.INACTIVE.getValue()) ? BadgeStatus.INACTIVE.getValue() : "";
 
-        if (!status.equals(""))
-        {
+        if (!status.equals("")) {
             return badgeRepository.findMemberBadgesByStatus(memberId, status).stream()
                     .map(badge -> modelMapper.map(badge, BadgeOnlyDTO.class))
                     .collect(Collectors.toList());
