@@ -36,17 +36,6 @@ public class Badge {
     @JoinColumn(name="badge_id")
     private List<Transaction> transactions;
 
-    public void addTransaction(Transaction transaction) {
-        if (transactions == null) {
-            transactions = new ArrayList<>();
-        }
-        transactions.add(transaction);
-    }
 
-    public void removeTransactions(Transaction transaction) {
-        if (transactions != null) {
-            transactions.remove(transaction);
-        }
-    }
 
 }

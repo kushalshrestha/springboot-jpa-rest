@@ -57,7 +57,7 @@ public class MemberServiceImp implements MemberService {
         if (locationOptional.isPresent()) {
             return modelMapper.map(locationOptional.get(), MemberDetailDTO.class);
         } else {
-            throw new RuntimeException("Location not found " + id);
+            throw new ResourceNotFoundException("Location not found " + id);
         }
     }
 
@@ -79,7 +79,7 @@ public class MemberServiceImp implements MemberService {
             return modelMapper.map(memberRepository.save(foundMember), MemberDTO.class);
 
         } else {
-            throw new RuntimeException("Member not found" + memberId);
+            throw new ResourceNotFoundException("Member not found" + memberId);
         }
     }
 
@@ -122,14 +122,14 @@ public class MemberServiceImp implements MemberService {
             memberRepository.deleteById(id);
 
         } else {
-            throw new RuntimeException("Member not found" + id);
+            throw new ResourceNotFoundException("Member not found" + id);
         }
     }
     @Override
     public List<PlanOnlyDTO> getAllPlansForMember(long memberId) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         if (!memberOptional.isPresent()) {
-            throw new RuntimeException("Member not found" + memberId);
+            throw new ResourceNotFoundException("Member not found" + memberId);
         }
         List<PlanOnlyDTO> planDTOs = memberOptional.get().getMemberships().stream()
                 .map(membership -> modelMapper.map(membership.getPlan(), PlanOnlyDTO.class))

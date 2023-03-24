@@ -7,7 +7,7 @@ import id_authentication.dto.LocationDTO;
 import id_authentication.dto.PlanDTO;
 import id_authentication.dto.collection.LocationDTOs;
 import id_authentication.dto.collection.PlanDTOs;
-import id_authentication.errorhandler.ResourceNotFoundException;
+import id_authentication.exceptions.ResourceNotFoundException;
 import id_authentication.repositories.*;
 import id_authentication.service.PlanService;
 import org.modelmapper.ModelMapper;

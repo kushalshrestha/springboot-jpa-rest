@@ -37,17 +37,6 @@ public class Plan {
     @JoinColumn(name = "plan_id")
     private Set<RolePlanLimit> rolePlanLimit ;
 
-    public void addRole(RolePlanLimit role) {
-        if (rolePlanLimit == null) {
-            rolePlanLimit = new HashSet<>();
-        }
-        rolePlanLimit.add(role);
-    }
 
-    public void removeRole(RolePlanLimit role) {
-        if (rolePlanLimit != null) {
-            rolePlanLimit.remove(role);
-        }
-    }
 
 }

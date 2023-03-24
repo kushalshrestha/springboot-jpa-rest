@@ -52,29 +52,4 @@ public class Member {
         this.badges = badges;
     }
 
-    public void addMembership(Membership membership) {
-        if (memberships == null) {
-            memberships = new ArrayList<>();
-        }
-        memberships.add(membership);
-    }
-
-    public void removeMembership(Membership membership) {
-        if (memberships != null) {
-            memberships.remove(membership);
-        }
-    }
-
-    public void addCheckInRecord(CheckInRecord checkInRecord) {
-        if (checkInRecords == null) {
-            checkInRecords = new ArrayList<>();
-        }
-        checkInRecords.add(checkInRecord);
-    }
-
-    public void removeCheckInRecord(CheckInRecord checkInRecord) {
-        if (checkInRecords != null) {
-            checkInRecords.remove(checkInRecord);
-        }
-    }
 }
